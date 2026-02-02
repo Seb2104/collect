@@ -7,7 +7,8 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nPrepare package for publishing to pub.dev\n\n- Add Apache 2.0 license\n- Create comprehensive README with features, usage examples, and installation instructions\n- Add detailed CHANGELOG for v0.0.1 release\n- Update pubspec.yaml with proper description, homepage, and repository URLs\n- Fix all dependency constraints (window_manager, super_editor, follow_the_leader, overlord)\n- Fix analyzer issues:\n  - Make ActionIcon widget fields final and const\n  - Remove unnecessary library names from lib_colour and lib_moment\n  - Rename constants to follow lowerCamelCase convention (MMMM -> mmmm, DDDD -> dateNumeric)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(tree:*)",
       "Bash(find:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(dart analyze:*)"
     ],
     "deny": [],
     "ask": []

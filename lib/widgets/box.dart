@@ -40,10 +40,8 @@ class StyledBox extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    RenderDecoratedBox renderObject,
-  ) {
+  void updateRenderObject(BuildContext context,
+      RenderDecoratedBox renderObject,) {
     renderObject
       ..decoration = decoration
       ..configuration = createLocalImageConfiguration(context)
@@ -87,7 +85,7 @@ class InsetShadowShapeDecoration extends ShapeDecoration {
 /// An object that paints a [InsetShadowShapeDecoration] into a canvas.
 class _ShapeDecorationPainter extends BoxPainter {
   _ShapeDecorationPainter(this._decoration, VoidCallback onChanged)
-    : super(onChanged);
+      : super(onChanged);
 
   final InsetShadowShapeDecoration _decoration;
 
@@ -195,11 +193,9 @@ class _ShapeDecorationPainter extends BoxPainter {
     // BlurStyle.outer to significantly diverge from the original intent.
     // It is assumed that [debugDisableShadows] will not change when calling
     // paintInterior or getOuterPath; if it does, the results are undefined.
-    bool debugHandleDisabledShadowStart(
-      Canvas canvas,
-      BoxShadow boxShadow,
-      Path path,
-    ) {
+    bool debugHandleDisabledShadowStart(Canvas canvas,
+        BoxShadow boxShadow,
+        Path path,) {
       if (debugDisableShadows && boxShadow.blurStyle == BlurStyle.outer) {
         canvas.save();
         final Path clipPath = Path();
@@ -221,14 +217,14 @@ class _ShapeDecorationPainter extends BoxPainter {
     if (_decoration.shape.preferPaintInterior) {
       for (int index = 0; index < _shadowsWithoutInset.length; index += 1) {
         assert(
-          debugHandleDisabledShadowStart(
-            canvas,
-            _shadowsWithoutInset[index],
-            _decoration.shape.getOuterPath(
-              _shadowBounds[index],
-              textDirection: textDirection,
-            ),
+        debugHandleDisabledShadowStart(
+          canvas,
+          _shadowsWithoutInset[index],
+          _decoration.shape.getOuterPath(
+            _shadowBounds[index],
+            textDirection: textDirection,
           ),
+        ),
         );
         _decoration.shape.paintInterior(
           canvas,
@@ -237,21 +233,21 @@ class _ShapeDecorationPainter extends BoxPainter {
           textDirection: textDirection,
         );
         assert(
-          debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
+        debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
         );
       }
     } else {
       for (int index = 0; index < _shadowsWithoutInset.length; index += 1) {
         assert(
-          debugHandleDisabledShadowStart(
-            canvas,
-            _shadowsWithoutInset[index],
-            _shadowPaths[index],
-          ),
+        debugHandleDisabledShadowStart(
+          canvas,
+          _shadowsWithoutInset[index],
+          _shadowPaths[index],
+        ),
         );
         canvas.drawPath(_shadowPaths[index], _shadowPaints[index]);
         assert(
-          debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
+        debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
         );
       }
     }
@@ -295,11 +291,9 @@ class _ShapeDecorationPainter extends BoxPainter {
     _imagePainter!.paint(canvas, _lastRect!, _innerPath, configuration);
   }
 
-  void _paintInsetShadows(
-    Canvas canvas,
-    Rect rect,
-    TextDirection? textDirection,
-  ) {
+  void _paintInsetShadows(Canvas canvas,
+      Rect rect,
+      TextDirection? textDirection,) {
     if (_insetShadows.isEmpty || _innerPath == null) {
       return;
     }
@@ -347,7 +341,8 @@ class _ShapeDecorationPainter extends BoxPainter {
 
       final path = Path.combine(
         PathOperation.difference,
-        Path()..addRect(outerBound),
+        Path()
+          ..addRect(outerBound),
         innerPathOfTheInsetShadow,
       );
 
