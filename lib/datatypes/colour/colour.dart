@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-final class Colour<P> {
+final class Colour<P> with Colours {
   final double alpha;
   final double red;
   final double green;

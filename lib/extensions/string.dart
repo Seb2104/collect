@@ -12,17 +12,17 @@ extension StringEx on String {
   /// ```
   /// The minimum value for [maxWidth] is 4
   String abbreviate(int maxWidth, {int offset = 0}) =>
-      Part.abbreviate(this, maxWidth);
+      Strings.abbreviate(this, maxWidth);
 
-  /// true if the the String is Blank.
+  /// true if the the String is Strings.
   /// A string that is zero length or only contains whitespace is
   /// considered blank.
-  bool isBlank() => Blank.isBlank(this);
+  bool isBlank() => Strings.isBlank(this);
 
-  /// true if the String is not Blank.
+  /// true if the String is not Strings.
   /// A string that is zero length or only contains whitespace is
   /// considered blank.
-  bool isNotBlank() => Blank.isNotBlank(this);
+  bool isNotBlank() => Strings.isNotBlank(this);
 
   /// Returns true if the String does not contain upper case letters.
   ///
@@ -39,7 +39,7 @@ extension StringEx on String {
   ///     print("".isLowerCase());
   ///     => false
   ///
-  bool isLowerCase() => Style.isLowerCase(this);
+  bool isLowerCase() => Strings.isLowerCase(this);
 
   /// Checks if the String is a number by attempting to parse it
   /// as a double.
@@ -49,7 +49,7 @@ extension StringEx on String {
   /// '1.20'.isNumeric();
   /// -> true
   /// ```
-  bool isNumeric() => StringType.isNumeric(this);
+  bool isNumeric() => Strings.isNumeric(this);
 
   /// returns true if the String only contains
   /// ascii characters. (0 - 128)
@@ -58,7 +58,7 @@ extension StringEx on String {
   /// 'abcde'.isAcii();
   /// -> true
   /// ```
-  bool isAscii() => StringType.isAscii(this);
+  bool isAscii() => Strings.isAscii(this);
 
   /// Returns true if the String does not contain any lower case letters.
   ///
@@ -74,7 +74,7 @@ extension StringEx on String {
   ///     => false
   /// ```
   ///
-  bool isUpperCase() => Style.isUpperCase(this);
+  bool isUpperCase() => Strings.isUpperCase(this);
 
   /// Returns the first [length] characters from the String.
   /// If [length] is longer than the String then the result is padded
@@ -85,7 +85,7 @@ extension StringEx on String {
   /// -> ' ab'
   /// ```
   String left(int length, {Pad pad = Pad.none}) =>
-      Part.left(this, length, pad: pad);
+      Strings.left(this, length, pad: pad);
 
   /// Returns a string with reversed order of characters.
   ///
@@ -94,7 +94,7 @@ extension StringEx on String {
   ///     print("hello".reverse());
   ///     => olleh
   /// ```
-  String reverse() => Transform.reverse(this);
+  String reverse() => Strings.reverse(this);
 
   /// Returns the right 'n' characters from  the String.
   ///
@@ -106,7 +106,7 @@ extension StringEx on String {
   /// -> 'ab '
   /// ```
   String right(int length, {Pad pad = Pad.none}) =>
-      Part.right(this, length, pad: pad);
+      Strings.right(this, length, pad: pad);
 
   /// Returns true if the String starts with a lower case character.
   ///
@@ -120,7 +120,7 @@ extension StringEx on String {
   ///     print("".startsWithLowerCase());
   ///     => false
   /// ```
-  bool startsWithLowerCase() => Style.startsWithLowerCase(this);
+  bool startsWithLowerCase() => Strings.startsWithLowerCase(this);
 
   /// Returns true if the String starts with an upper case character.
   ///
@@ -134,7 +134,7 @@ extension StringEx on String {
   ///     print("".startsWithUpperCase());
   ///     => false
   ///```
-  bool startsWithUpperCase() => Style.startsWithUpperCase(this);
+  bool startsWithUpperCase() => Strings.startsWithUpperCase(this);
 
   /// Returns the String in the form "UpperCamelCase" or "lowerCamelCase".
   ///
@@ -147,7 +147,7 @@ extension StringEx on String {
   ///      => DartVm
   /// ```
   String toCamelCase({bool lower = false}) =>
-      Style.toCamelCase(this, lower: lower);
+      Strings.toCamelCase(this, lower: lower);
 
   /// Returns the String with the first character capitalized.
   ///
@@ -156,7 +156,7 @@ extension StringEx on String {
   ///     print("dart".capitalize());
   ///     => Dart
   /// ```
-  String toCapitalised() => Style.toCapitalised(this);
+  String toCapitalised() => Strings.toCapitalised(this);
 
   /// Returns an escaped string.
   /// The following characters are escaped
@@ -175,7 +175,7 @@ extension StringEx on String {
   ///     => 'Hello \'world\' \n'
   /// ```
   String toEscaped({String Function(int charCode)? encode}) =>
-      Transform.toEscape(this, encode: encode);
+      Strings.toEscape(this, encode: encode);
 
   /// Returns an escaped string.
   /// The following characters are escaped
@@ -191,7 +191,7 @@ extension StringEx on String {
   ///     print("Hello 'world' \n".toPrintable());
   ///     => 'Hello \'world\' \n'
   /// ```
-  String toPrintable() => Transform.toPrintable(this);
+  String toPrintable() => Strings.toPrintable(this);
 
   /// Converts the String to proper case by capitalising
   /// the first letter of each word and forcing all other characters
@@ -202,7 +202,7 @@ extension StringEx on String {
   /// "one two".toProperCase();
   /// -> "One Two"
   /// ```
-  String toProperCase() => Style.toProperCase(this);
+  String toProperCase() => Strings.toProperCase(this);
 
   /// Converts the String to snake_case by
   /// inserting an underscore before each
@@ -214,7 +214,7 @@ extension StringEx on String {
   ///     print("DartVM DartCore".toSnakeCase());
   ///     => dart_vm dart_core
   /// ```
-  String toSnakeCase() => Style.toSnakeCase(this);
+  String toSnakeCase() => Strings.toSnakeCase(this);
 
   /// Compare two strings ignoring case.
   /// If rhs is null then returns false.

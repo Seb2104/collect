@@ -1,5 +1,18 @@
 part of '../../collect.dart';
 
+/// Control the padding on functions that allow the result
+/// to be padded.
+enum Pad {
+  /// Add the padding to the left of the String
+  left,
+
+  /// Add the padding to the right of the String
+  right,
+
+  /// Do not pad the String.
+  none,
+}
+
 /// A set of String utility functions that aim to
 /// extend the set of  functions available the core String class
 /// as well as provding safe methods when working with nullable
@@ -19,75 +32,151 @@ part of '../../collect.dart';
 /// -> ' '
 /// ```
 class Strings {
-  /// hide the default ctor as this is a collection of statics.
   Strings._();
-
-  //
-  // Methods that test a String
-  //
 
   /// Checks if [string] is a number by attempting to parse it
   /// as a double.
-  ///
   /// INFINITY and NaN are not treated as numbers.
-  static bool isNumeric(String? string) => StringType.isNumeric(string);
+  static bool isNumeric(String? string) {
+    if (string == null) {
+      return false;
+    }
+    if (string == double.infinity.toString() ||
+        string == double.nan.toString()) {
+      return false;
+    }
+
+    return double.tryParse(string) != null;
+  }
 
   /// returns true if [string] only contains
-  /// digits
-  static bool isDigits(String? string) => StringType.isDigits(string);
+  /// ascii characters.
+  static bool isAscii(String? string) {
+    if (string == null) {
+      return false;
+    }
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      if (runes.length != 1) {
+        return false;
+      }
+      final c = runes.first;
+      if (c < asciiStart || c > asciiEnd) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-  /// returns true if [string] only contains
-  /// ascii characters. (0 - 128)
-  static bool isAscii(String? string) => StringType.isAscii(string);
+  /// Checks that the string only contains digits.
+  ///
+  static bool isDigits(String? string) {
+    if (string == null) {
+      return false;
+    }
+    var valid = true;
 
-  /// returns true if the [string] only contains whitespace characters.
-  /// We use the same definition of whitespace as String.trim.
-  static bool isWhitespace(String string) => Style.isWhitespace(string);
+    for (var i = 0; i < string.length; i++) {
+      final char = string[i];
+      if (!'0123456789'.contains(char)) {
+        valid = false;
+        break;
+      }
+    }
+    return valid;
+  }
 
-  /// returns true if the [rune] is a whitespace characters.
-  /// We use the same definition of whitespace as String.trim.
-  static bool isWhitespaceRune(int rune) => Style.isWhitespaceRune(rune);
+  /// toLowerCase
+  static bool isLowerCase(String? string) {
+    if (string == null) {
+      return true;
+    }
+    if (string.isEmpty) {
+      return true;
+    }
 
-  /// true if the [string] is null, or is a zero length String
-  static bool isEmpty(String? string) => Empty.isEmpty(string);
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      if (runes.length == 1) {
+        final c = runes.first;
+        var flag = 0;
+        if (c <= asciiEnd) {
+          flag = ascii[c];
+        }
 
-  /// true if the [string] is not null and is not a zero length String
-  static bool isNotEmpty(String? string) => Empty.isNotEmpty(string);
+        if (c <= asciiEnd) {
+          if (flag & upperMask != 0) {
+            return false;
+          }
+        } else {
+          if (s == s.toUpperCase()) {
+            return false;
+          }
+        }
+      }
+    }
 
-  /// Returns true if the [string] is null or Blank.
-  ///
-  /// A string that only contains whitespace is considered blank.
-  /// See: [Empty.isEmpty] to check for a zero length string.
-  static bool isBlank(String? string) => Blank.isBlank(string);
+    return true;
+  }
 
-  /// Returns true if the [string] is not null and not Blank.
-  ///
-  /// A string containing only whitespace is considered blank.
-  /// See: [isNotEmpty] to check for non-zero length string.
-  static bool isNotBlank(String? string) => Blank.isNotBlank(string);
+  /// True if [character] is visible if printed
+  /// to the console.
+  static bool isPrintable(int? character) {
+    if (character == null) {
+      return false;
+    }
+    switch (unicode.generalCategories[character]) {
+      case unicode.control:
+      case unicode.format:
+      case unicode.lineSeparator:
+      case unicode.notAssigned:
+      case unicode.paragraphSeparator:
+      case unicode.privateUse:
+      case unicode.surrogate:
+        return false;
+      default:
+        return true;
+    }
+  }
 
-  /// Returns true if [string] does not contain upper case letters
+  /// True if the passed character is a whitespace character.
+  /// Our definition of whitespace matches the [String.trim]
+  /// functions set of whitespace characters which goes
+  /// beyond the standard space, tab and newline to include
+  /// unicode characters.
   ///
-  /// If [string] is null then we return true.
-  ///
-  ///
-  /// Example:
-  ///     print(isLowerCase("camelCase"));
-  ///     => false
-  ///
-  ///     print(isLowerCase("dart"));
-  ///     => true
-  ///
-  ///     print(isLowerCase(""));
-  ///     => false
-  ///
-  ///     print(isLowerCase(null));
-  ///     => false
-  static bool isLowerCase(String? string) => Style.isLowerCase(string);
+  static bool isWhitespace(String string) {
+    for (final element in string.runes) {
+      if (!isWhitespaceRune(element)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-  /// Returns true if [string] does not contain any lower case letters.
-  ///
-  /// If [string] is null then return true;
+  /// True if the passed rune is a whitespace character.
+  /// Our definition of whitespace matches the [String.trim]
+  /// functions set of whitespace characters which goes
+  /// beyond the standard space, tab and newline to include
+  /// unicode characters.
+  static bool isWhitespaceRune(int rune) =>
+      (rune >= 0x0009 && rune <= 0x000D) ||
+      rune == 0x0020 ||
+      rune == 0x0085 ||
+      rune == 0x00A0 ||
+      rune == 0x1680 ||
+      rune == 0x180E ||
+      (rune >= 0x2000 && rune <= 0x200A) ||
+      rune == 0x2028 ||
+      rune == 0x2029 ||
+      rune == 0x202F ||
+      rune == 0x205F ||
+      rune == 0x3000 ||
+      rune == 0xFEFF;
+
+  /// Returns true if the string does not contain lower case letters
   ///
   /// Example:
   ///     print(isUpperCase("CamelCase"));
@@ -98,32 +187,41 @@ class Strings {
   ///
   ///     print(isUpperCase(""));
   ///     => false
-  ///
-  ///     print(isUpperCase(null));
-  ///     => true
-  static bool isUpperCase(String? string) => Style.isUpperCase(string);
+  static bool isUpperCase(String? string) {
+    if (string == null) {
+      return true;
+    }
+    if (string.isEmpty) {
+      return true;
+    }
 
-  /// Returns true if [character] is a printable ascii
-  /// character.
-  ///
-  /// If [character] is null  then we return false.
-  static bool isPrintable(int? character) => Style.isPrintable(character);
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      if (runes.length == 1) {
+        final c = runes.first;
+        var flag = 0;
+        if (c <= asciiEnd) {
+          flag = ascii[c];
+        }
 
-  /// Converts [string] to snake_case by
-  /// inserting an underscore before each
-  /// sequence of upper case letters and
-  /// changing all upper case letters to lowercase.
-  ///
-  /// Returns an empty String if [string] is null.
-  ///
-  /// Example:
-  ///     print(toSnakeCase("DartVM DartCore"));
-  ///     => dart_vm dart_core
-  static String toSnakeCase(String? string) => Style.toSnakeCase(string);
+        if (c <= asciiEnd) {
+          if (flag & lowerMask != 0) {
+            return false;
+          }
+        } else {
+          if (s == s.toLowerCase()) {
+            return false;
+          }
+        }
+      }
+    }
 
-  /// Returns true if [string] starts with the lower case character.
-  ///
-  /// Returns false if [string] is empty or null
+    return true;
+  }
+
+  /// Returns true if the string starts with the lower case character; otherwise
+  /// false;
   ///
   /// Example:
   ///     print(startsWithLowerCase("camelCase"));
@@ -131,14 +229,40 @@ class Strings {
   ///
   ///     print(startsWithLowerCase(""));
   ///     => false
-  ///     print(startsWithLowerCase(null));
-  ///     => false
-  static bool startsWithLowerCase(String? string) =>
-      Style.startsWithLowerCase(string);
+  static bool startsWithLowerCase(String? string) {
+    if (string == null) {
+      return false;
+    }
+    if (string.isEmpty) {
+      return false;
+    }
 
-  /// Returns true if the string starts with the upper case character.
-  ///
-  /// Returns false if [string] is empty.
+    final characters = Characters(string);
+    final s = characters.first;
+    final runes = s.runes;
+    if (runes.length == 1) {
+      final c = runes.first;
+      var flag = 0;
+      if (c <= asciiEnd) {
+        flag = ascii[c];
+      }
+
+      if (c <= asciiEnd) {
+        if (flag & lowerMask != 0) {
+          return true;
+        }
+      } else {
+        if (s == s.toLowerCase()) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /// Returns true if [string]] starts with the upper case character; otherwise
+  /// false;
   ///
   /// Example:
   ///     print(startsWithUpperCase("Dart"));
@@ -146,54 +270,619 @@ class Strings {
   ///
   ///     print(startsWithUpperCase(""));
   ///     => false
+  static bool startsWithUpperCase(String? string) {
+    if (string == null) {
+      return false;
+    }
+    if (string.isEmpty) {
+      return false;
+    }
+
+    final characters = Characters(string);
+    final s = characters.first;
+    final runes = s.runes;
+    if (runes.length == 1) {
+      final c = runes.first;
+      var flag = 0;
+      if (c <= asciiEnd) {
+        flag = ascii[c];
+      }
+
+      if (c <= asciiEnd) {
+        if (flag & upperMask != 0) {
+          return true;
+        }
+      } else {
+        if (s == s.toUpperCase()) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /// Returns a string in the form "UpperCamelCase" or "lowerCamelCase".
   ///
-  ///     print(startsWithUpperCase(null));
-  ///     => false
-  static bool startsWithUpperCase(String? string) =>
-      Style.startsWithUpperCase(string);
+  /// Example:
+  ///      print(camelize("dart_vm"));
+  ///      => DartVm
+  static String toCamelCase(String? string, {bool lower = false}) {
+    if (string == null) {
+      return '';
+    }
+    if (string.isEmpty) {
+      return string;
+    }
 
-  //
-  // Methods that transform a String
-  //
+    string = string.toLowerCase();
+    var capitlize = true;
+    var position = 0;
+    var remove = false;
+    final sb = StringBuffer();
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      var flag = 0;
+      if (runes.length == 1) {
+        final c = runes.first;
+        if (c <= asciiEnd) {
+          flag = ascii[c];
+        }
+      }
 
-  /// If [string] is null we return a zero length string otherwise we
-  /// return [string].
+      if (capitlize && flag & alphaMask != 0) {
+        if (lower && position == 0) {
+          sb.write(s);
+        } else {
+          sb.write(s.toUpperCase());
+        }
+
+        capitlize = false;
+        remove = true;
+        position++;
+      } else {
+        if (flag & underscoreMask != 0) {
+          if (!remove) {
+            sb.write(s);
+            remove = true;
+          }
+
+          capitlize = true;
+        } else {
+          if (flag & alphaNumMask != 0) {
+            capitlize = false;
+            remove = true;
+          } else {
+            capitlize = true;
+            remove = false;
+            position = 0;
+          }
+
+          sb.write(s);
+        }
+      }
+    }
+
+    return sb.toString();
+  }
+
+  // toCapitalised
+  static String toCapitalised(String? string) {
+    if (string == null || string.isEmpty) {
+      return '';
+    }
+
+    return string[0].toUpperCase() + string.substring(1);
+  }
+
+  /// toPropoerCase
+  static String toProperCase(String? sentence) {
+    if (sentence == null) {
+      return '';
+    }
+    final words = sentence.split(' ');
+    var result = '';
+
+    for (final word in words) {
+      final lower = word.toLowerCase();
+      if (lower.isNotEmpty) {
+        final proper =
+            '${lower.substring(0, 1).toUpperCase()}${lower.substring(1)}';
+        result = result.isEmpty ? proper : '$result $proper';
+      }
+    }
+    return result;
+  }
+
+  // toSnakeCase
+  static String toSnakeCase(String? string) {
+    if (string == null || string.isEmpty) {
+      return '';
+    }
+
+    final sb = StringBuffer();
+    var separate = false;
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      var flag = 0;
+      if (runes.length == 1) {
+        final c = runes.first;
+        if (c <= asciiEnd) {
+          flag = ascii[c];
+        }
+      }
+
+      if (separate && flag & upperMask != 0) {
+        sb
+          ..write('_')
+          ..write(s.toLowerCase());
+        separate = true;
+      } else {
+        if (flag & alphaNumMask != 0) {
+          separate = true;
+        } else if (flag & underscoreMask != 0 && separate) {
+          separate = true;
+        } else {
+          separate = false;
+        }
+
+        sb.write(s.toLowerCase());
+      }
+    }
+
+    return sb.toString();
+  }
+
+  /// reverse
+  static String reverse(String? string) {
+    if (string == null) {
+      return '';
+    }
+    if (string.length < 2) {
+      return string;
+    }
+
+    final characters = Characters(string);
+    return characters.toList().reversed.join();
+  }
+
+  /// toEscape
+  static String toEscape(
+    String? string, {
+    String Function(int charCode)? encode,
+  }) {
+    if (string == null || string.isEmpty) {
+      return '';
+    }
+
+    encode ??= Strings.toUnicode;
+    final sb = StringBuffer();
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      if (runes.length == 1) {
+        final c = runes.first;
+        if (c >= c0Start && c <= c0End) {
+          switch (c) {
+            case 9:
+              sb.write(r'\t');
+            case 10:
+              sb.write(r'\n');
+            case 13:
+              sb.write(r'\r');
+            default:
+              sb.write(encode(c));
+          }
+        } else if (c >= asciiStart && c <= asciiEnd) {
+          switch (c) {
+            case 34:
+              sb.write(r'\"');
+            case 36:
+              sb.write(r'\$');
+            case 39:
+              sb.write(r"\'");
+            case 92:
+              sb.write(r'\\');
+            default:
+              sb.write(s);
+          }
+        } else if (isPrintable(c)) {
+          sb.write(s);
+        } else {
+          sb.write(encode(c));
+        }
+      } else {
+        // Experimental: Assumes that all clusters does not need to be escaped
+        sb.write(s);
+      }
+    }
+
+    return sb.toString();
+  }
+
+  /// Returns an unescaped printable string.
   ///
-  static String toEmpty(String? string) => Empty.toEmpty(string);
+  /// Example:
+  ///     print(toPrintable("Hello 'world' \n"));
+  ///     => Hello 'world' \n
+  static String toPrintable(String? string) {
+    if (string == null || string.isEmpty) {
+      return '';
+    }
 
-  /// If [string] is not null, then return [string]
-  /// If [string] is null the [elsestring] is returned
-  static String orElse(String? string, String elsestring) =>
-      Empty.orElse(string, elsestring);
+    final sb = StringBuffer();
+    final characters = Characters(string);
+    for (final s in characters) {
+      final runes = s.runes;
+      if (runes.length == 1) {
+        final c = runes.first;
+        if (c >= c0Start && c <= c0End) {
+          switch (c) {
+            case 9:
+              sb.write(r'\t');
+            case 10:
+              sb.write(r'\n');
+            case 13:
+              sb.write(r'\r');
+            default:
+              sb.write(Strings.toUnicode(c));
+          }
+        } else if (isPrintable(c)) {
+          sb.write(s);
+        } else {
+          sb.write(Strings.toUnicode(c));
+        }
+      } else {
+        // Experimental: Assumes that all clusters can be printed
+        sb.write(s);
+      }
+    }
+
+    return sb.toString();
+  }
+
+  /// toUnicode
+  static String toUnicode(int? charCode) {
+    if (charCode == null) {
+      return '';
+    }
+    if (charCode < 0 || charCode > unicodeEnd) {
+      throw RangeError.range(charCode, 0, unicodeEnd, 'charCode');
+    }
+
+    var hex = charCode.toRadixString(16);
+    final length = hex.length;
+    if (length < 4) {
+      hex = hex.padLeft(4, '0');
+    }
+
+    return '\\u$hex';
+  }
+
+  /// Concates a list by inserting [separator] between
+  /// each item in the list, except for the last separator
+  /// where [last] is used instead.
+  static String conjuctionJoin(
+    List<String> list, {
+    String separator = ', ',
+    String last = ' or ',
+  }) {
+    switch (list.length) {
+      case 0:
+        return '';
+      case 1:
+        return list.first;
+      default:
+        return '''${list.sublist(0, list.length - 1).join(separator)}$last${list.last}''';
+    }
+  }
+
+  /// Refer to [String.length]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static int length(String? string) => (string ?? '').length;
+
+  /// Refer to [String.codeUnits]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static List<int> codeUnits(String? string) => (string ?? '').codeUnits;
+
+  /// Refer to [String.runes]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static Runes runes(String? string) => (string ?? '').runes;
+
+  /// Refer to [String.allMatches]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static Iterable<Match> allMatches(
+    String? pattern,
+    String string, [
+    int start = 0,
+  ]) => (pattern ?? '').allMatches(string, start);
+
+  /// Refer to [String.codeUnitAt]
+  ///
+  /// If [string] is null it is treated as an empty string which will result
+  /// in an IndexOutOfBoundsException
+  static int codeUnitAt(String? string, int index) =>
+      (string ?? '').codeUnitAt(index);
+
+  /// Refer to [String.compareTo]
+  ///
+  /// This method has special handling for a null [string] or [other].
+  /// If both are null then we return -1
+  /// If one of them is null then we use [nullIsLessThan] to determine if
+  /// we return -1  or 1.
+  static int compareTo(
+    String? string,
+    String? other, {
+    bool nullIsLessThan = true,
+  }) {
+    if (string == other) {
+      return 0;
+    }
+    if (string == null) {
+      return nullIsLessThan ? -1 : 1;
+    }
+    if (other == null) {
+      return nullIsLessThan ? 1 : -1;
+    }
+    return string.compareTo(other);
+  }
+
+  /// Refer to [String.contains]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static bool contains(String? string, Pattern other, [int startIndex = 0]) =>
+      (string ?? '').contains(other, startIndex);
+
+  /// Refer to [String.endsWith]
+  static bool endsWith(String? string, String? other) {
+    if (string == null || other == null) {
+      return false;
+    }
+
+    return string.endsWith(other);
+  }
+
+  /// Refer to [String.indexOf]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static int indexOf(String? string, Pattern pattern, [int start = 0]) =>
+      (string ?? '').indexOf(pattern, start);
+
+  /// Refer to [String.lastIndexOf]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static int lastIndexOf(String? string, Pattern pattern, [int? start]) =>
+      (string ?? '').lastIndexOf(pattern, start);
+
+  /// Refer to [String.matchAsPrefix]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static Match? matchAsPrefix(
+    String? pattern,
+    String string, [
+    int start = 0,
+  ]) => (pattern ?? '').matchAsPrefix(string, start);
+
+  /// Refer to [String.padLeft]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String padLeft(String? string, int width, [String padding = ' ']) =>
+      (string ?? '').padLeft(width, padding);
+
+  /// Refer to [String.padRight]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String padRight(String? string, int width, [String padding = ' ']) =>
+      (string ?? '').padRight(width, padding);
+
+  /// Refer to [String.replaceAll]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String replaceAll(String? string, Pattern from, String replace) =>
+      (string ?? '').replaceAll(from, replace);
+
+  /// Refer to [String.replaceAllMapped]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String replaceAllMapped(
+    String? string,
+    Pattern from,
+    String Function(Match match) replace,
+  ) => (string ?? '').replaceAllMapped(from, replace);
+
+  /// Refer to [String.replaceFirst]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String replaceFirst(
+    String? string,
+    Pattern from,
+    String to, [
+    int startIndex = 0,
+  ]) => (string ?? '').replaceFirst(from, to, startIndex);
+
+  /// Refer to [String.replaceFirstMapped]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String replaceFirstMapped(
+    String? string,
+    Pattern from,
+    String Function(Match match) replace, [
+    int startIndex = 0,
+  ]) => (string ?? '').replaceFirstMapped(from, replace, startIndex);
+
+  /// Refer to [String.replaceRange]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String replaceRange(
+    String? string,
+    int start,
+    int? end,
+    String replacement,
+  ) => (string ?? '').replaceRange(start, end, replacement);
+
+  /// Refer to [String.split]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static List<String> split(String? string, Pattern pattern) =>
+      (string ?? '').split(pattern);
+
+  /// Refer to [String.splitMapJoin]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String splitMapJoin(
+    String? string,
+    Pattern pattern, {
+    String Function(Match)? onMatch,
+    String Function(String)? onNonMatch,
+  }) => (string ?? '').splitMapJoin(
+    pattern,
+    onMatch: onMatch,
+    onNonMatch: onNonMatch,
+  );
+
+  /// Refer to [String.startsWith]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static bool startsWith(String? string, Pattern pattern, [int index = 0]) =>
+      (string ?? '').startsWith(pattern, index);
+
+  /// Refer to [String.substring]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String substring(String? string, int start, [int? end]) {
+    if (string == null) {
+      return ' ' * ((end ?? start + 1) - start);
+    }
+    return string.substring(start, end);
+  }
+
+  /// Refer to [String.toLowerCase]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String toLowerCase(String? string) => (string ?? '').toLowerCase();
+
+  /// Refer to [String.toUpperCase]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String toUpperCase(String? string) => (string ?? '').toUpperCase();
+
+  /// Refer to [String.trim]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String trim(String? string) => (string ?? '').trim();
+
+  /// Refer to [String.trimLeft]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String trimLeft(String? string) => (string ?? '').trimLeft();
+
+  /// Refer to [String.trimRight]
+  ///
+  /// If [string] is null then it is treated as an empty String
+  static String trimRight(String? string) => (string ?? '').trimRight();
+
+  /// true if the [string] is null or Blank.
+  /// A string that only contains whitespace is considered blank.
+  /// See: [Empty.isEmpty] to check for a null or zero length string.
+  static bool isBlank(String? string) {
+    if (string == null) {
+      return true;
+    }
+    return string.trim().isEmpty;
+  }
+
+  /// true if the [string] is not null and not Blank.
+  /// A string containing only whitespace is considered blank.
+  /// See: [Empty.isNotEmpty] to check for non-zero length string.
+  static bool isNotBlank(String? string) => !isBlank(string);
 
   /// If the [string] is not blank then we return [string]
   /// otherwise we return [elseString]
-  static String orElseOnBlank(String? string, String elseString) =>
-      Blank.orElse(string, elseString);
-
-  /// If [string] is not null, then return [string]
-  /// If [string] is null, calls [elsestring] and return the result.
-  static String orElseCall(String? string, String Function() elsestring) =>
-      Empty.orElseCall(string, elsestring);
-
-  /// Methods that deal with parts of a string.
+  static String orElse(String? string, String elseString) =>
+      isNotBlank(string) ? string! : elseString;
 
   /// Abbreviate a string to [maxWidth] by truncating the
-  /// string and adding '...' to the truncated string.
-  ///
-  /// If [string] is null an empty string is returned.
+  /// string and adding '...' to then truncated string.
   /// ```dart
   /// Strings.abbreviate('Hello World', 6) == 'Hel...'
   /// ```
-  /// The minimum string for [maxWidth] is 4
-  static String abbreviate(String? string, int maxWidth, {int offset = 0}) =>
-      Part.abbreviate(string, maxWidth);
+  /// Pass an [offset] to to start the abbreviation from the given
+  /// [offset].  The returned string will included everything before
+  /// the offset plus as well as the abreviate text staring from the offset.
+  /// If [maxWidth] is less than 4 then we just truncate the string
+  /// to the given width.
+  /// If [string] is shorter than maxWidth we just return [string].
+  /// If [string] is null we return an empty string.
+  static String abbreviate(String? string, int maxWidth, {int offset = 0}) {
+    if (string == null) {
+      return '';
+    }
+    final length = string.length;
+    if (length <= maxWidth || maxWidth < 4) {
+      return string;
+    }
+    if (offset > length) {
+      offset = length;
+    }
+    if (length - offset < maxWidth - 3) {
+      offset = length - (maxWidth - 3);
+    }
+    const abrevMarker = '...';
+    if (offset <= 4) {
+      return string.substring(0, maxWidth - 3) + abrevMarker;
+    }
+
+    if (offset + maxWidth - 3 < length) {
+      return abrevMarker + abbreviate(string.substring(offset), maxWidth - 3);
+    }
+    return abrevMarker + string.substring(length - (maxWidth - 3));
+  }
+
+  /// Hides part of a string by replace the characters between
+  /// [start] (inclusive) and [end] exclusive.
+  /// If start is not passed then it is defaults to 0.
+  /// If end is it defaults to the end of the string.
+  ///
+  /// By default characters are replaced with '*' however you can
+  /// choose an alternate character(s) by passing [replaceWith].
+  static String hidePart(
+    String? string, {
+    int start = 0,
+    int? end,
+    String replaceWith = '*',
+  }) {
+    if (string == null) {
+      return '';
+    }
+    end ??= string.length;
+
+    final characters = Characters(string);
+    final sb = StringBuffer();
+    var pos = 0;
+
+    for (final ch in characters) {
+      if (pos >= start && pos < end) {
+        sb.write(replaceWith);
+      } else {
+        sb.write(ch);
+      }
+
+      pos++;
+    }
+    return sb.toString();
+  }
 
   /// Returns the joined elements of the [list].
-  ///
   /// If the [list] is null then an empty String is returned.
   /// If any element in [list] is null it is treated as an empty string
   /// but still included in the list.
+  /// If [excludeEmpty] is true then any empty elements are not included.
   ///
   /// Example:
   ///     print(join(null));
@@ -207,60 +896,87 @@ class Strings {
     List<Object?>? list, {
     String separator = '',
     bool excludeEmpty = false,
-  }) => Part.join(list, separator: separator, excludeEmpty: excludeEmpty);
+  }) {
+    if (list == null) {
+      return '';
+    }
 
-  /// Obscures part of [string] by replace the characters between
-  /// [start] (inclusive) and [end] exclusive with [replaceWith]
-  ///
-  /// If start is not passed then it is defaults to 0.
-  /// If end is not passed it defaults to the end of the string.
-  static String hidePart(
-    String? string, {
-    int start = 0,
-    int? end,
-    String replaceWith = '*',
-  }) => Part.hidePart(string, start: start, end: end, replaceWith: replaceWith);
+    if (excludeEmpty) {
+      final nonEmptyElements = list.where(
+        (element) =>
+            element != null &&
+            ((element is! String) || Strings.isNotBlank(element)),
+      );
+      return nonEmptyElements.map((element) => element ?? '').join(separator);
+    }
+    return list.map((element) => element ?? '').join(separator);
+  }
 
-  /// Returns left most [take] characters from [string].
-  ///
+  /// Returns the first [take] characters from [string]
   /// If [take] is longer than [string] then the result is padded
   /// according to [pad]
-  /// if [string] is null it is treated as an empty String and the
-  /// above rules are applied.
-  static String left(String? string, int take, {Pad pad = Pad.none}) =>
-      Part.left(string, take, pad: pad);
+  static String left(String? string, int take, {Pad pad = Pad.none}) {
+    string ??= '';
 
-  /// Returns a string with reversed order of characters.
-  ///
-  /// If [string] is null then returns an empty string.
-  ///
-  /// Example:
-  ///     print(reverse("hello"));
-  ///     => olleh
-  static String reverse(String? string) => Transform.reverse(string);
+    final length = string.length;
+    if (length >= take) {
+      return string.substring(0, take);
+    }
 
-  /// Returns the right most [take] characters from  [string].
-  ///
-  /// If [take] is greater than the length of [string] then padding
+    final padLength = take - length;
+
+    switch (pad) {
+      case Pad.left:
+        return "${' ' * padLength}$string";
+      case Pad.right:
+        return "$string${' ' * padLength}";
+      case Pad.none:
+        return string;
+    }
+  }
+
+  /// Returns all characters from [string] starting at [take] inclusive.
+  /// If [take] is outside the bounds of [string] then padding
   /// is applied according to [pad].
-  /// if [string] is null it is treated as an empty String and the
-  /// above rules are applied.
-  static String right(String? string, int take, {Pad pad = Pad.none}) =>
-      Part.right(string, take, pad: pad);
+  static String right(String? string, int take, {Pad pad = Pad.none}) {
+    string ??= '';
 
-  /// Returns the string bounded by the [left] and [right] delimiters.
-  /// Throws an [ArgumentError] exception if either of the delimiters
-  /// are missing.
+    final length = string.length;
+    if (length >= take) {
+      return string.substring(length - take);
+    }
+
+    final padLength = take - length;
+
+    switch (pad) {
+      case Pad.left:
+        return "${' ' * padLength}$string";
+      case Pad.right:
+        return "$string${' ' * padLength}";
+      case Pad.none:
+        return string;
+    }
+  }
+
+  /// Returns the string bounded by the left and right delimiters.
+  /// Throws an exception if either of the delimiters are missing.
   /// If there are nested delimiters we return the outer most
   /// delimiters.
-  /// ``` dart
-  ///  final result= Strings.within("<AnInstance>", '<', '>');
-  ///  result == 'AnInstance';
-  ///
-  /// ```
-  ///
-  static String within(String string, String left, String right) =>
-      Part.within(string, left, right);
+  static String within(String string, String left, String right) {
+    final leftIndex = string.indexOf(left);
+    final rightIndex = string.lastIndexOf(right);
+
+    if (leftIndex == -1) {
+      throw ArgumentError('The left bounding character was missing');
+    }
+
+    if (rightIndex == -1) {
+      throw ArgumentError('The right bounding character was missing');
+    }
+
+    final within = string.substring(leftIndex + 1, rightIndex);
+    return within;
+  }
 
   /// Returns the left most part of a string upto,
   /// but not including, the [delimiter]
@@ -268,115 +984,47 @@ class Strings {
   /// If there is no [delimiter] found then the entire string
   /// is returned.
   ///
-  static String upTo(String string, String delimiter) =>
-      Part.upTo(string, delimiter);
+  static String upTo(String string, String delimiter) {
+    var index = string.indexOf(delimiter);
+    if (index == -1) {
+      index = string.length;
+    }
+    return string.substring(0, index);
+  }
 
-  //
-  // Methods that apply a style to  a String
-  //
+  /// hide the default ctor as this is a collection of statics.
+  /// true if the [string] is null, or is a zero length String
+  static bool isEmpty(String? string) {
+    if (string == null) {
+      return true;
+    }
+    return string.isEmpty;
+  }
 
-  /// Converts [sentence] to proper case by capitalising
-  /// the first letter of each word and forcing all other characters
-  /// to lower case.
-  ///
-  /// If [sentence] is null then an empty String is returned.
-  static String toProperCase(String? sentence) => Style.toProperCase(sentence);
+  /// true if the [string] is not null and is not a zero length String
+  static bool isNotEmpty(String? string) => !isEmpty(string);
 
-  /// Returns [string] in the form "UpperCamelCase" or "lowerCamelCase".
-  ///
-  /// If [string] is null then returns an empty String.
-  /// If [lower] is true, then the first character will be lower case.
-  ///
-  /// Example:
-  /// ```dart
-  ///      print(camelize("dart_vm"));
-  ///      => DartVm
-  /// ```
-  static String toCamelCase(String? string, {bool lower = false}) =>
-      Style.toCamelCase(string, lower: lower);
+  /// If [string] is not null, then return [string]
+  /// If [string] is null call [elseValue] and return the result.
+  /// Rather than using this function you could just call:
+  /// value ?? elseValue();
+  static String orElseCall(String? string, String Function() elseValue) =>
+      string ?? elseValue();
 
-  /// Returns [string] with the first character capitalized.
-  ///
-  /// If [string] is null then an empty String is returned;
-  ///
-  /// Example:
-  /// ```dart
-  ///     print(capitalize("dart"));
-  ///     => Dart
-  /// ```
-  static String toCapitalised(String? string) => Style.toCapitalised(string);
+  /// If [string] is null we return a zero length string
+  /// otherwise we return [string].
+  static String toEmpty(String? string) {
+    if (string == null) {
+      return '';
+    } else {
+      return string;
+    }
+  }
 
-  /// Returns an escaped string.
-  ///
-  /// If [string] is null then an empty string is returned.
-  /// The following characters are escaped
-  ///
-  /// tab
-  /// newline
-  /// carriage return
-  /// "
-  /// '
-  /// $
-  ///
-  /// Example:
-  /// ```dart
-  ///     print(toEscaped("Hello 'world' \n"));
-  ///     => Hello \'world\' \n
-  /// ```
-  static String toEscaped(
-    String? string, {
-    String Function(int charCode)? encode,
-  }) => Transform.toEscape(string, encode: encode);
-
-  /// Returns an Unicode representation of the character code.
-  ///
-  /// If [charCode] is null then an empty String is returned.
-  ///
-  /// Example:
-  /// ```dart
-  ///     print(toUnicode(48));
-  ///     => \u0030
-  /// ```
-  static String toUnicode(int? charCode) => Transform.toUnicode(charCode);
-
-  /// Concates a list by inserting [separator] between
-  /// each item in the list, except for the last separator
-  /// where [conjuction] is used instead.
-  /// If you don't pass [separator] then ',' is used.
-  /// If you don't pass [conjuction] then 'or' is used.
-  /// If the [list] is empty then an empty String is returned.
-  ///
-  /// Example:
-  /// ```dart
-  ///     final list = []'Girl', 'Boy', 'Other']
-  ///     print(Strings.conjuctionJoin(list));
-  ///     => Girl, Boy or Other
-  ///
-  static String conjuctionJoin(
-    List<String> list, {
-    String separator = ', ',
-    String conjuction = ' or ',
-  }) => Transform.conjuctionJoin(list, separator: separator, last: conjuction);
-
-  /// Returns an escaped string.
-  ///
-  /// If [string] is null then an empty string is returned.
-  /// The following characters are escaped
-  ///
-  /// tab
-  /// newline
-  /// carriage return
-  ///
-  /// Example:
-  /// ```dart
-  ///     print(toPrintable("Hello 'world' \n"));
-  ///     => Hello \'world\' \n
-  /// ```
-  static String toPrintable(String? string) => Transform.toPrintable(string);
-
-  //
-  // Equality checks
-  //
+  /// If the [string] is not blank then we return [string]
+  /// otherwise we return [elseString]
+  static String orElseOnBlank(String? string, String elseString) =>
+      isNotBlank(string) ? string! : elseString;
 
   /// Safely compares two nullable strings.
   ///
@@ -419,151 +1067,4 @@ class Strings {
 
     return lhs.toLowerCase() == rhs.toLowerCase();
   }
-
-  //
-  // Safe wrapper methods for String methods
-  //
-
-  /// Refer to [String.length]
-  static int length(String? string) => Safe.length(string);
-
-  /// Refer to [String.codeUnits]
-  static List<int> codeUnits(String? string) => Safe.codeUnits(string);
-
-  /// Refer to [String.runes]
-  static Runes runes(String? string) => Safe.runes(string);
-
-  /// Refer to [String.allMatches]
-  static Iterable<Match> allMatches(
-    String? pattern,
-    String string, [
-    int start = 0,
-  ]) => Safe.allMatches(pattern, string, start);
-
-  /// Refer to [Safe.codeUnitAt]
-  ///
-  /// If [string] is null it is treated as an empty string which will result
-  /// in an IndexOutOfBoundsException
-  static int codeUnitAt(String? string, int index) =>
-      Safe.codeUnitAt(string, index);
-
-  /// Refer to [Safe.compareTo]
-  ///
-  /// This method has special handling for a null [string] or [other].
-  /// If both are null then we return -1
-  /// If one of them is null then we use [nullIsLessThan] to determine if
-  /// we return -1  or 1.
-  static int compareTo(
-    String? string,
-    String? other, {
-    bool nullIsLessThan = true,
-  }) => Safe.compareTo(string, other, nullIsLessThan: nullIsLessThan);
-
-  /// Refer to [Safe.contains]
-  static bool contains(String? string, Pattern other, [int startIndex = 0]) =>
-      Safe.contains(string, other, startIndex);
-
-  /// Refer to [Safe.endsWith]
-  static bool endsWith(String? string, String? other) =>
-      Safe.endsWith(string, other);
-
-  /// Refer to [Safe.indexOf]
-  static int indexOf(String? string, Pattern pattern, [int start = 0]) =>
-      Safe.indexOf(string, pattern, start);
-
-  /// Refer to [Safe.lastIndexOf]
-  static int lastIndexOf(String? string, Pattern pattern, [int? start]) =>
-      Safe.lastIndexOf(string, pattern, start);
-
-  /// Refer to [Safe.matchAsPrefix]
-  static Match? matchAsPrefix(
-    String? pattern,
-    String string, [
-    int start = 0,
-  ]) => Safe.matchAsPrefix(pattern, string, start);
-
-  /// Refer to [Safe.padLeft]
-  static String padLeft(String? string, int width, [String padding = ' ']) =>
-      Safe.padLeft(string, width, padding);
-
-  /// Refer to [Safe.padRight]
-  static String padRight(String? string, int width, [String padding = ' ']) =>
-      Safe.padRight(string, width, padding);
-
-  /// Refer to [Safe.replaceAll]
-  static String replaceAll(String? string, Pattern from, String replace) =>
-      Safe.replaceAll(string, from, replace);
-
-  /// Refer to [Safe.replaceAllMapped]
-  static String replaceAllMapped(
-    String? string,
-    Pattern from,
-    String Function(Match match) replace,
-  ) => Safe.replaceAllMapped(string, from, replace);
-
-  /// Refer to [Safe.replaceFirst]
-  static String replaceFirst(
-    String? string,
-    Pattern from,
-    String to, [
-    int startIndex = 0,
-  ]) => Safe.replaceFirst(string, from, to, startIndex);
-
-  /// Refer to [Safe.replaceFirstMapped]
-  static String replaceFirstMapped(
-    String? string,
-    Pattern from,
-    String Function(Match match) replace, [
-    int startIndex = 0,
-  ]) => Safe.replaceFirstMapped(string, from, replace, startIndex);
-
-  /// Refer to [Safe.replaceRange]
-  static String replaceRange(
-    String? string,
-    int start,
-    int? end,
-    String replacement,
-  ) => Safe.replaceRange(string, start, end, replacement);
-
-  /// Refer to [Safe.split]
-  static List<String> split(String? string, Pattern pattern) =>
-      Safe.split(string, pattern);
-
-  /// Refer to [Safe.splitMapJoin]
-  static String splitMapJoin(
-    String? string,
-    Pattern pattern, {
-    String Function(Match)? onMatch,
-    String Function(String)? onNonMatch,
-  }) => Safe.splitMapJoin(
-    string,
-    pattern,
-    onMatch: onMatch,
-    onNonMatch: onNonMatch,
-  );
-
-  /// Refer to [Safe.startsWith]
-  static bool startsWith(String? string, Pattern pattern, [int index = 0]) =>
-      Safe.startsWith(string, pattern, index);
-
-  /// Refer to [Safe.substring]
-  static String substring(String? string, int start, [int? end]) =>
-      Safe.substring(string, start, end);
-
-  /// Refer to [Safe.toLowerCase]
-  static String toLowerCase(String? string) => Safe.toLowerCase(string);
-
-  /// Refer to [Safe.toUpperCase]
-  static String toUpperCase(String? string) => Safe.toUpperCase(string);
-
-  /// Refer to [Safe.trim]
-  static String trim(String? string) => Safe.trim(string);
-
-  /// Refer to [Safe.trimLeft]
-  static String trimLeft(String? string) => Safe.trimLeft(string);
-
-  /// Refer to [Safe.trimRight]
-  ///
-  /// If [string] is null then it is treated as an empty String
-  static String trimRight(String? string) => Safe.trimRight(string);
 }
