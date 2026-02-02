@@ -11,11 +11,10 @@ final class Colour<P> {
     required this.red,
     required this.green,
     required this.blue,
-  })
-      : assert(alpha >= 0, alpha <= 1),
-        assert(red >= 0, red <= 1),
-        assert(green >= 0, green <= 1),
-        assert(blue >= 0, blue <= 1);
+  }) : assert(alpha >= 0, alpha <= 1),
+       assert(red >= 0, red <= 1),
+       assert(green >= 0, green <= 1),
+       assert(blue >= 0, blue <= 1);
 
   Colour withAlpha(double alpha) =>
       Colour(alpha: this.alpha, red: red, green: green, blue: blue);

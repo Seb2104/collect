@@ -212,7 +212,7 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
           onTap: item.enabled ? () => _onItemTap(globalIndex, item) : null,
           enabled: item.enabled,
           isActive:
-          _selectedIndex == globalIndex &&
+              _selectedIndex == globalIndex &&
               widget.isExpanded &&
               item.content != null,
         ),
@@ -231,14 +231,14 @@ class _SidebarState extends State<Sidebar> with SingleTickerProviderStateMixin {
       decoration: BoxDecoration(color: AppTheme.surface(context)),
       child: widget.isExpanded
           ? FutureBuilder(
-        future: Future.delayed(const Duration(milliseconds: 200)),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _buildContent();
-          }
-          return const SizedBox.shrink();
-        },
-      )
+              future: Future.delayed(const Duration(milliseconds: 200)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return _buildContent();
+                }
+                return const SizedBox.shrink();
+              },
+            )
           : const SizedBox.shrink(),
     );
   }
@@ -316,10 +316,10 @@ class SidebarItem {
 }
 
 typedef AnimationBuilder =
-Widget Function(
-    BuildContext context,
-    Animation<double> animation,
-    Widget child,
+    Widget Function(
+      BuildContext context,
+      Animation<double> animation,
+      Widget child,
     );
 
 class SidebarGroup {

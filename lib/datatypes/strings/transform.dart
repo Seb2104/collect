@@ -1,6 +1,5 @@
 part of '../../common.dart';
 
-
 class Transform {
   /// reverse
   static String reverse(String? string) {

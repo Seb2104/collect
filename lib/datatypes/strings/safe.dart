@@ -1,6 +1,5 @@
 part of '../../common.dart';
 
-
 extension Safe on Strings {
   /// Refer to [String.length]
   ///

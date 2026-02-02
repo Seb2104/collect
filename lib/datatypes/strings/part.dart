@@ -1,6 +1,5 @@
 part of '../../common.dart';
 
-
 class Part {
   /// Abbreviate a string to [maxWidth] by truncating the
   /// string and adding '...' to then truncated string.

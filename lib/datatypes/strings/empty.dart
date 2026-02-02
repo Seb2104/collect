@@ -1,6 +1,5 @@
 part of '../../common.dart';
 
-
 class Empty {
   /// true if the [string] is null, or is a zero length String
   static bool isEmpty(String? string) {

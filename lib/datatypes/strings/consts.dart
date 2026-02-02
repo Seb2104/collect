@@ -1,6 +1,5 @@
 part of '../../common.dart';
 
-
 const int asciiEnd = 0x7f;
 
 const int asciiStart = 0x0;

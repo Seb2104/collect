@@ -1,5 +1,5 @@
 name: common
-description: "A comprehensive Flutter utility package providing reusable UI components, string manipulation utilities, color management, and Material 3 theming support."
+description: "A Flutter package providing reusable UI components, type extensions, custom types and Material 3 theming support."
 version: 0.0.1
 
 environment:
@@ -21,7 +21,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.recollect.willow_data
-        pluginClass: willow_dataPlugin
+        package: com.recollect.common
+        pluginClass: commonPlugin
       windows:
-        pluginClass: willow_dataPluginCApi
+        pluginClass: commonPluginCApi

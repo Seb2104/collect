@@ -1,5 +1,4 @@
-
-import 'package:common/common.dart';
+part of '../common.dart';
 
 /// Provides a set of extensions for the core String class.
 ///

@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-
 final class InsetBoxShadow extends BoxShadow {
   const InsetBoxShadow({
     super.color,

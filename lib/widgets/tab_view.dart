@@ -124,26 +124,26 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 
                       border: widget.indicator == true
                           ? widget.tabPosition == Side.top
-                          ? Border(
-                        bottom: BorderSide(
-                          color: controller.index == index
-                              ? AppTheme.primarySage
-                              : Colors.transparent,
-                          width: 3,
-                        ),
-                      )
-                          : Border(
-                        top: BorderSide(
-                          color: controller.index == index
-                              ? AppTheme.primarySage
-                              : Colors.transparent,
-                          width: 3,
-                        ),
-                      )
+                                ? Border(
+                                    bottom: BorderSide(
+                                      color: controller.index == index
+                                          ? AppTheme.primarySage
+                                          : Colors.transparent,
+                                      width: 3,
+                                    ),
+                                  )
+                                : Border(
+                                    top: BorderSide(
+                                      color: controller.index == index
+                                          ? AppTheme.primarySage
+                                          : Colors.transparent,
+                                      width: 3,
+                                    ),
+                                  )
                           : null,
                     ),
                     padding:
-                    widget.tabPadding ??
+                        widget.tabPadding ??
                         EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Word(
                       widget.content.keys.toList()[index],
@@ -188,7 +188,7 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
                     child: Container(
                       width: double.infinity,
                       padding:
-                      widget.tabPadding ??
+                          widget.tabPadding ??
                           const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         color: controller.index == index
@@ -196,22 +196,22 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
                             : Colors.transparent,
                         border: widget.indicator
                             ? widget.tabPosition == Side.right
-                            ? Border(
-                          left: BorderSide(
-                            color: controller.index == index
-                                ? AppTheme.primarySage
-                                : Colors.transparent,
-                            width: 3,
-                          ),
-                        )
-                            : Border(
-                          right: BorderSide(
-                            color: controller.index == index
-                                ? AppTheme.primarySage
-                                : Colors.transparent,
-                            width: 3,
-                          ),
-                        )
+                                  ? Border(
+                                      left: BorderSide(
+                                        color: controller.index == index
+                                            ? AppTheme.primarySage
+                                            : Colors.transparent,
+                                        width: 3,
+                                      ),
+                                    )
+                                  : Border(
+                                      right: BorderSide(
+                                        color: controller.index == index
+                                            ? AppTheme.primarySage
+                                            : Colors.transparent,
+                                        width: 3,
+                                      ),
+                                    )
                             : null,
                       ),
                       child: Container(

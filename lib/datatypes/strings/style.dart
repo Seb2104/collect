@@ -1,6 +1,5 @@
 part of '../../common.dart';
 
-
 class Style {
   /// toLowerCase
   static bool isLowerCase(String? string) {
