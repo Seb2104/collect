@@ -1,1 +1,2 @@
-## 
+## Collect
+This is the updated and compilation of functions, classes and extensions that we have used when creating Willow. Changed to this new plugin package, for easy of use and so that we can repurpose the old. 
