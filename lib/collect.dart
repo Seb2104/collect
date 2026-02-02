@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
 
-part 'widgets/box.dart';
+part 'widgets/box.dart' ;
 part 'datatypes/colour/bases.dart';
 part 'datatypes/colour/colour.dart';
 part 'datatypes/colour/colours.dart';
