@@ -14,7 +14,7 @@ class Colour with Colours implements Color {
   }
 
   @override
-  int get hashCode => Radix.base(value, 256);
+  int get hashCode => Radix.base(value, Bases.b256);
 
   @override
   double computeLuminance() {
@@ -97,10 +97,10 @@ class Colour with Colours implements Color {
   }
 
   Colour.fromB256(String data)
-    : alpha = Radix.base(data[0], 256) as int,
-      red = Radix.base(data[1], 256) as int,
-      green = Radix.base(data[2], 256) as int,
-      blue = Radix.base(data[3], 256) as int;
+    : alpha = Radix.base(data[0], Bases.b256) as int,
+      red = Radix.base(data[1], Bases.b256) as int,
+      green = Radix.base(data[2], Bases.b256) as int,
+      blue = Radix.base(data[3], Bases.b256) as int;
 
   Colour.fromPercent({
     double a = 100,
@@ -135,10 +135,10 @@ class Colour with Colours implements Color {
     }
 
     return Colour(
-      alpha: Radix.base(hex.substring(0, 2), 16),
-      red: Radix.base(hex.substring(2, 4), 16),
-      green: Radix.base(hex.substring(4, 6), 16),
-      blue: Radix.base(hex.substring(6, 8), 16),
+      alpha: Radix.base(hex.substring(0, 2), Bases.b16),
+      red: Radix.base(hex.substring(2, 4), Bases.b16),
+      green: Radix.base(hex.substring(4, 6), Bases.b16),
+      blue: Radix.base(hex.substring(6, 8), Bases.b16),
     );
   }
 
@@ -294,7 +294,7 @@ class Colour with Colours implements Color {
 
   @override
   String toString() {
-    return '${Radix.base(alpha, 256)}${Radix.base(red, 256)}${Radix.base(green, 256)}${Radix.base(blue, 256)}';
+    return '${Radix.base(alpha, Bases.b256)}${Radix.base(red, Bases.b256)}${Radix.base(green, Bases.b256)}${Radix.base(blue, Bases.b256)}';
   }
 
   static double _hueToRgb(double p, double q, double t) {
