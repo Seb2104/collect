@@ -22,3 +22,12 @@
   - Word rendering widgets
 * Added number extensions with responsive size configuration
 * Added moment/time utilities
+
+
+## 0.0.2
+Refused to let it retract
+
+## 0.0.3
+Updated readme and commits, 
+#### TODO:
+  - ADD BETTER DOCS 
