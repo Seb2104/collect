@@ -1,6 +1,5 @@
 part of '../../collect.dart';
 
-
 const List<String> defaultFormatStyle = [
   The,
   space,

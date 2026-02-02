@@ -53,13 +53,13 @@ class Period {
     int milliseconds = 0,
     int microseconds = 0,
   }) : this._microseconds(
-    microseconds +
-        years * microsecondsPerMillisecond * milliseconds +
-        microsecondsPerSecond * seconds +
-        microsecondsPerMinute * minutes +
-        microsecondsPerHour * hours +
-        microsecondsPerDay * days,
-  );
+         microseconds +
+             years * microsecondsPerMillisecond * milliseconds +
+             microsecondsPerSecond * seconds +
+             microsecondsPerMinute * minutes +
+             microsecondsPerHour * hours +
+             microsecondsPerDay * days,
+       );
 
   static const int microsecondsPerMillisecond = 1000;
 
