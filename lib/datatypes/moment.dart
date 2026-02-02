@@ -1,6 +1,6 @@
 // ignore_for_file: collection_methods_unrelated_type
 
-part of '../../collect.dart';
+part of '../collect.dart';
 
 final class Moment implements Comparable<Moment> {
   int? second;

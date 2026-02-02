@@ -1,4 +1,4 @@
-part of '../../collect.dart';
+part of '../collect.dart';
 
 mixin class Colours {
   // Transparent & Achromatic

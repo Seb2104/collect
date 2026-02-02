@@ -1,4 +1,4 @@
-part of '../../collect.dart';
+part of '../collect.dart';
 
 const int asciiEnd = 0x7f;
 

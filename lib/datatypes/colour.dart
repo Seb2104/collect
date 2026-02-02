@@ -1,4 +1,4 @@
-part of '../../collect.dart';
+part of '../collect.dart';
 
 class Colour with Colours implements Color {
   @override

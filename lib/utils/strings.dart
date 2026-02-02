@@ -1,4 +1,4 @@
-part of '../../collect.dart';
+part of '../collect.dart';
 
 /// Control the padding on functions that allow the result
 /// to be padded.
