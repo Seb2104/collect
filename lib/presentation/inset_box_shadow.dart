@@ -191,7 +191,7 @@ class _ShapeDecorationPainter extends BoxPainter {
     // methods are used in debug mode only to support BlurStyle.outer when
     // debugDisableShadows is set. Without these clips, the shadows would extend
     // to the inside of the shape, which would likely obscure important
-    // portions of the rendering and would cause unit tests of widgets that use
+    // portions of the rendering and would cause unit tests of presentation that use
     // BlurStyle.outer to significantly diverge from the original intent.
     // It is assumed that [debugDisableShadows] will not change when calling
     // paintInterior or getOuterPath; if it does, the results are undefined.

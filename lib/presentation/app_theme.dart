@@ -38,7 +38,220 @@ class AppTheme {
   static const Color darkHover = Color(0xFF38352F);
   static const Color darkFocus = Color(0xFF423F38);
 
-  static ThemeData darkTheme() {
+  static TextStyle getBaseTextStyle([String? fontFamily]) {
+    final fontService = FontSettingsService();
+    return TextStyle(
+      fontFamily: fontService.defaultFontFamily,
+      fontSize: fontService.defaultFontSize,
+      fontFamilyFallback: const [
+        'Segoe UI',
+        'Arial',
+        'Helvetica',
+        'sans-serif',
+        'Noto Color Emoji',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+      ],
+    );
+  }
+
+  static ThemeData lightTheme([FontSettingsService? fontService]) {
+    fontService ??= FontSettingsService();
+    final baseTextStyle = TextStyle(
+      fontFamily: fontService.defaultFontFamily,
+      fontSize: fontService.defaultFontSize,
+      fontFamilyFallback: const [
+        'Segoe UI',
+        'Arial',
+        'Helvetica',
+        'sans-serif',
+        'Noto Color Emoji',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+      ],
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: const ColorScheme.light(
+        primary: primarySage,
+        primaryContainer: Color(0xFFE8F0E5),
+        secondary: secondaryTerracotta,
+        secondaryContainer: Color(0xFFF5EDEA),
+        tertiary: lavenderMist,
+        tertiaryContainer: Color(0xFFF0EDF5),
+        surface: lightSurface,
+        surfaceContainerHighest: lightSurfaceVariant,
+        error: accentError,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: lightTextPrimary,
+        onError: Colors.white,
+        outline: lightBorder,
+        shadow: Color(0x1A3A3531),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: lightBackground,
+        foregroundColor: lightTextPrimary,
+        elevation: 0,
+        scrolledUnderElevation: 1,
+        shadowColor: Color(0x0A3A3531),
+        titleTextStyle: TextStyle(
+          color: lightTextPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primarySage,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: primarySage.withValues(alpha: 0.3),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: primarySage,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.25,
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: lightSurfaceElevated,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: lightBorderSubtle),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: lightBorderSubtle),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primarySage, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: accentError),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        hintStyle: const TextStyle(color: lightTextTertiary),
+        labelStyle: const TextStyle(color: lightTextSecondary),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: lightDivider,
+        thickness: 0.5,
+        space: 0.5,
+      ),
+      textTheme: TextTheme(
+        displayLarge: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 3.5,
+        ),
+        displayMedium: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 2.8,
+        ),
+        displaySmall: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 2.2,
+        ),
+        headlineLarge: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 2.0,
+        ),
+        headlineMedium: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 1.75,
+        ),
+        headlineSmall: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 1.5,
+        ),
+        titleLarge: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 1.375,
+        ),
+        titleMedium: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w500,
+          fontSize: baseTextStyle.fontSize! * 1.125,
+        ),
+        titleSmall: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+        bodyLarge: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w400,
+          fontSize: baseTextStyle.fontSize! * 1.125,
+        ),
+        bodyMedium: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: baseTextStyle.copyWith(
+          color: lightTextSecondary,
+          fontWeight: FontWeight.w400,
+          fontSize: baseTextStyle.fontSize! * 0.875,
+        ),
+        labelLarge: baseTextStyle.copyWith(
+          color: lightTextPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+        labelMedium: baseTextStyle.copyWith(
+          color: lightTextSecondary,
+          fontWeight: FontWeight.w500,
+          fontSize: baseTextStyle.fontSize! * 0.875,
+        ),
+        labelSmall: baseTextStyle.copyWith(
+          color: lightTextSecondary,
+          fontWeight: FontWeight.w500,
+          fontSize: baseTextStyle.fontSize! * 0.75,
+        ),
+      ),
+    );
+  }
+
+  static ThemeData darkTheme([FontSettingsService? fontService]) {
+    fontService ??= FontSettingsService();
+    final baseTextStyle = TextStyle(
+      fontFamily: fontService.defaultFontFamily,
+      fontSize: fontService.defaultFontSize,
+      fontFamilyFallback: const [
+        'Segoe UI',
+        'Arial',
+        'Helvetica',
+        'sans-serif',
+        'Noto Color Emoji',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+      ],
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
@@ -126,6 +339,80 @@ class AppTheme {
         color: darkDivider,
         thickness: 1,
         space: 1,
+      ),
+      textTheme: TextTheme(
+        displayLarge: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 3.5,
+        ),
+        displayMedium: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 2.8,
+        ),
+        displaySmall: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 2.2,
+        ),
+        headlineLarge: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 2.0,
+        ),
+        headlineMedium: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 1.75,
+        ),
+        headlineSmall: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 1.5,
+        ),
+        titleLarge: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w600,
+          fontSize: baseTextStyle.fontSize! * 1.375,
+        ),
+        titleMedium: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w500,
+          fontSize: baseTextStyle.fontSize! * 1.125,
+        ),
+        titleSmall: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+        bodyLarge: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w400,
+          fontSize: baseTextStyle.fontSize! * 1.125,
+        ),
+        bodyMedium: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: baseTextStyle.copyWith(
+          color: darkTextSecondary,
+          fontWeight: FontWeight.w400,
+          fontSize: baseTextStyle.fontSize! * 0.875,
+        ),
+        labelLarge: baseTextStyle.copyWith(
+          color: darkTextPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+        labelMedium: baseTextStyle.copyWith(
+          color: darkTextSecondary,
+          fontWeight: FontWeight.w500,
+          fontSize: baseTextStyle.fontSize! * 0.875,
+        ),
+        labelSmall: baseTextStyle.copyWith(
+          color: darkTextSecondary,
+          fontWeight: FontWeight.w500,
+          fontSize: baseTextStyle.fontSize! * 0.75,
+        ),
       ),
     );
   }
@@ -305,4 +592,43 @@ class AppTheme {
         ? lightTableShadow
         : darkTableShadow;
   }
+}
+
+class FontSettingsService extends ChangeNotifier {
+  static final FontSettingsService _instance = FontSettingsService._internal();
+
+  factory FontSettingsService() => _instance;
+
+  FontSettingsService._internal();
+
+  String get defaultFontFamily => 'Times New Roman';
+
+  double get defaultFontSize => 12.0;
+
+  static const List<String> systemFallbackFonts = [
+    'Segoe UI',
+    'Arial',
+    'Helvetica',
+    'sans-serif',
+    'Noto Color Emoji',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+  ];
+
+  static final allAvailableFonts = [
+    'Inter',
+    'Roboto',
+    'Lato',
+    'Montserrat',
+    'WorkSans',
+    'DMSans',
+    'IBMPlexSans',
+    'Outfit',
+    'Lora',
+    'CrimsonPro',
+    'MontaguSlab',
+    'JetBrainsMono',
+    'SourceCodePro',
+    'Times New Roman',
+  ];
 }

@@ -14,12 +14,12 @@
   - Sage-themed light and dark color schemes
   - Pre-configured theme data for Flutter apps
   - Table-specific theming utilities
-* Added reusable Flutter widgets
+* Added reusable Flutter presentation
   - Action icons
   - Custom menus
   - Sidebar components
   - Tab views
-  - Word rendering widgets
+  - Word rendering presentation
 * Added number extensions with responsive size configuration
 * Added moment/time utilities
 
