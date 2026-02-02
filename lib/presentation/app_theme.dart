@@ -1,39 +1,21 @@
 part of '../collect.dart';
 
 class AppTheme {
-  static TextStyle getBaseTextStyle([String? fontFamily]) {
-    final fontService = FontSettingsService();
-    return TextStyle(
-      fontFamily: fontService.defaultFontFamily,
-      fontSize: fontService.defaultFontSize,
-      fontFamilyFallback: const [
-        'Segoe UI',
-        'Arial',
-        'Helvetica',
-        'sans-serif',
-        'Noto Color Emoji',
-        'Apple Color Emoji',
-        'Segoe UI Emoji',
-      ],
-    );
-  }
+  static const TextStyle baseTextStyle = TextStyle(
+    fontFamily: 'Times New Roman',
+    fontSize: 12,
+    fontFamilyFallback:  [
+      'Segoe UI',
+      'Arial',
+      'Helvetica',
+      'sans-serif',
+      'Noto Color Emoji',
+      'Apple Color Emoji',
+      'Segoe UI Emoji',
+    ],
+  );
 
-  static ThemeData light([FontSettingsService? fontService]) {
-    fontService ??= FontSettingsService();
-    final baseTextStyle = TextStyle(
-      fontFamily: fontService.defaultFontFamily,
-      fontSize: fontService.defaultFontSize,
-      fontFamilyFallback: const [
-        'Segoe UI',
-        'Arial',
-        'Helvetica',
-        'sans-serif',
-        'Noto Color Emoji',
-        'Apple Color Emoji',
-        'Segoe UI Emoji',
-      ],
-    );
-
+  static ThemeData light() {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
@@ -199,184 +181,170 @@ class AppTheme {
     );
   }
 
-  static ThemeData dark([FontSettingsService? fontService]) {
-    fontService ??= FontSettingsService();
-    final baseTextStyle = TextStyle(
-      fontFamily: fontService.defaultFontFamily,
-      fontSize: fontService.defaultFontSize,
-      fontFamilyFallback: const [
-        'Segoe UI',
-        'Arial',
-        'Helvetica',
-        'sans-serif',
-        'Noto Color Emoji',
-        'Apple Color Emoji',
-        'Segoe UI Emoji',
-      ],
-    );
-
+  static ThemeData dark() {
     return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
-        primary: primarySage,
-        primaryContainer: Color(0xFF4D5E4A),
-        secondary: secondaryTerracotta,
-        secondaryContainer: Color(0xFF7D6359),
-        tertiary: lavenderMist,
-        tertiaryContainer: Color(0xFF6B6474),
-        surface: darkSurface,
-        surfaceContainerHighest: darkSurfaceVariant,
-        error: accentError,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onSurface: darkTextPrimary,
-        onError: Colors.white,
-        outline: darkBorder,
-        shadow: Color(0x33000000),
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: darkSurface,
-        foregroundColor: darkTextPrimary,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-        shadowColor: Color(0x33000000),
-        titleTextStyle: TextStyle(
-          color: darkTextPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primarySage,
-          foregroundColor: Colors.white,
-          elevation: 3,
-          shadowColor: const Color(0x33000000),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        ),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: primarySage,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          textStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.25,
-          ),
-        ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: darkSurfaceVariant,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: darkBorder),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: darkBorder),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: primarySage, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: accentError),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        hintStyle: const TextStyle(color: darkTextSecondary),
-        labelStyle: const TextStyle(color: darkTextSecondary),
-      ),
-      dividerTheme: const DividerThemeData(
-        color: darkDivider,
-        thickness: 1,
-        space: 1,
-      ),
-      textTheme: TextTheme(
-        displayLarge: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 3.5,
-        ),
-        displayMedium: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 2.8,
-        ),
-        displaySmall: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 2.2,
-        ),
-        headlineLarge: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 2.0,
-        ),
-        headlineMedium: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 1.75,
-        ),
-        headlineSmall: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 1.5,
-        ),
-        titleLarge: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: baseTextStyle.fontSize! * 1.375,
-        ),
-        titleMedium: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w500,
-          fontSize: baseTextStyle.fontSize! * 1.125,
-        ),
-        titleSmall: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w500,
-        ),
-        bodyLarge: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w400,
-          fontSize: baseTextStyle.fontSize! * 1.125,
-        ),
-        bodyMedium: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w400,
-        ),
-        bodySmall: baseTextStyle.copyWith(
-          color: darkTextSecondary,
-          fontWeight: FontWeight.w400,
-          fontSize: baseTextStyle.fontSize! * 0.875,
-        ),
-        labelLarge: baseTextStyle.copyWith(
-          color: darkTextPrimary,
-          fontWeight: FontWeight.w500,
-        ),
-        labelMedium: baseTextStyle.copyWith(
-          color: darkTextSecondary,
-          fontWeight: FontWeight.w500,
-          fontSize: baseTextStyle.fontSize! * 0.875,
-        ),
-        labelSmall: baseTextStyle.copyWith(
-          color: darkTextSecondary,
-          fontWeight: FontWeight.w500,
-          fontSize: baseTextStyle.fontSize! * 0.75,
-        ),
-      ),
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    colorScheme: const ColorScheme.dark(
+    primary: primarySage,
+    primaryContainer: Color(0xFF4D5E4A),
+    secondary: secondaryTerracotta,
+    secondaryContainer: Color(0xFF7D6359),
+    tertiary: lavenderMist,
+    tertiaryContainer: Color(0xFF6B6474),
+    surface: darkSurface,
+    surfaceContainerHighest: darkSurfaceVariant,
+    error: accentError,
+    onPrimary: Colors.white,
+    onSecondary: Colors.white,
+    onSurface: darkTextPrimary,
+    onError: Colors.white,
+    outline: darkBorder,
+    shadow: Color(0x33000000),
+    ),
+    appBarTheme: const AppBarTheme(
+    backgroundColor: darkSurface,
+    foregroundColor: darkTextPrimary,
+    elevation: 0,
+    scrolledUnderElevation: 1,
+    shadowColor: Color(0x33000000),
+    titleTextStyle: TextStyle(
+    color: darkTextPrimary,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+    backgroundColor: primarySage,
+    foregroundColor: Colors.white,
+    elevation: 3,
+    shadowColor: const Color(0x33000000),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+    foregroundColor: primarySage,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(12),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+    textStyle: const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.25,
+    ),
+    ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: darkSurfaceVariant,
+    border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: const BorderSide(color: darkBorder),
+    ),
+    enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: const BorderSide(color: darkBorder),
+    ),
+    focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: const BorderSide(color: primarySage, width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: const BorderSide(color: accentError),
+    ),
+    contentPadding: const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 12,
+    ),
+    hintStyle: const TextStyle(color: darkTextSecondary),
+    labelStyle: const TextStyle(color: darkTextSecondary),
+    ),
+    dividerTheme: const DividerThemeData(
+    color: darkDivider,
+    thickness: 1,
+    space: 1,
+    ),
+    textTheme: TextTheme(
+    displayLarge: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 3.5,
+    ),
+    displayMedium: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 2.8,
+    ),
+    displaySmall: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 2.2,
+    ),
+    headlineLarge: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 2.0,
+    ),
+    headlineMedium: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 1.75,
+    ),
+    headlineSmall: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 1.5,
+    ),
+    titleLarge: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w600,
+    fontSize: baseTextStyle.fontSize! * 1.375,
+    ),
+    titleMedium: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w500,
+    fontSize: baseTextStyle.fontSize! * 1.125,
+    ),
+    titleSmall: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w500,
+    ),
+    bodyLarge: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w400,
+    fontSize: baseTextStyle.fontSize! * 1.125,
+    ),
+    bodyMedium: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w400,
+    ),
+    bodySmall: baseTextStyle.copyWith(
+    color: darkTextSecondary,
+    fontWeight: FontWeight.w400,
+    fontSize: baseTextStyle.fontSize! * 0.875,
+    ),
+    labelLarge: baseTextStyle.copyWith(
+    color: darkTextPrimary,
+    fontWeight: FontWeight.w500,
+    ),
+    labelMedium: baseTextStyle.copyWith(
+    color: darkTextSecondary,
+    fontWeight: FontWeight.w500,
+    fontSize: baseTextStyle.fontSize! * 0.875,
+    ),
+    labelSmall: baseTextStyle.copyWith(
+    color: darkTextSecondary,
+    fontWeight: FontWeight.w500,
+    fontSize: baseTextStyle.fontSize! * 0.75,
+    ),
+    )
+    ,
     );
   }
 
@@ -387,145 +355,193 @@ class AppTheme {
   static Color error(BuildContext context) => accentError;
 
   static Color textPrimary(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTextPrimary
         : darkTextPrimary;
   }
 
   static Color textSecondary(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTextSecondary
         : darkTextSecondary;
   }
 
   static Color textTertiary(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTextTertiary
         : darkTextTertiary;
   }
 
   static Color surfaceElevated(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightSurfaceElevated
         : darkSurfaceElevated;
   }
 
   static Color borderSubtle(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightBorderSubtle
         : darkBorderSubtle;
   }
 
   static Color hover(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightHover
         : darkHover;
   }
 
   static Color focus(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightFocus
         : darkFocus;
   }
 
   static Color border(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightBorder
         : darkBorder;
   }
 
   static Color surfaceVariant(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightSurfaceVariant
         : darkSurfaceVariant;
   }
 
   static Color surface(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightSurface
         : darkSurface;
   }
 
   static Color background(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightBackground
         : darkBackground;
   }
 
   static Color divider(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightDivider
         : darkDivider;
   }
 
   static Color tableCellBackground(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableCellBackground
         : darkTableCellBackground;
   }
 
   static Color tableCellHover(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableCellHover
         : darkTableCellHover;
   }
 
   static Color tableCellFocus(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableCellFocus
         : darkTableCellFocus;
   }
 
   static Color tableCellSelected(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableCellSelected
         : darkTableCellSelected;
   }
 
   static Color tableHeaderBackground(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableHeaderBackground
         : darkTableHeaderBackground;
   }
 
   static Color tableHeaderText(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableHeaderText
         : darkTableHeaderText;
   }
 
   static Color tableBorder(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableBorder
         : darkTableBorder;
   }
 
   static Color tableBorderHover(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableBorderHover
         : darkTableBorderHover;
   }
 
   static Color tableAlternateRow(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableAlternateRow
         : darkTableAlternateRow;
   }
 
   static Color tableResizeHandle(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableResizeHandle
         : darkTableResizeHandle;
   }
 
   static Color tableResizeHandleHover(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableResizeHandleHover
         : darkTableResizeHandleHover;
   }
 
   static Color tableShadow(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
+    return Theme
+        .of(context)
+        .brightness == Brightness.light
         ? lightTableShadow
         : darkTableShadow;
   }
