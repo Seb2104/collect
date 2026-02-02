@@ -29,7 +29,6 @@ part 'datatypes/strings/transform.dart';
 part 'extensions/double.dart';
 part 'extensions/int.dart';
 part 'extensions/num.dart';
-part 'extensions/size_config.dart';
 part 'extensions/string.dart';
 part 'widgets/action_icon.dart';
 part 'widgets/menu.dart';
