@@ -1,6 +1,8 @@
 name: common
 description: "A Flutter package providing reusable UI components, type extensions, custom types and Material 3 theming support."
 version: 0.0.1
+homepage: https://github.com/Seb2104/common
+repository: https://github.com/Seb2104/common
 
 environment:
   sdk: ^3.10.1
