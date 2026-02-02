@@ -11,7 +11,6 @@ import 'package:unicode/unicode.dart' as unicode;
 import 'widgets/app_theme.dart';
 
 part 'datatypes/moment/moment.dart';
-part 'datatypes/moment/constant.dart';
 part 'datatypes/colour/bases.dart';
 part 'datatypes/colour/colour.dart';
 part 'datatypes/colour/colours.dart';
