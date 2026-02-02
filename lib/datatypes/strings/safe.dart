@@ -1,4 +1,4 @@
-part of '../../libs.dart';
+part of '../../collect.dart';
 
 extension Safe on Strings {
   /// Refer to [String.length]

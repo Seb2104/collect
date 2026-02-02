@@ -1,4 +1,4 @@
-part of '../../libs.dart';
+part of '../../collect.dart';
 
 class Part {
   /// Abbreviate a string to [maxWidth] by truncating the

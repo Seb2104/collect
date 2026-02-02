@@ -1,4 +1,4 @@
-part of '../libs.dart';
+part of '../collect.dart';
 
 class Menu<T> extends StatefulWidget {
   const Menu({

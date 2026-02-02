@@ -1,4 +1,4 @@
-part of '../../libs.dart';
+part of '../../collect.dart';
 
 /// A set of String utility functions that aim to
 /// extend the set of  functions available the core String class

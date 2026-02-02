@@ -1,8 +1,8 @@
-name: libs
+name: collect
 description: "A Flutter package providing reusable UI components, type extensions, custom types and Material 3 theming support."
 version: 0.0.1
-homepage: https://github.com/Seb2104/common
-repository: https://github.com/Seb2104/common
+homepage: https://github.com/Seb2104/collect
+repository: https://github.com/Seb2104/collect
 
 environment:
   sdk: ^3.10.1
@@ -23,7 +23,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.recollect.libs
-        pluginClass: libsPlugin
+        package: com.recollect.collect
+        pluginClass: collectPlugin
       windows:
-        pluginClass: libsPluginCApi
+        pluginClass: collectPluginCApi

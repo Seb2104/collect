@@ -1,4 +1,4 @@
-part of '../libs.dart';
+part of '../collect.dart';
 
 class AppTheme {
   static const Color primarySage = Color(0xFF9CAF88);

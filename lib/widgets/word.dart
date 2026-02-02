@@ -1,4 +1,4 @@
-part of '../libs.dart';
+part of '../collect.dart';
 
 enum _WordTextStyle { normal, primary, secondary, tertiary }
 

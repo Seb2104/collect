@@ -1,4 +1,4 @@
-part of '../../libs.dart';
+part of '../../collect.dart';
 
 class Radix {
   /// I am assuming everyone is using a radix of 10 to start ( the normal decimal numbers )
