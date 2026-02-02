@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../../libs.dart';
 
 final class Moment implements Comparable<Moment> {
   int? second;

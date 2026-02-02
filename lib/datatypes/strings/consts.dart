@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../../libs.dart';
 
 const int asciiEnd = 0x7f;
 

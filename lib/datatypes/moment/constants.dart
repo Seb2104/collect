@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../../libs.dart';
 
 
 const List<String> defaultFormatStyle = [

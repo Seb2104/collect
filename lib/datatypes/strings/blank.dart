@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../../libs.dart';
 
 class Blank {
   /// true if the [string] is null or Blank.

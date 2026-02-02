@@ -1,4 +1,4 @@
-part of '../common.dart';
+part of '../libs.dart';
 
 /// Provides a set of extensions for the core String class.
 ///

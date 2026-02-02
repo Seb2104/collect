@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../../libs.dart';
 
 extension Num on num? {
   /// Validate given double is not null and returns given value if null.

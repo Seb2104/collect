@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../../libs.dart';
 
 class StringType {
   /// Checks if [string] is a number by attempting to parse it
