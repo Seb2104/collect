@@ -234,11 +234,19 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 }
 
 class TabViewContent {
-  final List<TabViewItem> content;
+  final List<TabViewItem> content = const [];
 
-  const TabViewContent({required this.content});
+  const TabViewContent(List<TabViewItem> content);
 
   int get length => content.length;
+
+  List<Tab> get tabs {
+    List<Tab> data = [];
+    for (TabViewItem item in content) {
+      data.add(Tab(text: item.title));
+    }
+    return data;
+  }
 
   List<String> get titles {
     List<String> data = [];
@@ -258,10 +266,11 @@ class TabViewContent {
 }
 
 class TabViewItem {
+
   final String title;
   final Widget view;
 
-  const TabViewItem({required this.title, required this.view});
+  const TabViewItem(this.title, {required this.view});
 }
 
 enum Side { top, left, bottom, right }

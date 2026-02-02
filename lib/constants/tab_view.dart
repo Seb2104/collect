@@ -1,15 +1,13 @@
 part of '../collect.dart';
 
 /// Example [TabViewContent] so that theres a fallback option
-const TabViewContent demoContent = TabViewContent(
-  content: [
-    TabViewItem(title: 'First', view: First()),
-    TabViewItem(title: 'Second', view: Second()),
-    TabViewItem(title: 'Third', view: Third()),
-    TabViewItem(title: 'Fourth', view: Fourth()),
-    TabViewItem(title: 'Fifth', view: Fifth()),
-  ],
-);
+const TabViewContent demoContent = TabViewContent([
+  TabViewItem('First', view: First()),
+  TabViewItem('Second', view: Second()),
+  TabViewItem('Third', view: Third()),
+  TabViewItem('Fourth', view: Fourth()),
+  TabViewItem('Fifth', view: Fifth()),
+]);
 
 class First extends StatelessWidget {
   const First({super.key});
