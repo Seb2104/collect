@@ -1,10 +1,8 @@
 part of '../../collect.dart';
 
-enum Side { top, left, bottom, right }
-
 class TabView extends StatefulWidget {
   /// A Map\<String: Widget>, mapping each tab's name to its content
-  final Map<String, Widget> content;
+  // final Map<String, Widget> content;
 
   /// Which side the tabs are aligned to
   final Side tabPosition;
@@ -35,9 +33,11 @@ class TabView extends StatefulWidget {
   /// Puts this widget after the tabs
   final Widget? trailing;
 
+  final List<TabItem> children;
+
   const TabView({
     super.key,
-    this.content = demoContent,
+    // this.content = demoContent,
     this.tabPosition = Side.top,
     this.tabsWidth = 200,
     this.animationDuration = kTabScrollDuration,
@@ -46,6 +46,7 @@ class TabView extends StatefulWidget {
     this.tabPadding,
     this.leading,
     this.trailing,
+    required this.children,
   });
 
   @override
@@ -58,10 +59,10 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
   @override
   void initState() {
     controller = TabController(
-      length: widget.content.length,
+      length: widget.children.length,
       vsync: this,
       animationDuration: widget.animationDuration,
-      initialIndex: widget.initialIndex.clamp(0, widget.content.length - 1),
+      initialIndex: widget.initialIndex.clamp(0, widget.children.length - 1),
     );
     super.initState();
   }
@@ -113,7 +114,7 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
                 const SizedBox(width: 10),
               ],
 
-              ...List.generate(widget.content.length, (index) {
+              ...List.generate(widget.children.length, (index) {
                 return InkWell(
                   onTap: () => controller.animateTo(index),
                   child: Container(
@@ -124,26 +125,26 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 
                       border: widget.indicator == true
                           ? widget.tabPosition == Side.top
-                                ? Border(
-                                    bottom: BorderSide(
-                                      color: controller.index == index
-                                          ? AppTheme.primarySage
-                                          : Colors.transparent,
-                                      width: 3,
-                                    ),
-                                  )
-                                : Border(
-                                    top: BorderSide(
-                                      color: controller.index == index
-                                          ? AppTheme.primarySage
-                                          : Colors.transparent,
-                                      width: 3,
-                                    ),
-                                  )
+                          ? Border(
+                        bottom: BorderSide(
+                          color: controller.index == index
+                              ? AppTheme.primarySage
+                              : Colors.transparent,
+                          width: 3,
+                        ),
+                      )
+                          : Border(
+                        top: BorderSide(
+                          color: controller.index == index
+                              ? AppTheme.primarySage
+                              : Colors.transparent,
+                          width: 3,
+                        ),
+                      )
                           : null,
                     ),
                     padding:
-                        widget.tabPadding ??
+                    widget.tabPadding ??
                         EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Word(
                       widget.content.keys.toList()[index],
@@ -182,13 +183,13 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
                   widget.leading!,
                   const SizedBox(height: 10),
                 ],
-                ...List.generate(widget.content.length, (index) {
+                ...List.generate(widget.children.length, (index) {
                   return InkWell(
                     onTap: () => controller.animateTo(index),
                     child: Container(
                       width: double.infinity,
                       padding:
-                          widget.tabPadding ??
+                      widget.tabPadding ??
                           const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         color: controller.index == index
@@ -196,22 +197,22 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
                             : Colors.transparent,
                         border: widget.indicator
                             ? widget.tabPosition == Side.right
-                                  ? Border(
-                                      left: BorderSide(
-                                        color: controller.index == index
-                                            ? AppTheme.primarySage
-                                            : Colors.transparent,
-                                        width: 3,
-                                      ),
-                                    )
-                                  : Border(
-                                      right: BorderSide(
-                                        color: controller.index == index
-                                            ? AppTheme.primarySage
-                                            : Colors.transparent,
-                                        width: 3,
-                                      ),
-                                    )
+                            ? Border(
+                          left: BorderSide(
+                            color: controller.index == index
+                                ? AppTheme.primarySage
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        )
+                            : Border(
+                          right: BorderSide(
+                            color: controller.index == index
+                                ? AppTheme.primarySage
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                        )
                             : null,
                       ),
                       child: Container(
@@ -234,6 +235,15 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
     );
   }
 }
+
+class TabItem {
+  final Widget title;
+  final Widget view;
+
+  const TabItem({required this.title, required this.view});
+}
+
+enum Side { top, left, bottom, right }
 
 /// Absolute barebone basic map of five tabs for testing
 const Map<String, Widget> demoContent = {
