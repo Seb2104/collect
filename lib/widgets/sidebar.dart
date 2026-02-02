@@ -1,4 +1,4 @@
-part of '../../common.dart';
+part of '../common.dart';
 
 class Sidebar extends StatefulWidget {
   final List<SidebarGroup> groups;

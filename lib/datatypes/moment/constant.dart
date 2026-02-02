@@ -1,4 +1,4 @@
-part of '../lib_moment.dart';
+part of '../../common.dart';
 
 const List<String> defaultFormatStyle = [
   The,

@@ -8,8 +8,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
 
-import 'presentation/widgets/app_theme.dart';
+import 'widgets/app_theme.dart';
 
+part 'datatypes/moment/moment.dart';
+part 'datatypes/moment/constant.dart';
 part 'datatypes/colour/bases.dart';
 part 'datatypes/colour/colour.dart';
 part 'datatypes/colour/colours.dart';
@@ -25,8 +27,8 @@ part 'datatypes/strings/strings.dart';
 part 'datatypes/strings/style.dart';
 part 'datatypes/strings/transform.dart';
 part 'datatypes/strings/string_type.dart';
-part 'presentation/widgets/action_icon.dart';
-part 'presentation/widgets/menu.dart';
-part 'presentation/widgets/sidebar.dart';
-part 'presentation/widgets/tab_view.dart';
-part 'presentation/widgets/word.dart';
+part 'widgets/action_icon.dart';
+part 'widgets/menu.dart';
+part 'widgets/sidebar.dart';
+part 'widgets/tab_view.dart';
+part 'widgets/word.dart';

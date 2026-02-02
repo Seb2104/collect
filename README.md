@@ -94,15 +94,6 @@ import 'package:willow_data/src/lib_widgets.dart';
 import 'package:willow_data/app_theme.dart';
 ```
 
-## Platform Support
-
-- Android
-- Windows
-- iOS (planned)
-- macOS (planned)
-- Linux (planned)
-- Web (planned)
-
 ## License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
