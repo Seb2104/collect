@@ -14,19 +14,19 @@ cmake_policy(VERSION 3.14...3.25)
 
 # This value is used when generating builds using this plugin, so it must
 # not be changed
-set(PLUGIN_NAME "common_plugin")
+set(PLUGIN_NAME "collect_plugin")
 
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
-  "common_plugin.cpp"
-  "common_plugin.h"
+  "collect_plugin.cpp"
+  "collect_plugin.h"
 )
 
 # Define the plugin library target. Its name must not be changed (see comment
 # on PLUGIN_NAME above).
 add_library(${PLUGIN_NAME} SHARED
-  "include/common/common_plugin_c_api.h"
-  "common_plugin_c_api.cpp"
+  "include/collect/collect_plugin_c_api.h"
+  "collect_plugin_c_api.cpp"
   ${PLUGIN_SOURCES}
 )
 
