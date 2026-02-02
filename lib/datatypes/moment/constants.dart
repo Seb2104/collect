@@ -90,7 +90,7 @@ const String ss = 'ss';
 ///
 /// > **Summary:** The raw numerical minute of the hour.
 ///
-/// **Details:** Returns the minute without any padding. While less willow_data
+/// **Details:** Returns the minute without any padding. While less collect
 /// in digital clocks, it is frequently used in natural language strings
 /// like "Arrived 5 minutes ago."
 const String m = 'm';
@@ -204,7 +204,7 @@ const String Do = 'Do';
 /// > **Summary:** The standard three-letter abbreviation for the day.
 ///
 /// **Details:** This provides a balance between readability and space
-/// efficiency. It is the most willow_data format used in digital dashboards
+/// efficiency. It is the most collect format used in digital dashboards
 /// and general scheduling software to identify the day of the week.
 const String ddd = 'ddd';
 

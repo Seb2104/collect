@@ -1,4 +1,4 @@
-#include "willow_data_plugin.h"
+#include "collect_plugin.h"
 
 // This must be included before many other Windows headers.
 #include <windows.h>
@@ -13,17 +13,17 @@
 #include <memory>
 #include <sstream>
 
-namespace willow_data {
+namespace collect {
 
 // static
-void willow_dataPlugin::RegisterWithRegistrar(
+void collectPlugin::RegisterWithRegistrar(
     flutter::PluginRegistrarWindows *registrar) {
   auto channel =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          registrar->messenger(), "willow_data",
+          registrar->messenger(), "collect",
           &flutter::StandardMethodCodec::GetInstance());
 
-  auto plugin = std::make_unique<willow_dataPlugin>();
+  auto plugin = std::make_unique<collectPlugin>();
 
   channel->SetMethodCallHandler(
       [plugin_pointer = plugin.get()](const auto &call, auto result) {
@@ -33,11 +33,11 @@ void willow_dataPlugin::RegisterWithRegistrar(
   registrar->AddPlugin(std::move(plugin));
 }
 
-willow_dataPlugin::willow_dataPlugin() {}
+collectPlugin::collectPlugin() {}
 
-willow_dataPlugin::~willow_dataPlugin() {}
+collectPlugin::~collectPlugin() {}
 
-void willow_dataPlugin::HandleMethodCall(
+void collectPlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   if (method_call.method_name().compare("getPlatformVersion") == 0) {
@@ -56,4 +56,4 @@ void willow_dataPlugin::HandleMethodCall(
   }
 }
 
-}  // namespace willow_data
+}  // namespace collect

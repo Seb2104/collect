@@ -1,24 +1,24 @@
-#ifndef FLUTTER_PLUGIN_willow_data_PLUGIN_H_
-#define FLUTTER_PLUGIN_willow_data_PLUGIN_H_
+#ifndef FLUTTER_PLUGIN_collect_PLUGIN_H_
+#define FLUTTER_PLUGIN_collect_PLUGIN_H_
 
 #include <flutter/method_channel.h>
 #include <flutter/plugin_registrar_windows.h>
 
 #include <memory>
 
-namespace willow_data {
+namespace collect {
 
-class willow_dataPlugin : public flutter::Plugin {
+class collectPlugin : public flutter::Plugin {
  public:
   static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
 
-  willow_dataPlugin();
+  collectPlugin();
 
-  virtual ~willow_dataPlugin();
+  virtual ~collectPlugin();
 
   // Disallow copy and assign.
-  willow_dataPlugin(const willow_dataPlugin&) = delete;
-  willow_dataPlugin& operator=(const willow_dataPlugin&) = delete;
+  collectPlugin(const collectPlugin&) = delete;
+  collectPlugin& operator=(const collectPlugin&) = delete;
 
   // Called when a method is called on this plugin's channel from Dart.
   void HandleMethodCall(
@@ -26,6 +26,6 @@ class willow_dataPlugin : public flutter::Plugin {
       std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 };
 
-}  // namespace willow_data
+}  // namespace collect
 
-#endif  // FLUTTER_PLUGIN_willow_data_PLUGIN_H_
+#endif  // FLUTTER_PLUGIN_collect_PLUGIN_H_

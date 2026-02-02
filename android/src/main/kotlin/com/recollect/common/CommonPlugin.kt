@@ -1,13 +1,13 @@
-package com.recollect.willow_data
+package com.recollect.collect
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.willow_data.MethodCall
-import io.flutter.plugin.willow_data.MethodChannel
-import io.flutter.plugin.willow_data.MethodChannel.MethodCallHandler
-import io.flutter.plugin.willow_data.MethodChannel.Result
+import io.flutter.plugin.collect.MethodCall
+import io.flutter.plugin.collect.MethodChannel
+import io.flutter.plugin.collect.MethodChannel.MethodCallHandler
+import io.flutter.plugin.collect.MethodChannel.Result
 
-/** willow_dataPlugin */
-class willow_dataPlugin :
+/** collectPlugin */
+class collectPlugin :
     FlutterPlugin,
     MethodCallHandler {
     // The MethodChannel that will the communication between Flutter and native Android
@@ -17,7 +17,7 @@ class willow_dataPlugin :
     private lateinit var channel: MethodChannel
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "willow_data")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "collect")
         channel.setMethodCallHandler(this)
     }
 

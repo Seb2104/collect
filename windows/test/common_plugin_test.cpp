@@ -8,9 +8,9 @@
 #include <string>
 #include <variant>
 
-#include "willow_data_plugin.h"
+#include "collect_plugin.h"
 
-namespace willow_data {
+namespace collect {
 namespace test {
 
 namespace {
@@ -22,8 +22,8 @@ using flutter::MethodResultFunctions;
 
 }  // namespace
 
-TEST(willow_dataPlugin, GetPlatformVersion) {
-  willow_dataPlugin plugin;
+TEST(collectPlugin, GetPlatformVersion) {
+  collectPlugin plugin;
   // Save the reply value from the success callback.
   std::string result_string;
   plugin.HandleMethodCall(
@@ -40,4 +40,4 @@ TEST(willow_dataPlugin, GetPlatformVersion) {
 }
 
 }  // namespace test
-}  // namespace willow_data
+}  // namespace collect

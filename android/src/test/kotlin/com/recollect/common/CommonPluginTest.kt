@@ -1,7 +1,7 @@
-package com.recollect.willow_data
+package com.recollect.collect
 
-import io.flutter.plugin.willow_data.MethodCall
-import io.flutter.plugin.willow_data.MethodChannel
+import io.flutter.plugin.collect.MethodCall
+import io.flutter.plugin.collect.MethodChannel
 import org.mockito.Mockito
 import kotlin.test.Test
 
@@ -13,10 +13,10 @@ import kotlin.test.Test
  * you can run them directly from IDEs that support JUnit such as Android Studio.
  */
 
-internal class willow_dataPluginTest {
+internal class collectPluginTest {
     @Test
     fun onMethodCall_getPlatformVersion_returnsExpectedValue() {
-        val plugin = willow_dataPlugin()
+        val plugin = collectPlugin()
 
         val call = MethodCall("getPlatformVersion", null)
         val mockResult: MethodChannel.Result = Mockito.mock(MethodChannel.Result::class.java)
