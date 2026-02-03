@@ -2,14 +2,14 @@ library;
 
 import 'dart:math' as math;
 import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide FilterCallback, SearchCallback;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
-import 'package:flutter/widgets.dart';
+
+part 'icons/icon_collection.dart';
 
 part 'constants/bases.dart';
 
@@ -66,41 +66,3 @@ part 'utils/notifications.dart';
 part 'utils/radix.dart';
 
 part 'utils/strings.dart';
-
-part 'icons/ant_design.dart';
-
-part 'icons/flutter_icon_data.dart';
-
-part 'icons/entypo.dart';
-
-part 'icons/evil_icons.dart';
-
-part 'icons/feather.dart';
-
-part 'icons/flutter_icons_plus.dart';
-
-part 'icons/font_awesome.dart';
-
-part 'icons/font_awesome_5.dart';
-
-part 'icons/font_awesome_5_brands.dart';
-
-part 'icons/font_awesome_5_solid.dart';
-
-part 'icons/foundation.dart';
-
-part 'icons/icon_toggle.dart';
-
-part 'icons/ionicons.dart';
-
-part 'icons/material_community_icons.dart';
-
-part 'icons/material_icons.dart';
-
-part 'icons/octicons.dart';
-
-part 'icons/simple_line_icons.dart';
-
-part 'icons/weather_icons.dart';
-
-part 'icons/zocial.dart';
