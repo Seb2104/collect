@@ -1,5 +1,6 @@
 part of '../collect.dart';
 
+
 class Box extends StatelessWidget {
   Box({
     super.key,
@@ -17,19 +18,19 @@ class Box extends StatelessWidget {
     this.child,
     this.clipBehavior = Clip.none,
   }) : assert(margin == null || margin.isNonNegative),
-       assert(padding == null || padding.isNonNegative),
-       assert(decoration == null || decoration.debugAssertIsValid()),
-       assert(constraints == null || constraints.debugAssertIsValid()),
-       assert(decoration != null || clipBehavior == Clip.none),
-       assert(
-         color == null || decoration == null,
-         'Cannot provide both a color and a decoration\n'
-         'To provide both, use "decoration: BoxDecoration(color: color)".',
-       ),
-       constraints = (width != null || height != null)
-           ? constraints?.tighten(width: width, height: height) ??
-                 BoxConstraints.tightFor(width: width, height: height)
-           : constraints;
+        assert(padding == null || padding.isNonNegative),
+        assert(decoration == null || decoration.debugAssertIsValid()),
+        assert(constraints == null || constraints.debugAssertIsValid()),
+        assert(decoration != null || clipBehavior == Clip.none),
+        assert(
+        color == null || decoration == null,
+        'Cannot provide both a color and a decoration\n'
+            'To provide both, use "decoration: BoxDecoration(color: color)".',
+        ),
+        constraints = (width != null || height != null)
+            ? constraints?.tighten(width: width, height: height) ??
+            BoxConstraints.tightFor(width: width, height: height)
+            : constraints;
 
   final Widget? child;
 
@@ -207,9 +208,9 @@ class StyledBox extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-    BuildContext context,
-    RenderDecoratedBox renderObject,
-  ) {
+      BuildContext context,
+      RenderDecoratedBox renderObject,
+      ) {
     renderObject
       ..decoration = decoration
       ..configuration = createLocalImageConfiguration(context)
@@ -236,7 +237,7 @@ class StyledBox extends SingleChildRenderObjectWidget {
 
 class _DecorationClipper extends CustomClipper<Path> {
   _DecorationClipper({TextDirection? textDirection, required this.decoration})
-    : textDirection = textDirection ?? TextDirection.ltr;
+      : textDirection = textDirection ?? TextDirection.ltr;
 
   final TextDirection textDirection;
   final Decoration decoration;
@@ -264,19 +265,11 @@ final class InsetBoxShadow extends BoxShadow {
   });
 
   const InsetBoxShadow.dip({
-    super.color = Colours.grey,
-    super.offset = const Offset(-4, -4),
+    super.color = Colours.black,
+    super.offset = Offset.zero,
     super.blurStyle = BlurStyle.outer,
     super.blurRadius = 8,
     super.spreadRadius = 3,
-  });
-
-  const InsetBoxShadow.bare({
-    super.color = Colours.grey,
-    super.offset = const Offset(-5, -5),
-    super.blurStyle = BlurStyle.outer,
-    super.blurRadius = 10,
-    super.spreadRadius = 2,
   });
 }
 
@@ -299,7 +292,7 @@ class InsetShadowShapeDecoration extends ShapeDecoration {
 /// An object that paints a [InsetShadowShapeDecoration] into a canvas.
 class _ShapeDecorationPainter extends BoxPainter {
   _ShapeDecorationPainter(this._decoration, VoidCallback onChanged)
-    : super(onChanged);
+      : super(onChanged);
 
   final InsetShadowShapeDecoration _decoration;
 
@@ -408,10 +401,10 @@ class _ShapeDecorationPainter extends BoxPainter {
     // It is assumed that [debugDisableShadows] will not change when calling
     // paintInterior or getOuterPath; if it does, the results are undefined.
     bool debugHandleDisabledShadowStart(
-      Canvas canvas,
-      BoxShadow boxShadow,
-      Path path,
-    ) {
+        Canvas canvas,
+        BoxShadow boxShadow,
+        Path path,
+        ) {
       if (debugDisableShadows && boxShadow.blurStyle == BlurStyle.outer) {
         canvas.save();
         final Path clipPath = Path();
@@ -433,14 +426,14 @@ class _ShapeDecorationPainter extends BoxPainter {
     if (_decoration.shape.preferPaintInterior) {
       for (int index = 0; index < _shadowsWithoutInset.length; index += 1) {
         assert(
-          debugHandleDisabledShadowStart(
-            canvas,
-            _shadowsWithoutInset[index],
-            _decoration.shape.getOuterPath(
-              _shadowBounds[index],
-              textDirection: textDirection,
-            ),
+        debugHandleDisabledShadowStart(
+          canvas,
+          _shadowsWithoutInset[index],
+          _decoration.shape.getOuterPath(
+            _shadowBounds[index],
+            textDirection: textDirection,
           ),
+        ),
         );
         _decoration.shape.paintInterior(
           canvas,
@@ -449,21 +442,21 @@ class _ShapeDecorationPainter extends BoxPainter {
           textDirection: textDirection,
         );
         assert(
-          debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
+        debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
         );
       }
     } else {
       for (int index = 0; index < _shadowsWithoutInset.length; index += 1) {
         assert(
-          debugHandleDisabledShadowStart(
-            canvas,
-            _shadowsWithoutInset[index],
-            _shadowPaths[index],
-          ),
+        debugHandleDisabledShadowStart(
+          canvas,
+          _shadowsWithoutInset[index],
+          _shadowPaths[index],
+        ),
         );
         canvas.drawPath(_shadowPaths[index], _shadowPaints[index]);
         assert(
-          debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
+        debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
         );
       }
     }
@@ -508,10 +501,10 @@ class _ShapeDecorationPainter extends BoxPainter {
   }
 
   void _paintInsetShadows(
-    Canvas canvas,
-    Rect rect,
-    TextDirection? textDirection,
-  ) {
+      Canvas canvas,
+      Rect rect,
+      TextDirection? textDirection,
+      ) {
     if (_insetShadows.isEmpty || _innerPath == null) {
       return;
     }
@@ -519,25 +512,30 @@ class _ShapeDecorationPainter extends BoxPainter {
     for (final shadow in _insetShadows) {
       canvas.save();
       final shadowPaint = shadow.toPaint();
-
-      // Clip to the inner path so shadow only appears inside the shape
       canvas.clipPath(_innerPath!);
 
       // Calculate the center of the path bounds
       final center = rect.center;
 
+      // To calculate the inset shadow area we need to take the biggest possible shadow outer bound (includes the spread and blur)
+      // and cut-off the inner path transformed by the shadow offset and spread radius.
+      final outerBound = rect.inflate(
+        shadow.spreadRadius +
+            shadow.blurRadius +
+            max(shadow.offset.dx.abs(), shadow.offset.dy.abs()),
+      );
+
       // Create a matrix to translate the path to origin for proportional scaling
       final translateToOrigin = Matrix4.identity()
         ..translateByDouble(-center.dx, -center.dy, 0, 1);
 
-      // Expand the shape beyond the boundaries - this will cast shadow INWARD
-      // The larger this expansion, the more shadow area we create inside
-      final scaleX = 1 + ((shadow.spreadRadius * 4) / rect.width);
-      final scaleY = 1 + ((shadow.spreadRadius * 4) / rect.height);
+      // Scaling down the inner path according to the spread diameter (radius * 2)
+      final scaleX = 1 - ((shadow.spreadRadius * 2) / rect.width);
+      final scaleY = 1 - ((shadow.spreadRadius * 2) / rect.height);
       final scalingMatrix = Matrix4.identity()
         ..scaleByDouble(scaleX, scaleY, 1, 1);
 
-      // Apply offset - positive offset creates shadow on opposite edge (inset effect)
+      // Create a matrix to translate back to original center with applied shadow offset
       final translateX = center.dx + shadow.offset.dx;
       final translateY = center.dy + shadow.offset.dy;
       final translateBack = Matrix4.identity()
@@ -548,15 +546,17 @@ class _ShapeDecorationPainter extends BoxPainter {
           .multiplied(scalingMatrix)
           .multiplied(translateToOrigin);
 
-      // Transform the inner path to create the expanded shadow shape
-      final expandedPath = _innerPath!.transform(
+      final innerPathOfTheInsetShadow = _innerPath!.transform(
         combinedMatrix.storage,
       );
 
-      // Draw the expanded shape - because we're clipped to innerPath,
-      // only the parts that extend beyond the original shape will be visible
-      // This creates the inward shadow effect
-      canvas.drawPath(expandedPath, shadowPaint);
+      final path = Path.combine(
+        PathOperation.difference,
+        Path()..addRect(outerBound),
+        innerPathOfTheInsetShadow,
+      );
+
+      canvas.drawPath(path, shadowPaint);
 
       canvas.restore();
     }

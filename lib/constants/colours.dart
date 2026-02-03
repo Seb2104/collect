@@ -8,7 +8,12 @@ mixin class Colours {
     green: 0x00,
     blue: 0x00,
   );
-  static const Colour black = Colour(red: 0, green: 0, blue: 0, alpha: 255);
+  static const Colour black = Colour(
+    alpha: 0xFF,
+    green: 0x00,
+    blue: 0x00,
+    red: 0x00,
+  );
   static const Colour black87 = Colour(
     alpha: 0xDD,
     red: 0x00,
