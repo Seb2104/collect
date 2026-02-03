@@ -23,7 +23,7 @@ class Colour with Colours implements Color {
   }
 
   @override
-  int get hashCode => Radix.base(value, Bases.b256);
+  int get hashCode => value;
 
   @override
   double computeLuminance() {
