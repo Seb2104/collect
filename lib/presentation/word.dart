@@ -1,5 +1,7 @@
 part of '../collect.dart';
 
+typedef Font = Fonts;
+
 enum _WordTextStyle { normal, primary, secondary, tertiary }
 
 class Word extends StatefulWidget {
@@ -23,8 +25,8 @@ class Word extends StatefulWidget {
   final bool inherit;
   final Color? color;
   final Color? backgroundColor;
-  final String? fontFamily;
-  final List<String>? fontFamilyFallback;
+  final Font? fontFamily;
+  final List<Font>? fontFamilyFallback;
   final String? package;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -84,8 +86,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = 'Times New Roman',
-    this.fontFamilyFallback = const ['AppleColorEmoji'],
+    this.fontFamily = Fonts.timesNewRoman,
+    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
     this.package,
   }) : _textStyleType = _WordTextStyle.normal;
 
@@ -128,8 +130,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = 'Times New Roman',
-    this.fontFamilyFallback = const ['AppleColorEmoji'],
+    this.fontFamily = Fonts.timesNewRoman,
+    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
     this.package,
   }) : _textStyleType = _WordTextStyle.primary;
 
@@ -172,8 +174,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = 'Times New Roman',
-    this.fontFamilyFallback = const ['AppleColorEmoji'],
+    this.fontFamily = Fonts.timesNewRoman,
+    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
     this.package,
   }) : _textStyleType = _WordTextStyle.secondary;
 
@@ -216,8 +218,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = 'Times New Roman',
-    this.fontFamilyFallback = const ['AppleColorEmoji'],
+    this.fontFamily = Fonts.timesNewRoman,
+    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
     this.package,
   }) : _textStyleType = _WordTextStyle.tertiary;
 
@@ -272,8 +274,8 @@ class _WordState extends State<Word> {
               decorationStyle: widget.decorationStyle,
               decorationThickness: widget.decorationThickness,
               debugLabel: widget.debugLabel,
-              fontFamily: widget.fontFamily,
-              fontFamilyFallback: widget.fontFamilyFallback,
+              fontFamily: widget.fontFamily?.value,
+              fontFamilyFallback: _getFonts(widget.fontFamilyFallback!),
               package: widget.package,
               overflow: widget.overflow,
             ),
@@ -316,8 +318,8 @@ class _WordState extends State<Word> {
               decorationStyle: widget.decorationStyle,
               decorationThickness: widget.decorationThickness,
               debugLabel: widget.debugLabel,
-              fontFamily: widget.fontFamily,
-              fontFamilyFallback: widget.fontFamilyFallback,
+              fontFamily: widget.fontFamily?.value,
+              fontFamilyFallback: _getFonts(widget.fontFamilyFallback!),
               package: widget.package,
               overflow: widget.overflow,
             ),
@@ -335,5 +337,13 @@ class _WordState extends State<Word> {
             textHeightBehavior: widget.textHeightBehavior,
             selectionColor: widget.selectionColor,
           );
+  }
+
+  List<String> _getFonts(List<Fonts> fonts) {
+    List<String> a = [];
+    for (Fonts font in fonts) {
+      a.add(font.value);
+    }
+    return a;
   }
 }

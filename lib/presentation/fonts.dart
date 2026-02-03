@@ -16,9 +16,11 @@ enum Fonts {
   reCollectIcons('ReCollectIcons'),
   roboto('Roboto'),
   sourceCodePro('SourceCodePro'),
-  workSans('WorkSans');
+  workSans('WorkSans'),
+  timesNewRoman('Times New Roman');
 
   final String value;
 
   const Fonts(this.value);
+  
 }
