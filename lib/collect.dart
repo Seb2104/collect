@@ -29,6 +29,7 @@ part 'presentation/action_icon.dart';
 part 'presentation/app_theme.dart';
 part 'presentation/box.dart';
 part 'presentation/fonts.dart';
+part 'presentation/hex_editor.dart';
 part 'presentation/hex_viewer.dart';
 part 'presentation/hover_detector.dart';
 part 'presentation/menu.dart';
