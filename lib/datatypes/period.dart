@@ -2,11 +2,9 @@ part of '../collect.dart';
 
 class Period {
   @override
-  String toString() => '$period';
+  String toString() => '$_period microseconds';
 
   final int _period;
-
-  Period get period => this;
 
   const Period._microseconds(int period) : _period = period + 0;
 
@@ -54,11 +52,13 @@ class Period {
     int microseconds = 0,
   }) : this._microseconds(
          microseconds +
-             years * microsecondsPerMillisecond * milliseconds +
+             microsecondsPerMillisecond * milliseconds +
              microsecondsPerSecond * seconds +
              microsecondsPerMinute * minutes +
              microsecondsPerHour * hours +
-             microsecondsPerDay * days,
+             microsecondsPerDay * days +
+             microsecondsPerDay * 30 * months +
+             microsecondsPerDay * 365 * years,
        );
 
   static const int microsecondsPerMillisecond = 1000;

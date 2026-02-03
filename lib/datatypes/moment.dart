@@ -18,7 +18,7 @@ final class Moment implements Comparable<Moment> {
     this.date,
     this.month,
     this.year,
-    this.formatStyle =  defaultFormatStyle,
+    this.formatStyle = defaultFormatStyle,
   });
 
   Moment.fromDateTime(DateTime dateTime)
@@ -133,9 +133,9 @@ final class Moment implements Comparable<Moment> {
     seconds: second ?? 0,
     minutes: minute ?? 0,
     hours: hour ?? 0,
-    days: date ?? 0,
-    months: month ?? 0,
-    years: year ?? 0,
+    days: 0,
+    months: 0,
+    years: 0,
   );
 
   int get totalSeconds {
@@ -148,12 +148,14 @@ final class Moment implements Comparable<Moment> {
 
     int totalDays = 0;
 
-    for (int yr = 1970; yr < y; yr++) {
-      totalDays += _isLeapYear(yr) ? 366 : 365;
-    }
-
-    for (int yr = y; yr < 1970; yr++) {
-      totalDays -= _isLeapYear(yr) ? 366 : 365;
+    if (y >= 1970) {
+      for (int yr = 1970; yr < y; yr++) {
+        totalDays += _isLeapYear(yr) ? 366 : 365;
+      }
+    } else {
+      for (int yr = 1969; yr >= y; yr--) {
+        totalDays -= _isLeapYear(yr) ? 366 : 365;
+      }
     }
 
     for (int mn = 1; mn < m; mn++) {
@@ -347,7 +349,7 @@ final class Moment implements Comparable<Moment> {
     }
   }
 
-  String format([List<String>? formatStyle]) {
+  String format({List<String>? formatStyle = defaultFormatStyle}) {
     String val = '';
     for (int i = 0; i < formatStyle!.length; i++) {
       val += formatToken(this, formatStyle[i]).toString();
@@ -417,22 +419,20 @@ final class Moment implements Comparable<Moment> {
     int m = month ?? 1;
     int d = date ?? 1;
 
-    int leapYears = 0;
-    for (int i = 1970; i < y; i++) {
-      if ((i % 4 == 0 && i % 100 != 0) || (i % 400 == 0)) {
-        leapYears++;
+    int totalDays = 0;
+
+    if (y >= 1970) {
+      for (int i = 1970; i < y; i++) {
+        totalDays += _isLeapYear(i) ? 366 : 365;
+      }
+    } else {
+      for (int i = 1969; i >= y; i--) {
+        totalDays -= _isLeapYear(i) ? 366 : 365;
       }
     }
 
-    List<int> daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-    bool isLeap = (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
-    if (isLeap) daysInMonth[1] = 29;
-
-    int totalDays = (y - 1970) * 365 + leapYears;
-
-    for (int i = 0; i < m - 1; i++) {
-      totalDays += daysInMonth[i];
+    for (int i = 1; i < m; i++) {
+      totalDays += _daysInMonth(i, y);
     }
 
     totalDays += d - 1;
