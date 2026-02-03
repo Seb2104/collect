@@ -232,5 +232,3 @@ class NotificationData {
     required this.type,
   }) : timestamp = Moment.now();
 }
-
-

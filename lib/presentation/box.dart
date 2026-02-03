@@ -377,4 +377,3 @@ final class InsetBoxShadow extends BoxShadow {
     super.spreadRadius = 3,
   });
 }
-

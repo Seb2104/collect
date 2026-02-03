@@ -266,7 +266,6 @@ class TabViewContent {
 }
 
 class TabViewItem {
-
   final String title;
   final Widget view;
 

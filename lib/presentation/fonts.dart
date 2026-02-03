@@ -22,5 +22,4 @@ enum Fonts {
   final String value;
 
   const Fonts(this.value);
-  
 }
