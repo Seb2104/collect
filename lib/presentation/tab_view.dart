@@ -234,9 +234,9 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
 }
 
 class TabViewContent {
-  final List<TabViewItem> content = const [];
+  final List<TabViewItem> content;
 
-  const TabViewContent(List<TabViewItem> content);
+  const TabViewContent(this.content);
 
   int get length => content.length;
 
