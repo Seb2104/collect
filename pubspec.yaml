@@ -191,7 +191,8 @@ flutter:
     - family: KaTeX_Typewriter
       fonts:
         - asset: assets/fonts/KaTeX_Typewriter-Regular.ttf
-    - family: MaterialDesignIconFont
+
+    - family: materialdesignicons-webfont
       fonts:
         - asset: assets/icons/materialdesignicons-webfont.ttf
 
