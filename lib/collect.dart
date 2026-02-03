@@ -9,7 +9,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
 
-part 'presentation/fonts.dart';
 part 'constants/bases.dart';
 part 'constants/colours.dart';
 part 'constants/moment.dart';
@@ -25,6 +24,7 @@ part 'extensions/num.dart';
 part 'extensions/string.dart';
 part 'presentation/action_icon.dart';
 part 'presentation/app_theme.dart';
+part 'presentation/fonts.dart';
 part 'presentation/inset_box_shadow.dart';
 part 'presentation/menu.dart';
 part 'presentation/styled_box.dart';

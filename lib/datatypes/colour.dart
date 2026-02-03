@@ -22,7 +22,10 @@ class Colour with Colours implements Color {
   }
 
   @override
-  int get value => int.parse(Colour.fromColor(this).toString());
+  int get value => ((alpha & 0xff) << 24) |
+  ((red & 0xff) << 16) |
+  ((green & 0xff) << 8) |
+  ((blue & 0xff) << 0);
 
   @override
   bool operator ==(Object other) {
