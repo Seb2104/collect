@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
 
+part 'presentation/fonts.dart';
 part 'constants/bases.dart';
 part 'constants/colours.dart';
 part 'constants/moment.dart';
