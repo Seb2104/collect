@@ -265,7 +265,7 @@ final class InsetBoxShadow extends BoxShadow {
 
   const InsetBoxShadow.dip({
     super.color = Colours.grey,
-    super.offset = Offset.zero,
+    super.offset = const Offset(-4, -4),
     super.blurStyle = BlurStyle.outer,
     super.blurRadius = 8,
     super.spreadRadius = 3,
@@ -273,7 +273,7 @@ final class InsetBoxShadow extends BoxShadow {
 
   const InsetBoxShadow.bare({
     super.color = Colours.grey,
-    super.offset = Offset.zero,
+    super.offset = const Offset(-5, -5),
     super.blurStyle = BlurStyle.outer,
     super.blurRadius = 10,
     super.spreadRadius = 2,
@@ -519,30 +519,25 @@ class _ShapeDecorationPainter extends BoxPainter {
     for (final shadow in _insetShadows) {
       canvas.save();
       final shadowPaint = shadow.toPaint();
+
+      // Clip to the inner path so shadow only appears inside the shape
       canvas.clipPath(_innerPath!);
 
       // Calculate the center of the path bounds
       final center = rect.center;
 
-      // To calculate the inset shadow area we need to take the biggest possible shadow outer bound (includes the spread and blur)
-      // and cut-off the inner path transformed by the shadow offset and spread radius.
-      final outerBound = rect.inflate(
-        shadow.spreadRadius +
-            shadow.blurRadius +
-            max(shadow.offset.dx.abs(), shadow.offset.dy.abs()),
-      );
-
       // Create a matrix to translate the path to origin for proportional scaling
       final translateToOrigin = Matrix4.identity()
         ..translateByDouble(-center.dx, -center.dy, 0, 1);
 
-      // Scaling down the inner path according to the spread diameter (radius * 2)
-      final scaleX = 1 - ((shadow.spreadRadius * 2) / rect.width);
-      final scaleY = 1 - ((shadow.spreadRadius * 2) / rect.height);
+      // Expand the shape beyond the boundaries - this will cast shadow INWARD
+      // The larger this expansion, the more shadow area we create inside
+      final scaleX = 1 + ((shadow.spreadRadius * 4) / rect.width);
+      final scaleY = 1 + ((shadow.spreadRadius * 4) / rect.height);
       final scalingMatrix = Matrix4.identity()
         ..scaleByDouble(scaleX, scaleY, 1, 1);
 
-      // Create a matrix to translate back to original center with applied shadow offset
+      // Apply offset - positive offset creates shadow on opposite edge (inset effect)
       final translateX = center.dx + shadow.offset.dx;
       final translateY = center.dy + shadow.offset.dy;
       final translateBack = Matrix4.identity()
@@ -553,17 +548,15 @@ class _ShapeDecorationPainter extends BoxPainter {
           .multiplied(scalingMatrix)
           .multiplied(translateToOrigin);
 
-      final innerPathOfTheInsetShadow = _innerPath!.transform(
+      // Transform the inner path to create the expanded shadow shape
+      final expandedPath = _innerPath!.transform(
         combinedMatrix.storage,
       );
 
-      final path = Path.combine(
-        PathOperation.difference,
-        Path()..addRect(outerBound),
-        innerPathOfTheInsetShadow,
-      );
-
-      canvas.drawPath(path, shadowPaint);
+      // Draw the expanded shape - because we're clipped to innerPath,
+      // only the parts that extend beyond the original shape will be visible
+      // This creates the inward shadow effect
+      canvas.drawPath(expandedPath, shadowPaint);
 
       canvas.restore();
     }
