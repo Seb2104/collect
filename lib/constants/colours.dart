@@ -3,7 +3,7 @@ part of '../collect.dart';
 mixin class Colours {
   // Transparent & Achromatic
   static const Colour transparent = Colour(
-    alpha: 0,
+    alpha: 0x00,
     red: 0x00,
     green: 0x00,
     blue: 0x00,
