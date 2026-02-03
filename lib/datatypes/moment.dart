@@ -9,7 +9,7 @@ final class Moment implements Comparable<Moment> {
   int? date;
   int? month;
   int? year;
-  List<String>? formatStyle = defaultFormatStyle;
+  List<String> formatStyle;
 
   Moment({
     this.second,
@@ -18,7 +18,7 @@ final class Moment implements Comparable<Moment> {
     this.date,
     this.month,
     this.year,
-    this.formatStyle,
+    this.formatStyle =  defaultFormatStyle,
   });
 
   Moment.fromDateTime(DateTime dateTime)

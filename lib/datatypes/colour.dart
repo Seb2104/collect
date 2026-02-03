@@ -18,17 +18,8 @@ class Colour with Colours implements Color {
         _floatToInt8(b) << 0;
   }
 
-  int _floatToInt8(double x) {
-    return (x * 255.0).round().clamp(0, 255);
-  }
-
   @override
   int get hashCode => value;
-
-  @override
-  double computeLuminance() {
-    return 0;
-  }
 
   @override
   int get value =>
@@ -36,6 +27,15 @@ class Colour with Colours implements Color {
       ((red & 0xff) << 16) |
       ((green & 0xff) << 8) |
       ((blue & 0xff) << 0);
+
+  int _floatToInt8(double x) {
+    return (x * 255.0).round().clamp(0, 255);
+  }
+
+  @override
+  double computeLuminance() {
+    return 0;
+  }
 
   @override
   bool operator ==(Object other) {
