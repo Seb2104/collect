@@ -1,6 +1,6 @@
 name: collect
 description: "A Flutter package providing reusable UI components, type extensions, custom types and Material 3 theming support."
-version: 1.1.4
+version: 1.1.5
 homepage: https://github.com/Seb2104/collect
 repository: https://github.com/Seb2104/collect
 
