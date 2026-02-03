@@ -17,19 +17,19 @@ class Box extends StatelessWidget {
     this.child,
     this.clipBehavior = Clip.none,
   }) : assert(margin == null || margin.isNonNegative),
-        assert(padding == null || padding.isNonNegative),
-        assert(decoration == null || decoration.debugAssertIsValid()),
-        assert(constraints == null || constraints.debugAssertIsValid()),
-        assert(decoration != null || clipBehavior == Clip.none),
-        assert(
-        color == null || decoration == null,
-        'Cannot provide both a color and a decoration\n'
-            'To provide both, use "decoration: BoxDecoration(color: color)".',
-        ),
-        constraints = (width != null || height != null)
-            ? constraints?.tighten(width: width, height: height) ??
-            BoxConstraints.tightFor(width: width, height: height)
-            : constraints;
+       assert(padding == null || padding.isNonNegative),
+       assert(decoration == null || decoration.debugAssertIsValid()),
+       assert(constraints == null || constraints.debugAssertIsValid()),
+       assert(decoration != null || clipBehavior == Clip.none),
+       assert(
+         color == null || decoration == null,
+         'Cannot provide both a color and a decoration\n'
+         'To provide both, use "decoration: BoxDecoration(color: color)".',
+       ),
+       constraints = (width != null || height != null)
+           ? constraints?.tighten(width: width, height: height) ??
+                 BoxConstraints.tightFor(width: width, height: height)
+           : constraints;
 
   final Widget? child;
 
@@ -207,9 +207,9 @@ class StyledBox extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context,
-      RenderDecoratedBox renderObject,
-      ) {
+    BuildContext context,
+    RenderDecoratedBox renderObject,
+  ) {
     renderObject
       ..decoration = decoration
       ..configuration = createLocalImageConfiguration(context)
@@ -236,7 +236,7 @@ class StyledBox extends SingleChildRenderObjectWidget {
 
 class _DecorationClipper extends CustomClipper<Path> {
   _DecorationClipper({TextDirection? textDirection, required this.decoration})
-      : textDirection = textDirection ?? TextDirection.ltr;
+    : textDirection = textDirection ?? TextDirection.ltr;
 
   final TextDirection textDirection;
   final Decoration decoration;
@@ -263,12 +263,20 @@ final class InsetBoxShadow extends BoxShadow {
     super.blurStyle = BlurStyle.normal,
   });
 
-  InsetBoxShadow.dip({
-    super.color = Colors.black,
+  const InsetBoxShadow.dip({
+    super.color = Colours.grey,
     super.offset = Offset.zero,
     super.blurStyle = BlurStyle.outer,
     super.blurRadius = 8,
     super.spreadRadius = 3,
+  });
+
+  const InsetBoxShadow.bare({
+    super.color = Colours.grey,
+    super.offset = Offset.zero,
+    super.blurStyle = BlurStyle.outer,
+    super.blurRadius = 10,
+    super.spreadRadius = 2,
   });
 }
 
@@ -291,7 +299,7 @@ class InsetShadowShapeDecoration extends ShapeDecoration {
 /// An object that paints a [InsetShadowShapeDecoration] into a canvas.
 class _ShapeDecorationPainter extends BoxPainter {
   _ShapeDecorationPainter(this._decoration, VoidCallback onChanged)
-      : super(onChanged);
+    : super(onChanged);
 
   final InsetShadowShapeDecoration _decoration;
 
@@ -400,10 +408,10 @@ class _ShapeDecorationPainter extends BoxPainter {
     // It is assumed that [debugDisableShadows] will not change when calling
     // paintInterior or getOuterPath; if it does, the results are undefined.
     bool debugHandleDisabledShadowStart(
-        Canvas canvas,
-        BoxShadow boxShadow,
-        Path path,
-        ) {
+      Canvas canvas,
+      BoxShadow boxShadow,
+      Path path,
+    ) {
       if (debugDisableShadows && boxShadow.blurStyle == BlurStyle.outer) {
         canvas.save();
         final Path clipPath = Path();
@@ -425,14 +433,14 @@ class _ShapeDecorationPainter extends BoxPainter {
     if (_decoration.shape.preferPaintInterior) {
       for (int index = 0; index < _shadowsWithoutInset.length; index += 1) {
         assert(
-        debugHandleDisabledShadowStart(
-          canvas,
-          _shadowsWithoutInset[index],
-          _decoration.shape.getOuterPath(
-            _shadowBounds[index],
-            textDirection: textDirection,
+          debugHandleDisabledShadowStart(
+            canvas,
+            _shadowsWithoutInset[index],
+            _decoration.shape.getOuterPath(
+              _shadowBounds[index],
+              textDirection: textDirection,
+            ),
           ),
-        ),
         );
         _decoration.shape.paintInterior(
           canvas,
@@ -441,21 +449,21 @@ class _ShapeDecorationPainter extends BoxPainter {
           textDirection: textDirection,
         );
         assert(
-        debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
+          debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
         );
       }
     } else {
       for (int index = 0; index < _shadowsWithoutInset.length; index += 1) {
         assert(
-        debugHandleDisabledShadowStart(
-          canvas,
-          _shadowsWithoutInset[index],
-          _shadowPaths[index],
-        ),
+          debugHandleDisabledShadowStart(
+            canvas,
+            _shadowsWithoutInset[index],
+            _shadowPaths[index],
+          ),
         );
         canvas.drawPath(_shadowPaths[index], _shadowPaints[index]);
         assert(
-        debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
+          debugHandleDisabledShadowEnd(canvas, _shadowsWithoutInset[index]),
         );
       }
     }
@@ -500,10 +508,10 @@ class _ShapeDecorationPainter extends BoxPainter {
   }
 
   void _paintInsetShadows(
-      Canvas canvas,
-      Rect rect,
-      TextDirection? textDirection,
-      ) {
+    Canvas canvas,
+    Rect rect,
+    TextDirection? textDirection,
+  ) {
     if (_insetShadows.isEmpty || _innerPath == null) {
       return;
     }
