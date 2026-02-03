@@ -2,6 +2,15 @@ part of '../collect.dart';
 
 class Colour with Colours implements Color {
   @override
+  final int alpha;
+  @override
+  final int red;
+  @override
+  final int green;
+  @override
+  final int blue;
+
+  @override
   int toARGB32() {
     return _floatToInt8(a) << 24 |
         _floatToInt8(r) << 16 |
@@ -22,24 +31,16 @@ class Colour with Colours implements Color {
   }
 
   @override
-  int get value => ((alpha & 0xff) << 24) |
-  ((red & 0xff) << 16) |
-  ((green & 0xff) << 8) |
-  ((blue & 0xff) << 0);
+  int get value =>
+      ((alpha & 0xff) << 24) |
+      ((red & 0xff) << 16) |
+      ((green & 0xff) << 8) |
+      ((blue & 0xff) << 0);
 
   @override
   bool operator ==(Object other) {
     return hashCode == other.hashCode;
   }
-
-  @override
-  final int alpha;
-  @override
-  final int red;
-  @override
-  final int green;
-  @override
-  final int blue;
 
   @override
   double get r => red / 255;
@@ -297,7 +298,7 @@ class Colour with Colours implements Color {
 
   @override
   String toString() {
-    return '${Radix.base(alpha, Bases.b256)}${Radix.base(red, Bases.b256)}${Radix.base(green, Bases.b256)}${Radix.base(blue, Bases.b256)}';
+    return '${Radix.base(alpha, Bases.decimal)}${Radix.base(red, Bases.decimal)}${Radix.base(green, Bases.decimal)}${Radix.base(blue, Bases.decimal)}';
   }
 
   static double _hueToRgb(double p, double q, double t) {
