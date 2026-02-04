@@ -53,32 +53,43 @@ class DataInspector extends StatelessWidget {
               color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    'Inspector',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
-                    ),
+                Text(
+                  'Inspector',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
-                CheckboxListTile(
-                  value: endianness == Endianness.little,
-                  onChanged: (value) {
+                const SizedBox(height: 8),
+                InkWell(
+                  onTap: () {
                     onEndiannessChanged(
-                      value == true ? Endianness.little : Endianness.big,
+                      endianness == Endianness.little
+                          ? Endianness.big
+                          : Endianness.little,
                     );
                   },
-                  title: Text(
-                    endianness.label,
-                    style: const TextStyle(fontSize: 12),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: endianness == Endianness.little,
+                        onChanged: (value) {
+                          onEndiannessChanged(
+                            value == true ? Endianness.little : Endianness.big,
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        endianness.label,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ],
                   ),
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  controlAffinity: ListTileControlAffinity.leading,
                 ),
               ],
             ),
@@ -350,21 +361,25 @@ class _InteractiveHexViewerState extends State<InteractiveHexViewer> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildHeader(),
           Expanded(
-            child: Scrollbar(
-              controller: _scrollController,
-              thumbVisibility: true,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(totalRows, (row) => _buildRow(row)),
-                ),
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(totalRows, (row) => _buildRow(row)),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -381,28 +396,41 @@ class _InteractiveHexViewerState extends State<InteractiveHexViewer> {
       color: theme.colorScheme.onSurface,
     );
 
-    final buffer = StringBuffer();
-    buffer.write('Offset    ');
-
-    for (int i = 0; i < widget.bytesPerRow; i++) {
-      buffer.write(i.toRadixString(16).padLeft(2, '0').toUpperCase());
-      buffer.write(' ');
-      if (widget.groupSize > 0 &&
-          (i + 1) % widget.groupSize == 0 &&
-          i + 1 < widget.bytesPerRow) {
-        buffer.write(' ');
-      }
-    }
-
-    buffer.write(' ASCII');
-
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
       ),
-      child: Text(buffer.toString(), style: headerStyle),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80,
+            child: Text('Offset', style: headerStyle),
+          ),
+          Row(
+            children: [
+              for (int i = 0; i < widget.bytesPerRow; i++) ...[
+                SizedBox(
+                  width: 24,
+                  child: Text(
+                    i.toRadixString(16).padLeft(2, '0').toUpperCase(),
+                    style: headerStyle,
+                  ),
+                ),
+                if (widget.groupSize > 0 &&
+                    (i + 1) % widget.groupSize == 0 &&
+                    i + 1 < widget.bytesPerRow)
+                  const SizedBox(width: 8)
+                else
+                  const SizedBox(width: 4),
+              ],
+            ],
+          ),
+          const SizedBox(width: 16),
+          Text('ASCII', style: headerStyle),
+        ],
+      ),
     );
   }
 
@@ -424,66 +452,80 @@ class _InteractiveHexViewerState extends State<InteractiveHexViewer> {
       color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
     );
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Offset
-          Text(
-            offset.toRadixString(16).padLeft(8, '0'),
-            style: offsetStyle,
-          ),
-          const SizedBox(width: 16),
-          // Hex bytes
-          Expanded(
-            child: Wrap(
-              spacing: 4,
-              runSpacing: 0,
-              children: List.generate(widget.bytesPerRow, (i) {
-                if (i < rowData.length) {
-                  final byteIndex = offset + i;
-                  final isSelected = _isSelected(byteIndex);
-
-                  return GestureDetector(
-                    onTap: () => _selectByte(byteIndex),
-                    onLongPress: () => _extendSelection(byteIndex),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? theme.colorScheme.primary
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: Text(
-                        rowData[i].toRadixString(16).padLeft(2, '0'),
-                        style: style.copyWith(
-                          color: isSelected
-                              ? theme.colorScheme.onPrimary
-                              : theme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-                  );
-                } else {
-                  return SizedBox(
-                    width: 20,
-                    child: Text('  ', style: style),
-                  );
-                }
-              }),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Offset
+            SizedBox(
+              width: 80,
+              child: Text(
+                offset.toRadixString(16).padLeft(8, '0'),
+                style: offsetStyle,
+              ),
             ),
+            // Hex bytes
+            Row(
+              children: [
+                for (int i = 0; i < widget.bytesPerRow; i++) ...[
+                  if (i < rowData.length)
+                    _buildByteWidget(offset + i, rowData[i], theme, style)
+                  else
+                    SizedBox(
+                      width: 24,
+                      child: Text('  ', style: style),
+                    ),
+                  if (widget.groupSize > 0 &&
+                      (i + 1) % widget.groupSize == 0 &&
+                      i + 1 < widget.bytesPerRow)
+                    const SizedBox(width: 8)
+                  else
+                    const SizedBox(width: 4),
+                ],
+              ],
+            ),
+            const SizedBox(width: 16),
+            // ASCII
+            SizedBox(
+              width: widget.bytesPerRow * 8.0,
+              child: Text(
+                rowData
+                    .map((b) =>
+                        (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.')
+                    .join(),
+                style: style.copyWith(color: theme.colorScheme.primary),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildByteWidget(int byteIndex, int byteValue, ThemeData theme, TextStyle style) {
+    final isSelected = _isSelected(byteIndex);
+
+    return GestureDetector(
+      onTap: () => _selectByte(byteIndex),
+      onLongPress: () => _extendSelection(byteIndex),
+      child: Container(
+        width: 24,
+        padding: const EdgeInsets.symmetric(horizontal: 2),
+        decoration: BoxDecoration(
+          color: isSelected ? theme.colorScheme.primary : Colors.transparent,
+          borderRadius: BorderRadius.circular(2),
+        ),
+        child: Text(
+          byteValue.toRadixString(16).padLeft(2, '0'),
+          style: style.copyWith(
+            color: isSelected
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface,
           ),
-          const SizedBox(width: 16),
-          // ASCII
-          Text(
-            rowData
-                .map((b) => (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.')
-                .join(),
-            style: style.copyWith(color: theme.colorScheme.primary),
-          ),
-        ],
+        ),
       ),
     );
   }

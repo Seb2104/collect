@@ -201,15 +201,20 @@ InteractiveHexViewer(data: bytes);
 
 ## Run the Example
 
+The example app includes full file opening functionality:
+
 ```bash
-flutter run example/hex_editor_example.dart
+flutter run example/hex_editor_app.dart
 ```
 
 The example demonstrates:
+- **Opening any file** from your system
 - Selecting individual bytes
 - Viewing multi-byte values
 - Toggling endianness
 - Different data type interpretations
+- File information display
+- Professional hex editor interface
 
 ## Use Cases
 

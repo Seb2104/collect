@@ -1,0 +1,3 @@
+@echo off
+echo Starting Hex Editor...
+flutter run -d windows hex_editor_app.dart

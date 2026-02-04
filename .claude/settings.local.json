@@ -8,7 +8,9 @@
       "Bash(tree:*)",
       "Bash(find:*)",
       "Bash(findstr:*)",
-      "Bash(dart analyze:*)"
+      "Bash(dart analyze:*)",
+      "Bash(if not exist example mkdir example)",
+      "Bash(flutter pub get:*)"
     ],
     "deny": [],
     "ask": []
