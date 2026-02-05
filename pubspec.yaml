@@ -1,6 +1,6 @@
 name: collect
 description: "A Flutter package providing reusable UI components, type extensions, custom types and Material 3 theming support."
-version: 1.2.1
+version: 1.2.2
 homepage: https://github.com/Seb2104/collect
 repository: https://github.com/Seb2104/collect
 
@@ -13,9 +13,6 @@ dependencies:
     sdk: flutter
   unicode: ^1.1.9
   file_picker: ^10.3.10
-  flutter_colorpicker:
-    path: flutter_colorpicker/
-
 
 dev_dependencies:
   flutter_test:
