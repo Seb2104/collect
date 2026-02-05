@@ -13,6 +13,9 @@ dependencies:
     sdk: flutter
   unicode: ^1.1.9
   file_picker: ^10.3.10
+  flutter_colorpicker:
+    path: flutter_colorpicker/
+
 
 dev_dependencies:
   flutter_test:
