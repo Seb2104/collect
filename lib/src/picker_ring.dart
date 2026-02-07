@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 import '../collect.dart';
 
-
 class HueRingPicker extends StatefulWidget {
   const HueRingPicker({
     super.key,
