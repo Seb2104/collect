@@ -12,8 +12,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
 
-export 'api/presentation/colour_pickers.dart';
-
 part 'api/constants/bases.dart';
 part 'api/constants/colour_pickers.dart';
 part 'api/constants/colours.dart';
