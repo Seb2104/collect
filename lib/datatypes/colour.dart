@@ -1,5 +1,6 @@
 part of '../collect.dart';
 
+// TODO look into implementing HSV colour as well
 class Colour with Colours implements Color {
   @override
   final int alpha;
@@ -42,7 +43,7 @@ class Colour with Colours implements Color {
     return hashCode == other.hashCode;
   }
 
-  @override
+    @override
   double get r => red / 255;
 
   @override
@@ -280,7 +281,7 @@ class Colour with Colours implements Color {
     return Colour(alpha: alpha, red: red, green: green, blue: blue);
   }
 
-  HSVColor toHSV(Colour colour) {
+  HSVColor toHSV() {
     final double red = color.r / 0xFF;
     final double green = color.g / 0xFF;
     final double blue = color.b / 0xFF;
@@ -334,13 +335,13 @@ class Colour with Colours implements Color {
   }
 
   @override
-  Color withOpacity(double opacity) => withAlpha((255.0 * opacity).round());
+  Colour withOpacity(double opacity) => withAlpha((255.0 * opacity).round());
 
   @override
   ColorSpace get colorSpace => ColorSpace.sRGB;
 
   @override
-  Color withValues({
+  Colour withValues({
     double? alpha,
     double? red,
     double? green,
