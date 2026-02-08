@@ -46,7 +46,7 @@ class ColourPicker {
   }
 
   static Widget square({
-    required Color pickerColor,
+    required Color currentColour,
     required ValueChanged<Color> onColorChanged,
     HSVColour? pickerHsvColor,
     ValueChanged<HSVColor>? onHsvColorChanged,
@@ -68,7 +68,7 @@ class ColourPicker {
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return SquarePicker(
-      pickerColor: pickerColor,
+      currentColour: currentColour,
       onColorChanged: onColorChanged,
       pickerHsvColor: pickerHsvColor,
       onHsvColorChanged: onHsvColorChanged,
@@ -86,7 +86,7 @@ class ColourPicker {
   }
 
   static Widget slides({
-    required Color pickerColor,
+    required Color currentColour,
     required ValueChanged<Color> onColorChanged,
     ColorModel colorModel = ColorModel.rgb,
     bool enableAlpha = true,
@@ -105,7 +105,7 @@ class ColourPicker {
     BorderRadius indicatorBorderRadius = const BorderRadius.all(Radius.zero),
   }) {
     return SlidePicker(
-      pickerColor: pickerColor,
+      currentColour: currentColour,
       onColorChanged: onColorChanged,
       colorModel: colorModel,
       enableAlpha: enableAlpha,
@@ -126,7 +126,7 @@ class ColourPicker {
   }
 
   static Widget ring({
-    required Color pickerColor,
+    required Color currentColour,
     required ValueChanged<Color> onColorChanged,
     bool portraitOnly = false,
     double colorPickerHeight = 250.0,
@@ -136,7 +136,7 @@ class ColourPicker {
     BorderRadius pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
   }) {
     return HueRingPicker(
-      pickerColor: pickerColor,
+      currentColour: currentColour,
       onColorChanged: onColorChanged,
       portraitOnly: portraitOnly,
       colorPickerHeight: colorPickerHeight,

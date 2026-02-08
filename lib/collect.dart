@@ -32,6 +32,7 @@ part 'api/extensions/num.dart';
 part 'api/extensions/string.dart';
 part 'api/extensions/widget.dart';
 part 'api/presentation/action_icon.dart';
+part 'api/presentation/menu_flow.dart';
 part 'api/presentation/app_theme.dart';
 part 'api/presentation/box.dart';
 part 'api/presentation/fonts.dart';
