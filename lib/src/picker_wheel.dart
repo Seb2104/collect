@@ -8,6 +8,8 @@ import 'common/common.dart';
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
     super.key,
+    required this.height,
+    required this.width,
     required this.pickerColor,
     required this.onColorChanged,
     this.pickerHsvColor,
@@ -17,12 +19,16 @@ class WheelPicker extends StatefulWidget {
     this.labelTypes = const [ColorLabelType.rgb, ColorLabelType.hex],
     this.displayThumbColor = false,
     this.portraitOnly = false,
-    this.colorPickerSize = 300.0,
+    this.pickerRadius = 300.0,
     this.pickerAreaHeightPercent = 1.0,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
     this.colorHistory,
     this.onHistoryChanged,
   });
+
+  final double height;
+  final double width;
+  final double pickerRadius;
 
   final Color pickerColor;
   final ValueChanged<Color> onColorChanged;
@@ -33,7 +39,6 @@ class WheelPicker extends StatefulWidget {
   final List<ColorLabelType> labelTypes;
   final bool displayThumbColor;
   final bool portraitOnly;
-  final double colorPickerSize;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
   final List<Color>? colorHistory;
@@ -91,8 +96,8 @@ class _WheelPickerState extends State<WheelPicker> {
       return Column(
         children: <Widget>[
           SizedBox(
-            width: widget.colorPickerSize,
-            height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
+            width: widget.pickerRadius,
+            height: widget.pickerRadius * widget.pickerAreaHeightPercent,
             child: ColorPickerArea(
               currentHsvColor,
               onColorChanging,
@@ -100,7 +105,12 @@ class _WheelPickerState extends State<WheelPicker> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15.0, 5.0, 10.0, 5.0),
+            padding: EdgeInsets.fromLTRB(
+              widget.pickerRadius * 0.05,
+              widget.pickerRadius * 0.017,
+              widget.pickerRadius * 0.033,
+              widget.pickerRadius * 0.017,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -118,14 +128,14 @@ class _WheelPickerState extends State<WheelPicker> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 40.0,
-                        width: widget.colorPickerSize - 75.0,
+                        height: widget.pickerRadius * 0.133,
+                        width: widget.pickerRadius * 0.75,
                         child: colorPickerSlider(TrackType.value),
                       ),
                       if (widget.enableAlpha)
                         SizedBox(
-                          height: 40.0,
-                          width: widget.colorPickerSize - 75.0,
+                          height: widget.pickerRadius * 0.133,
+                          width: widget.pickerRadius * 0.75,
                           child: colorPickerSlider(TrackType.alpha),
                         ),
                     ],
@@ -136,28 +146,33 @@ class _WheelPickerState extends State<WheelPicker> {
           ),
           if (colorHistory.isNotEmpty)
             SizedBox(
-              width: widget.colorPickerSize,
-              height: 50,
+              width: widget.pickerRadius,
+              height: widget.pickerRadius * 0.167,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   for (Color color in colorHistory)
                     Padding(
                       key: Key(color.hashCode.toString()),
-                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
+                      padding: EdgeInsets.fromLTRB(
+                        widget.pickerRadius * 0.05,
+                        0,
+                        0,
+                        widget.pickerRadius * 0.033,
+                      ),
                       child: Center(
                         child: GestureDetector(
                           onTap: () =>
                               onColorChanging(HSVColour.fromColor(color)),
                           child: ColorIndicator(
                             HSVColour.fromColor(color),
-                            width: 30,
-                            height: 30,
+                            width: widget.pickerRadius * 0.1,
+                            height: widget.pickerRadius * 0.1,
                           ),
                         ),
                       ),
                     ),
-                  const SizedBox(width: 15),
+                  SizedBox(width: widget.pickerRadius * 0.05),
                 ],
               ),
             ),
@@ -173,12 +188,13 @@ class _WheelPickerState extends State<WheelPicker> {
       );
     } else {
       return SizedBox(
-        height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
+        height: widget.height,
+        width: widget.width,
         child: Row(
           children: <Widget>[
             SizedBox(
-              width: widget.colorPickerSize,
-              height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
+              width: widget.pickerRadius,
+              height: widget.pickerRadius * widget.pickerAreaHeightPercent,
               child: ColorPickerArea(
                 currentHsvColor,
                 onColorChanging,
@@ -189,7 +205,7 @@ class _WheelPickerState extends State<WheelPicker> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const SizedBox(width: 20.0),
+                    SizedBox(width: widget.pickerRadius * 0.067),
                     GestureDetector(
                       onTap: () => setState(() {
                         if (widget.onHistoryChanged != null &&
@@ -203,32 +219,37 @@ class _WheelPickerState extends State<WheelPicker> {
                     Column(
                       children: <Widget>[
                         SizedBox(
-                          height: 40.0,
-                          width: 260.0,
+                          height: widget.pickerRadius * 0.133,
+                          width: widget.pickerRadius * 0.867,
                           child: colorPickerSlider(TrackType.value),
                         ),
                         if (widget.enableAlpha)
                           SizedBox(
-                            height: 40.0,
-                            width: 260.0,
+                            height: widget.pickerRadius * 0.133,
+                            width: widget.pickerRadius * 0.867,
                             child: colorPickerSlider(TrackType.alpha),
                           ),
                       ],
                     ),
-                    const SizedBox(width: 10.0),
+                    SizedBox(width: widget.pickerRadius * 0.033),
                   ],
                 ),
                 if (colorHistory.isNotEmpty)
                   SizedBox(
-                    width: widget.colorPickerSize,
-                    height: 50,
+                    width: widget.pickerRadius,
+                    height: widget.pickerRadius * 0.167,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         for (Color color in colorHistory)
                           Padding(
                             key: Key(color.hashCode.toString()),
-                            padding: const EdgeInsets.fromLTRB(15, 18, 0, 0),
+                            padding: EdgeInsets.fromLTRB(
+                              widget.pickerRadius * 0.05,
+                              widget.pickerRadius * 0.06,
+                              0,
+                              0,
+                            ),
                             child: Center(
                               child: GestureDetector(
                                 onTap: () =>
@@ -241,20 +262,21 @@ class _WheelPickerState extends State<WheelPicker> {
                                 },
                                 child: ColorIndicator(
                                   HSVColour.fromColor(color),
-                                  width: 30,
-                                  height: 30,
+                                  width: widget.pickerRadius * 0.1,
+                                  height: widget.pickerRadius * 0.1,
                                 ),
                               ),
                             ),
                           ),
-                        const SizedBox(width: 15),
+                        SizedBox(width: widget.pickerRadius * 0.05),
                       ],
                     ),
                   ),
-                const SizedBox(height: 20.0),
+                SizedBox(height: widget.pickerRadius * 0.067),
                 if (widget.showLabel && widget.labelTypes.isNotEmpty)
                   FittedBox(
                     child: ColourLabel(
+                      height: 100,
                       currentHsvColor.toColour(),
                       enableAlpha: widget.enableAlpha,
                       colorLabelTypes: widget.labelTypes,

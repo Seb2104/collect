@@ -8,7 +8,10 @@ import '../../src/picker_wheel.dart';
 
 class ColourPicker {
   static Widget wheel({
+    required double height,
+    required double width,
     required Color pickerColor,
+    double pickerRadius = 300,
     required ValueChanged<Color> onColorChanged,
     HSVColor? pickerHsvColor,
     ValueChanged<HSVColor>? onHsvColorChanged,
@@ -20,13 +23,14 @@ class ColourPicker {
     ],
     bool displayThumbColor = true,
     bool portraitOnly = false,
-    double colorPickerWidth = 300,
     double pickerAreaHeightPercent = 1.0,
     BorderRadius? pickerAreaBorderRadius,
     List<Color>? colorHistory,
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return WheelPicker(
+      height: height,
+      width: width,
       pickerColor: pickerColor,
       onColorChanged: onColorChanged,
       enableAlpha: enableAlpha,
@@ -34,7 +38,7 @@ class ColourPicker {
       labelTypes: labelTypes,
       displayThumbColor: displayThumbColor,
       portraitOnly: portraitOnly,
-      colorPickerSize: colorPickerWidth,
+      pickerRadius: pickerRadius,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
       colorHistory: colorHistory,
       onHistoryChanged: onHistoryChanged,

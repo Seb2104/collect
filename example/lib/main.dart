@@ -17,16 +17,21 @@ class Main extends StatelessWidget {
       theme: AppTheme.light(),
       home: Scaffold(
         backgroundColor: AppTheme.background(context),
-        body: Center(
-          child: SizedBox(
-            child: ColourPicker.wheel(
-              colorPickerWidth: 250,
-              // hexInputBar: true,
-              pickerColor: colour,
-              onColorChanged: (value) {
-                colour = Colour.fromColor(value);
-                print(colour.print());
-              },
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1,
+          child: Center(
+            child: Container(
+              child: ColourPicker.wheel(
+                width: 700,
+                height: 250,
+                pickerAreaHeightPercent: 0.7,
+                pickerColor: colour,
+                onColorChanged: (value) {
+                  colour = Colour.fromColor(value);
+                  print(colour.print());
+                },
+              ),
             ),
           ),
         ),

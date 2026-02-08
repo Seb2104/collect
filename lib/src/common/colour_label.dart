@@ -48,6 +48,9 @@ class _ColourLabelState extends State<ColourLabel> {
       height: widget.height,
       width: widget.width,
       child: TabView(
+        tabPadding: EdgeInsets.all(0),
+        tabPosition: Side.left,
+  tabsWidth: 50,
         content: TabViewContent([
           TabViewItem('b256', view: base256View()),
           TabViewItem('HEX', view: hexView()),
