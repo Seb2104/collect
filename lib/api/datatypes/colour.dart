@@ -127,10 +127,7 @@ class Colour extends Col implements Color {
     this.red = 255,
     this.green = 255,
     this.blue = 255,
-  }) : assert(alpha >= 0, alpha <= 100),
-       assert(red >= 0, red <= 255),
-       assert(green >= 0, green <= 255),
-       assert(blue >= 0, blue <= 255);
+  });
 
   const Colour.fromRGB({
     required this.red,
@@ -339,9 +336,7 @@ class Colour extends Col implements Color {
   }
 
   Colour withHsvValue(double value) {
-    return Colour.fromHSVColour(
-      HSVColour.fromAHSV(a, hue, saturation, value),
-    );
+    return Colour.fromHSVColour(HSVColour.fromAHSV(a, hue, saturation, value));
   }
 
   // HSLColor-like methods
@@ -372,7 +367,6 @@ class Colour extends Col implements Color {
     return p;
   }
 
-
   @override
   Colour withOpacity(double opacity) => withAlpha((255.0 * opacity).round());
 
@@ -389,4 +383,8 @@ class Colour extends Col implements Color {
   }) {
     return Colour();
   }
+}
+
+extension c on Color {
+  Colour get colour => Colour.fromColor(this);
 }

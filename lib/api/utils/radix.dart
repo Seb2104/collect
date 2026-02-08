@@ -17,51 +17,36 @@ class Radix {
           );
   }
 
-  static dynamic toRadix(int data, Base toRadix) {
-    int.parse(
-      _crypt(
-        data: data,
-        from: _base.substring(0, 10),
-        to: _base.substring(0, toRadix.value),
-      ),
+  static String toRadix(int data, Base toRadix) {
+    return _crypt(
+      data: data,
+      from: _base.substring(0, 10),
+      to: _base.substring(0, toRadix.value),
     );
   }
 
-  static String oct(int data) {
-    return base(data, Bases.b8);
-  }
+  static String oct(int data) => base(data, Bases.b8);
 
-  static String bin(int data) {
-    return base(data, Bases.b2).toUpperCase();
-  }
+  static String bin(int data) => base(data, Bases.b2).toUpperCase();
 
-  static String hex(int data) {
-    return base(data, Bases.b16).toUpperCase();
-  }
+  static String hex(int data) => base(data, Bases.b16).toUpperCase();
 
-  static String dec(int data) {
-    return base(data, Bases.b10);
-  }
+  static String dec(int data) => base(data, Bases.b10);
 
-  static String b256(int data) {
-    return toRadix(data, Bases.b256);
-  }
+  static String b256(int data) => toRadix(data, Bases.b256);
 
   static String _crypt({
     dynamic data,
     required String from,
     required String to,
   }) {
-    if (data.isEmpty || from == to) {
-      return data;
-    }
-
+    data = data.toString();
     final int sourceBase = from.length;
     final int destinationBase = to.length;
     final Map<int, int> numberMap = {};
     int divide = 0;
     int newLength = 0;
-    int length = data.length;
+    int length = data.toString().length;
     String result = '';
 
     for (int i = 0; i < length; i++) {
@@ -109,5 +94,3 @@ class Radix {
   static const String _base =
       '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/!@%^\$&*()-_=[]{}|;:,.<>?~`\'"\\ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψϏϐϑϒϓϔϕϖϗϘϙϚϛϜϝϞϟϠϡϢϣϤϥϦϧϨϩϪϫϬϭϮϯϰϱϲϳϴϵ϶ϷϸϹϺϻϼϽϾϿЀЏАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя#';
 }
-
-

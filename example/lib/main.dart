@@ -20,12 +20,12 @@ class Main extends StatelessWidget {
         body: Center(
           child: SizedBox(
             height: 600,
-            child: ColourPicker.square(
+            child: ColourPicker.wheel(
               hexInputBar: true,
               pickerColor: colour,
               onColorChanged: (value) {
                 colour = Colour.fromColor(value);
-                print(colour);
+                print(colour.print());
               },
             ),
           ),
