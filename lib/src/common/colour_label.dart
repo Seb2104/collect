@@ -29,51 +29,66 @@ class ColourLabel extends StatefulWidget {
 }
 
 class _ColourLabelState extends State<ColourLabel> {
-  Widget base256View() => Center(child: Word.primary(widget.colour.b256));
+  String b256() => widget.colour.b256;
 
-  Widget hexView() => Center(child: Word.primary(widget.colour.hex));
+  String hexView() => widget.colour.hex;
 
-  Widget argbView() => Center(child: Word.primary(widget.colour.argb));
+  String argbView() => widget.colour.argb;
 
-  Widget hslView() => Center(child: Word.primary(widget.colour.hsl.toString()));
+  String hslView() => widget.colour.hsl.toString();
   MenuController menuController = MenuController();
+  String selectedFormat = 'b256';
 
   @override
   void initState() {
     super.initState();
   }
 
+  String getViewForFormat(String format) {
+    switch (format) {
+      case 'b256':
+        return b256();
+      case 'hex':
+        return hexView();
+      case 'argb':
+        return argbView();
+      case 'hsl':
+        return hslView();
+      default:
+        return b256();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height,
       width: widget.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Menu(
             menuController: menuController,
-            initialSelection: 'b256',
+            initialSelection: selectedFormat,
+            onSelected: (value) {
+              setState(() {
+                selectedFormat = value!;
+              });
+            },
             items: [
               MenuEntry(value: "b256", label: 'B256'),
               MenuEntry(value: "hex", label: 'HEX'),
               MenuEntry(value: "argb", label: 'ARGB'),
               MenuEntry(value: "hsl", label: 'HSL'),
             ],
+            width: 100,
+          ),
+          Word(
+            getViewForFormat(selectedFormat),
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ],
       ),
-      //     child: TabView(
-      //       tabPadding: EdgeInsets.all(0),
-      //       tabPosition: Side.left,
-      // tabsWidth: 50,
-      //       content: TabViewContent([
-      //         TabViewItem('b256', view: base256View()),
-      //         TabViewItem('HEX', view: hexView()),
-      //         TabViewItem('ARGB', view: argbView()),
-      //         TabViewItem('HSL', view: hslView()),
-      //       ]),
-      //     ),
     );
   }
 }
