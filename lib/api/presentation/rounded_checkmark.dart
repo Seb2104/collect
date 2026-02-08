@@ -1,6 +1,5 @@
 part of '../../collect.dart';
 
-///Widget that draw a beautiful checkbox rounded. Provided with animation if wanted
 class RoundedCheckBox extends StatefulWidget {
   const RoundedCheckBox({
     super.key,
@@ -19,41 +18,29 @@ class RoundedCheckBox extends StatefulWidget {
     this.textStyle,
   });
 
-  ///Define weather the checkbox is marked or not
   final bool? isChecked;
 
-  ///Define the widget that is shown when Widgets is checked
   final Widget? checkedWidget;
 
-  ///Define the widget that is shown when Widgets is unchecked
   final Widget? uncheckedWidget;
 
-  ///Define the color that is shown when Widgets is checked
   final Color? checkedColor;
 
-  ///Define the color that is shown when Widgets is unchecked
   final Color? uncheckedColor;
 
-  ///Define the color that is shown when Widgets is disabled
   final Color? disabledColor;
 
-  ///Define the border of the widget
   final Border? border;
 
-  ///Define the border color  of the widget
   final Color? borderColor;
 
-  ///Define the size of the checkbox
   final double? size;
 
   final String text;
   final TextStyle? textStyle;
 
-  ///Define Function that os executed when user tap on checkbox
-  ///If onTap is given a null callback, it will be disabled
   final Function(bool?)? onTap;
 
-  ///Define the duration of the animation. If any
   final Duration? animationDuration;
 
   @override
@@ -129,8 +116,3 @@ class _RoundedCheckBoxState extends State<RoundedCheckBox> {
   }
 }
 
-// child: RoundedCheckBox(
-//   text: 'Boobies',
-//   onTap: (value) => print('object'),
-//   animationDuration: Duration.zero,
-// ),

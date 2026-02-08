@@ -66,7 +66,19 @@ class _ColourLabelState extends State<ColourLabel> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Menu(
+          DropdownMenu(
+            menuStyle: MenuStyle(
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+              visualDensity: VisualDensity.compact,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              isDense: true,
+              // contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            textStyle: TextStyle(fontSize: 11),
             menuController: menuController,
             initialSelection: selectedFormat,
             onSelected: (value) {
@@ -74,18 +86,18 @@ class _ColourLabelState extends State<ColourLabel> {
                 selectedFormat = value!;
               });
             },
-            items: [
-              MenuEntry(value: "b256", label: 'B256'),
-              MenuEntry(value: "hex", label: 'HEX'),
-              MenuEntry(value: "argb", label: 'ARGB'),
-              MenuEntry(value: "hsl", label: 'HSL'),
+            width: 105,
+            dropdownMenuEntries: [
+              DropdownMenuEntry(value: "b256", label: 'B256'),
+              DropdownMenuEntry(value: "hex", label: 'HEX'),
+              DropdownMenuEntry(value: "argb", label: 'ARGB'),
+              DropdownMenuEntry(value: "hsl", label: 'HSL'),
             ],
-            width: 100,
           ),
           Word(
             getViewForFormat(selectedFormat),
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 14,
           ),
         ],
       ),
