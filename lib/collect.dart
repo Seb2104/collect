@@ -4,6 +4,10 @@ import 'dart:math' as math;
 import 'dart:math' show sqrt;
 import 'dart:ui';
 
+import 'package:collect/src/picker_ring.dart';
+import 'package:collect/src/picker_slides.dart';
+import 'package:collect/src/picker_square.dart';
+import 'package:collect/src/picker_wheel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide FilterCallback, SearchCallback;
@@ -46,3 +50,4 @@ part 'api/utils/notifications.dart';
 part 'api/utils/radix.dart';
 part 'api/utils/strings.dart';
 part 'api/constants/icons.dart';
+part 'api/presentation/colour_picker.dart';

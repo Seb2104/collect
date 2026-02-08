@@ -1,10 +1,4 @@
-import 'package:collect/src/picker_ring.dart';
-import 'package:collect/src/picker_slides.dart';
-import 'package:collect/src/picker_square.dart';
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
-import '../../src/picker_wheel.dart';
+part of '../../collect.dart';
 
 class ColourPicker {
   static Widget wheel({
