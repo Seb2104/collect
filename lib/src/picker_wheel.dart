@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collect/src/common/colour_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,6 +12,7 @@ class WheelPicker extends StatefulWidget {
     super.key,
     required this.pickerColor,
     required this.onColorChanged,
+    this.size = 600,
     this.pickerHsvColor,
     this.onHsvColorChanged,
     this.enableAlpha = true,
@@ -18,7 +20,7 @@ class WheelPicker extends StatefulWidget {
     this.labelTypes = const [ColorLabelType.rgb, ColorLabelType.hex],
     this.displayThumbColor = false,
     this.portraitOnly = false,
-    this.colorPickerWidth = 300.0,
+    this.colorPickerSize = 300.0,
     this.pickerAreaHeightPercent = 1.0,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
     this.hexInputBar = false,
@@ -29,6 +31,7 @@ class WheelPicker extends StatefulWidget {
 
   final Color pickerColor;
   final ValueChanged<Color> onColorChanged;
+  final double size;
   final HSVColour? pickerHsvColor;
   final ValueChanged<HSVColour>? onHsvColorChanged;
   final bool enableAlpha;
@@ -36,7 +39,7 @@ class WheelPicker extends StatefulWidget {
   final List<ColorLabelType> labelTypes;
   final bool displayThumbColor;
   final bool portraitOnly;
-  final double colorPickerWidth;
+  final double colorPickerSize;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
   final bool hexInputBar;
@@ -146,8 +149,8 @@ class _WheelPickerState extends State<WheelPicker> {
       return Column(
         children: <Widget>[
           SizedBox(
-            width: widget.colorPickerWidth,
-            height: widget.colorPickerWidth * widget.pickerAreaHeightPercent,
+            width: widget.colorPickerSize,
+            height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
             child: colorPicker(),
           ),
           Padding(
@@ -170,13 +173,13 @@ class _WheelPickerState extends State<WheelPicker> {
                     children: <Widget>[
                       SizedBox(
                         height: 40.0,
-                        width: widget.colorPickerWidth - 75.0,
+                        width: widget.colorPickerSize - 75.0,
                         child: colorPickerSlider(TrackType.value),
                       ),
                       if (widget.enableAlpha)
                         SizedBox(
                           height: 40.0,
-                          width: widget.colorPickerWidth - 75.0,
+                          width: widget.colorPickerSize - 75.0,
                           child: colorPickerSlider(TrackType.alpha),
                         ),
                     ],
@@ -187,7 +190,7 @@ class _WheelPickerState extends State<WheelPicker> {
           ),
           if (colorHistory.isNotEmpty)
             SizedBox(
-              width: widget.colorPickerWidth,
+              width: widget.colorPickerSize,
               height: 50,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -214,8 +217,8 @@ class _WheelPickerState extends State<WheelPicker> {
             ),
           if (widget.showLabel && widget.labelTypes.isNotEmpty)
             FittedBox(
-              child: ColorPickerLabel(
-                currentHsvColor,
+              child: ColourLabel(
+                currentHsvColor.toColour(),
                 enableAlpha: widget.enableAlpha,
                 colorLabelTypes: widget.labelTypes,
               ),
@@ -240,8 +243,8 @@ class _WheelPickerState extends State<WheelPicker> {
       return Row(
         children: <Widget>[
           SizedBox(
-            width: widget.colorPickerWidth,
-            height: widget.colorPickerWidth * widget.pickerAreaHeightPercent,
+            width: widget.colorPickerSize,
+            height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
             child: colorPicker(),
           ),
           Column(
@@ -279,7 +282,7 @@ class _WheelPickerState extends State<WheelPicker> {
               ),
               if (colorHistory.isNotEmpty)
                 SizedBox(
-                  width: widget.colorPickerWidth,
+                  width: widget.colorPickerSize,
                   height: 50,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -313,8 +316,8 @@ class _WheelPickerState extends State<WheelPicker> {
               const SizedBox(height: 20.0),
               if (widget.showLabel && widget.labelTypes.isNotEmpty)
                 FittedBox(
-                  child: ColorPickerLabel(
-                    currentHsvColor,
+                  child: ColourLabel(
+                    currentHsvColor.toColour(),
                     enableAlpha: widget.enableAlpha,
                     colorLabelTypes: widget.labelTypes,
                   ),

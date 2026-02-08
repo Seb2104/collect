@@ -4,7 +4,9 @@ sealed class Col {
   const Col();
 
   Colour toColour();
+
   HSLColour toHSL();
+
   HSVColour toHSV();
 
   static double getHue(

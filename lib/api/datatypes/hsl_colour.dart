@@ -6,14 +6,7 @@ class HSLColour extends Col implements HSLColor {
     this.hue,
     this.saturation,
     this.lightness,
-  ) : assert(alpha >= 0.0),
-      assert(alpha <= 1.0),
-      assert(hue >= 0.0),
-      assert(hue <= 360.0),
-      assert(saturation >= 0.0),
-      assert(saturation <= 1.0),
-      assert(lightness >= 0.0),
-      assert(lightness <= 1.0);
+  );
 
   const HSLColour({
     this.alpha = 1.0,
@@ -94,16 +87,10 @@ class HSLColour extends Col implements HSLColor {
     double s = 0.0;
     double v = 0.0;
 
-    v = lightness +
-        saturation * (lightness < 0.5 ? lightness : 1 - lightness);
+    v = lightness + saturation * (lightness < 0.5 ? lightness : 1 - lightness);
     if (v != 0) s = 2 - 2 * lightness / v;
 
-    return HSVColour.fromAHSV(
-      alpha,
-      hue,
-      s.clamp(0.0, 1.0),
-      v.clamp(0.0, 1.0),
-    );
+    return HSVColour.fromAHSV(alpha, hue, s.clamp(0.0, 1.0), v.clamp(0.0, 1.0));
   }
 
   @override
@@ -155,7 +142,7 @@ class HSLColour extends Col implements HSLColor {
 
   @override
   String toString() =>
-      '${objectRuntimeType(this, 'HSLColour')}($alpha, $hue, $saturation, $lightness)';
+      '${alpha.roundToPrecision(2)},${hue.roundToPrecision(2)},${saturation.roundToPrecision(2)},${lightness.roundToPrecision(2)}';
 }
 
 extension Hslcolour on HSLColor {

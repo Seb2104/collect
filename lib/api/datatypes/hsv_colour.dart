@@ -128,12 +128,7 @@ class HSVColour extends Col implements HSVColor {
         s = saturation * value / (2 - l * 2);
       }
     }
-    return HSLColour.fromAHSL(
-      alpha,
-      hue,
-      s.clamp(0.0, 1.0),
-      l.clamp(0.0, 1.0),
-    );
+    return HSLColour.fromAHSL(alpha, hue, s.clamp(0.0, 1.0), l.clamp(0.0, 1.0));
   }
 
   @override
