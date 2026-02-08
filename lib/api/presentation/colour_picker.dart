@@ -22,8 +22,6 @@ class ColourPicker {
     bool portraitOnly = false,
     double colorPickerWidth = 300,
     double pickerAreaHeightPercent = 1.0,
-    bool hexInputBar = false,
-    TextEditingController? hexInputController,
     BorderRadius? pickerAreaBorderRadius,
     List<Color>? colorHistory,
     ValueChanged<List<Color>>? onHistoryChanged,
@@ -38,8 +36,6 @@ class ColourPicker {
       portraitOnly: portraitOnly,
       colorPickerSize: colorPickerWidth,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
-      hexInputBar: false,
-      hexInputController: hexInputController,
       colorHistory: colorHistory,
       onHistoryChanged: onHistoryChanged,
     );

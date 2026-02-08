@@ -20,8 +20,6 @@ class WheelPicker extends StatefulWidget {
     this.colorPickerSize = 300.0,
     this.pickerAreaHeightPercent = 1.0,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
-    this.hexInputBar = false,
-    this.hexInputController,
     this.colorHistory,
     this.onHistoryChanged,
   });
@@ -38,8 +36,6 @@ class WheelPicker extends StatefulWidget {
   final double colorPickerSize;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
-  final bool hexInputBar;
-  final TextEditingController? hexInputController;
   final List<Color>? colorHistory;
   final ValueChanged<List<Color>>? onHistoryChanged;
 
@@ -56,13 +52,6 @@ class _WheelPickerState extends State<WheelPicker> {
     currentHsvColor = (widget.pickerHsvColor != null)
         ? widget.pickerHsvColor as HSVColour
         : HSVColour.fromColor(widget.pickerColor);
-    if (widget.hexInputController?.text.isEmpty == true) {
-      widget.hexInputController?.text = colorToHex(
-        currentHsvColor.toColor(),
-        enableAlpha: widget.enableAlpha,
-      );
-    }
-    widget.hexInputController?.addListener(colorPickerTextInputListener);
     if (widget.colorHistory != null && widget.onHistoryChanged != null) {
       colorHistory = widget.colorHistory ?? [];
     }
@@ -77,33 +66,8 @@ class _WheelPickerState extends State<WheelPicker> {
         : HSVColour.fromColor(widget.pickerColor);
   }
 
-  void colorPickerTextInputListener() {
-    if (widget.hexInputController == null) return;
-    final Color? color = colorFromHex(
-      widget.hexInputController!.text,
-      enableAlpha: widget.enableAlpha,
-    );
-    if (color != null) {
-      setState(() => currentHsvColor = HSVColour.fromColor(color));
-      widget.onColorChanged(color);
-      if (widget.onHsvColorChanged != null) {
-        widget.onHsvColorChanged!(currentHsvColor);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.hexInputController?.removeListener(colorPickerTextInputListener);
-    super.dispose();
-  }
-
   Widget colorPickerSlider(TrackType trackType) {
     return ColourPickerSlider(trackType, currentHsvColor, (HSVColour color) {
-      widget.hexInputController?.text = colorToHex(
-        color.toColor(),
-        enableAlpha: widget.enableAlpha,
-      );
       setState(() => currentHsvColor = color);
       widget.onColorChanged(currentHsvColor.toColor());
       if (widget.onHsvColorChanged != null) {
@@ -113,29 +77,11 @@ class _WheelPickerState extends State<WheelPicker> {
   }
 
   void onColorChanging(HSVColour color) {
-    widget.hexInputController?.text = colorToHex(
-      color.toColor(),
-      enableAlpha: widget.enableAlpha,
-    );
     setState(() => currentHsvColor = color);
     widget.onColorChanged(currentHsvColor.toColor());
     if (widget.onHsvColorChanged != null) {
       widget.onHsvColorChanged!(currentHsvColor);
     }
-  }
-
-  Widget colorPicker() {
-    return ClipRRect(
-      borderRadius: widget.pickerAreaBorderRadius,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ColorPickerArea(
-          currentHsvColor,
-          onColorChanging,
-          PaletteType.hueWheel,
-        ),
-      ),
-    );
   }
 
   @override
@@ -147,7 +93,11 @@ class _WheelPickerState extends State<WheelPicker> {
           SizedBox(
             width: widget.colorPickerSize,
             height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
-            child: colorPicker(),
+            child: ColorPickerArea(
+              currentHsvColor,
+              onColorChanging,
+              PaletteType.hueWheel,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 5.0, 10.0, 5.0),
@@ -229,7 +179,11 @@ class _WheelPickerState extends State<WheelPicker> {
             SizedBox(
               width: widget.colorPickerSize,
               height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
-              child: colorPicker(),
+              child: ColorPickerArea(
+                currentHsvColor,
+                onColorChanging,
+                PaletteType.hueWheel,
+              ),
             ),
             Column(
               children: <Widget>[
