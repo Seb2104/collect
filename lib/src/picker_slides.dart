@@ -6,7 +6,7 @@ import 'common/common.dart';
 class SlidePicker extends StatefulWidget {
   const SlidePicker({
     super.key,
-    required this.pickerColor,
+    required this.currentColour,
     required this.onColorChanged,
     this.colorModel = ColorModel.rgb,
     this.enableAlpha = true,
@@ -25,7 +25,7 @@ class SlidePicker extends StatefulWidget {
     this.indicatorBorderRadius = const BorderRadius.all(Radius.zero),
   });
 
-  final Color pickerColor;
+  final Color currentColour;
   final ValueChanged<Color> onColorChanged;
   final ColorModel colorModel;
   final bool enableAlpha;
@@ -53,13 +53,13 @@ class _SlidePickerState extends State<SlidePicker> {
   @override
   void initState() {
     super.initState();
-    currentHsvColor = HSVColour.fromColor(widget.pickerColor);
+    currentHsvColor = HSVColour.fromColor(widget.currentColour);
   }
 
   @override
   void didUpdateWidget(SlidePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    currentHsvColor = HSVColour.fromColor(widget.pickerColor);
+    currentHsvColor = HSVColour.fromColor(widget.currentColour);
   }
 
   Widget colorPickerSlider(TrackType trackType) {
@@ -82,7 +82,7 @@ class _SlidePickerState extends State<SlidePicker> {
       child: GestureDetector(
         onTap: () {
           setState(
-            () => currentHsvColor = HSVColour.fromColor(widget.pickerColor),
+            () => currentHsvColor = HSVColour.fromColor(widget.currentColour),
           );
           widget.onColorChanged(currentHsvColor.toColor());
         },
@@ -93,8 +93,8 @@ class _SlidePickerState extends State<SlidePicker> {
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                widget.pickerColor,
-                widget.pickerColor,
+                widget.currentColour,
+                widget.currentColour,
                 currentHsvColor.toColor(),
                 currentHsvColor.toColor(),
               ],
