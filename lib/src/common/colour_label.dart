@@ -36,6 +36,7 @@ class _ColourLabelState extends State<ColourLabel> {
   Widget argbView() => Center(child: Word.primary(widget.colour.argb));
 
   Widget hslView() => Center(child: Word.primary(widget.colour.hsl.toString()));
+  MenuController menuController = MenuController();
 
   @override
   void initState() {
@@ -47,17 +48,32 @@ class _ColourLabelState extends State<ColourLabel> {
     return SizedBox(
       height: widget.height,
       width: widget.width,
-      child: TabView(
-        tabPadding: EdgeInsets.all(0),
-        tabPosition: Side.left,
-  tabsWidth: 50,
-        content: TabViewContent([
-          TabViewItem('b256', view: base256View()),
-          TabViewItem('HEX', view: hexView()),
-          TabViewItem('ARGB', view: argbView()),
-          TabViewItem('HSL', view: hslView()),
-        ]),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Menu(
+            menuController: menuController,
+            initialSelection: 'b256',
+            items: [
+              MenuEntry(value: "b256", label: 'B256'),
+              MenuEntry(value: "hex", label: 'HEX'),
+              MenuEntry(value: "argb", label: 'ARGB'),
+              MenuEntry(value: "hsl", label: 'HSL'),
+            ],
+          ),
+        ],
       ),
+      //     child: TabView(
+      //       tabPadding: EdgeInsets.all(0),
+      //       tabPosition: Side.left,
+      // tabsWidth: 50,
+      //       content: TabViewContent([
+      //         TabViewItem('b256', view: base256View()),
+      //         TabViewItem('HEX', view: hexView()),
+      //         TabViewItem('ARGB', view: argbView()),
+      //         TabViewItem('HSL', view: hslView()),
+      //       ]),
+      //     ),
     );
   }
 }
