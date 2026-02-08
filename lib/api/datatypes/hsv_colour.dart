@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class HSVColour extends Col implements HSVColor {
+class HSVColour implements HSVColor {
   @override
   final double alpha;
 
@@ -58,22 +58,22 @@ class HSVColour extends Col implements HSVColor {
   }
 
   @override
-  HSVColor withAlpha(double alpha) {
+  HSVColour withAlpha(double alpha) {
     throw UnimplementedError();
   }
 
   @override
-  HSVColor withHue(double hue) {
+  HSVColour withHue(double hue) {
     throw UnimplementedError();
   }
 
   @override
-  HSVColor withSaturation(double saturation) {
+  HSVColour withSaturation(double saturation) {
     throw UnimplementedError();
   }
 
   @override
-  HSVColor withValue(double value) {
+  HSVColour withValue(double value) {
     throw UnimplementedError();
   }
 }

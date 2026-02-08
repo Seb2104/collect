@@ -26,6 +26,25 @@ class Colour extends Col implements Color {
     return HSVColour.fromAHSV(alpha, hue, saturation, max);
   }
 
+  HSLColor get hsl {
+    final double red = color.r / 0xFF;
+    final double green = color.g / 0xFF;
+    final double blue = color.b / 0xFF;
+
+    final double max = math.max(red, math.max(green, blue));
+    final double min = math.min(red, math.min(green, blue));
+    final double delta = max - min;
+
+    final double alpha = color.a / 0xFF;
+    final double hue = _getHue(red, green, blue, max, delta);
+    final double lightness = (max + min) / 2.0;
+    final double saturation = min == max
+        ? 0.0
+        : delta /
+              (1.0 - (2.0 * lightness - 1.0).abs()).clamp(0.0, double.infinity);
+    return HSLColour.fromAHSL(alpha, hue, saturation, lightness);
+  }
+
   @override
   int toARGB32() {
     return _floatToInt8(a) << 24 |
@@ -82,14 +101,15 @@ class Colour extends Col implements Color {
   @override
   double get a => alpha / 255;
 
-  // HSVColor-like properties and methods
+  // HSVColor-like properties
   double get hue => hsv.hue;
 
   double get saturation => hsv.saturation;
 
   double get hsvValue => hsv.value;
 
-  double get hsvAlpha => hsv.alpha;
+  // HSLColor-like property
+  double get lightness => hsl.lightness;
 
   const Colour({
     this.alpha = 255,
@@ -309,27 +329,33 @@ class Colour extends Col implements Color {
   // HSVColor-like methods
   Colour withHue(double hue) {
     return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(hsvAlpha, hue, saturation, hsvValue),
+      hsvColour: HSVColor.fromAHSV(a, hue, saturation, hsvValue),
     );
   }
 
   Colour withSaturation(double saturation) {
     return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(hsvAlpha, hue, saturation, hsvValue),
+      hsvColour: HSVColor.fromAHSV(a, hue, saturation, hsvValue),
     );
   }
 
   Colour withHsvValue(double value) {
     return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(hsvAlpha, hue, saturation, value),
+      hsvColour: HSVColor.fromAHSV(a, hue, saturation, value),
     );
   }
 
-  Colour withHsvAlpha(double alpha) {
-    return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(alpha, hue, saturation, hsvValue),
+  // HSLColor-like methods
+  Colour withLightness(double lightness) {
+    return Colour.fromHSLColour(
+      hslColour: HSLColour.fromAHSL(a, hue, saturation, lightness),
     );
   }
+
+  // Implicit conversions to HSVColor and HSLColor
+  HSVColor toHSVColor() => hsv;
+
+  HSLColor toHSLColor() => hsl;
 
   @override
   String toString() {
@@ -384,5 +410,4 @@ class Colour extends Col implements Color {
   }) {
     return Colour();
   }
-
 }

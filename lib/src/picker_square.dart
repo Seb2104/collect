@@ -520,7 +520,7 @@ class HSVWithValueColorPainter extends CustomPainter {
 class HSLWithHueColorPainter extends CustomPainter {
   const HSLWithHueColorPainter(this.hslColor, {this.pointerColor});
 
-  final HSLColor hslColor;
+  final HSLColour hslColor;
   final Color? pointerColor;
 
   @override
@@ -529,7 +529,7 @@ class HSLWithHueColorPainter extends CustomPainter {
     final Gradient gradientH = LinearGradient(
       colors: [
         const Color(0xff808080),
-        HSLColor.fromAHSL(1.0, hslColor.hue, 1.0, 0.5).toColor(),
+        HSLColour.fromAHSL(1.0, hslColor.hue, 1.0, 0.5).toColour(),
       ],
     );
     const Gradient gradientV = LinearGradient(
@@ -555,7 +555,7 @@ class HSLWithHueColorPainter extends CustomPainter {
       Paint()
         ..color =
             pointerColor ??
-            (useWhiteForeground(hslColor.toColor())
+            (useWhiteForeground(hslColor.toColour())
                 ? Colors.white
                 : Colors.black)
         ..strokeWidth = 1.5
@@ -570,20 +570,20 @@ class HSLWithHueColorPainter extends CustomPainter {
 class HSLWithSaturationColorPainter extends CustomPainter {
   const HSLWithSaturationColorPainter(this.hslColor, {this.pointerColor});
 
-  final HSLColor hslColor;
+  final HSLColour hslColor;
   final Color? pointerColor;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Rect rect = Offset.zero & size;
     final List<Color> colors = [
-      HSLColor.fromAHSL(1.0, 0.0, hslColor.saturation, 0.5).toColor(),
-      HSLColor.fromAHSL(1.0, 60.0, hslColor.saturation, 0.5).toColor(),
-      HSLColor.fromAHSL(1.0, 120.0, hslColor.saturation, 0.5).toColor(),
-      HSLColor.fromAHSL(1.0, 180.0, hslColor.saturation, 0.5).toColor(),
-      HSLColor.fromAHSL(1.0, 240.0, hslColor.saturation, 0.5).toColor(),
-      HSLColor.fromAHSL(1.0, 300.0, hslColor.saturation, 0.5).toColor(),
-      HSLColor.fromAHSL(1.0, 360.0, hslColor.saturation, 0.5).toColor(),
+      HSLColour.fromAHSL(1.0, 0.0, hslColor.saturation, 0.5).toColour(),
+      HSLColour.fromAHSL(1.0, 60.0, hslColor.saturation, 0.5).toColour(),
+      HSLColour.fromAHSL(1.0, 120.0, hslColor.saturation, 0.5).toColour(),
+      HSLColour.fromAHSL(1.0, 180.0, hslColor.saturation, 0.5).toColour(),
+      HSLColour.fromAHSL(1.0, 240.0, hslColor.saturation, 0.5).toColour(),
+      HSLColour.fromAHSL(1.0, 300.0, hslColor.saturation, 0.5).toColour(),
+      HSLColour.fromAHSL(1.0, 360.0, hslColor.saturation, 0.5).toColour(),
     ];
     final Gradient gradientH = LinearGradient(colors: colors);
     const Gradient gradientV = LinearGradient(
@@ -609,7 +609,7 @@ class HSLWithSaturationColorPainter extends CustomPainter {
       Paint()
         ..color =
             pointerColor ??
-            (useWhiteForeground(hslColor.toColor())
+            (useWhiteForeground(hslColor.toColour())
                 ? Colors.white
                 : Colors.black)
         ..strokeWidth = 1.5
@@ -624,20 +624,20 @@ class HSLWithSaturationColorPainter extends CustomPainter {
 class HSLWithLightnessColorPainter extends CustomPainter {
   const HSLWithLightnessColorPainter(this.hslColor, {this.pointerColor});
 
-  final HSLColor hslColor;
+  final HSLColour hslColor;
   final Color? pointerColor;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Rect rect = Offset.zero & size;
     final List<Color> colors = [
-      const HSLColor.fromAHSL(1.0, 0.0, 1.0, 0.5).toColor(),
-      const HSLColor.fromAHSL(1.0, 60.0, 1.0, 0.5).toColor(),
-      const HSLColor.fromAHSL(1.0, 120.0, 1.0, 0.5).toColor(),
-      const HSLColor.fromAHSL(1.0, 180.0, 1.0, 0.5).toColor(),
-      const HSLColor.fromAHSL(1.0, 240.0, 1.0, 0.5).toColor(),
-      const HSLColor.fromAHSL(1.0, 300.0, 1.0, 0.5).toColor(),
-      const HSLColor.fromAHSL(1.0, 360.0, 1.0, 0.5).toColor(),
+      const HSLColour.fromAHSL(1.0, 0.0, 1.0, 0.5).toColour(),
+      const HSLColour.fromAHSL(1.0, 60.0, 1.0, 0.5).toColour(),
+      const HSLColour.fromAHSL(1.0, 120.0, 1.0, 0.5).toColour(),
+      const HSLColour.fromAHSL(1.0, 180.0, 1.0, 0.5).toColour(),
+      const HSLColour.fromAHSL(1.0, 240.0, 1.0, 0.5).toColour(),
+      const HSLColour.fromAHSL(1.0, 300.0, 1.0, 0.5).toColour(),
+      const HSLColour.fromAHSL(1.0, 360.0, 1.0, 0.5).toColour(),
     ];
     final Gradient gradientH = LinearGradient(colors: colors);
     const Gradient gradientV = LinearGradient(
@@ -671,7 +671,7 @@ class HSLWithLightnessColorPainter extends CustomPainter {
       Paint()
         ..color =
             pointerColor ??
-            (useWhiteForeground(hslColor.toColor())
+            (useWhiteForeground(hslColor.toColour())
                 ? Colors.white
                 : Colors.black)
         ..strokeWidth = 1.5
@@ -911,8 +911,8 @@ class TrackPainter extends CustomPainter {
         break;
       case TrackType.saturationForHSL:
         final List<Color> colors = [
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 0.0, 0.5).toColor(),
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 0.0, 0.5).toColour(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColour(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
@@ -927,9 +927,9 @@ class TrackPainter extends CustomPainter {
         break;
       case TrackType.lightness:
         final List<Color> colors = [
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 0.0).toColor(),
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.0).toColour(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColour(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 1.0).toColour(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
@@ -1109,7 +1109,7 @@ class _ColorPickerLabelState extends State<ColorPickerLabel> {
         '${(hsvColor.alpha * 100).round()}%',
       ];
     } else if (colorLabelType == ColorLabelType.hsl) {
-      HSLColor hslColor = hsvToHsl(hsvColor);
+      HSLColour hslColor = hsvToHsl(hsvColor);
       return [
         '${hslColor.hue.round()}°',
         '${(hslColor.saturation * 100).round()}%',
@@ -1364,12 +1364,12 @@ class ColorPickerSlider extends StatelessWidget {
           case TrackType.saturationForHSL:
             thumbOffset +=
                 (box.maxWidth - 30.0) * hsvToHsl(hsvColor).saturation;
-            thumbColor = HSLColor.fromAHSL(
+            thumbColor = HSLColour.fromAHSL(
               1.0,
               hsvColor.hue,
               hsvToHsl(hsvColor).saturation,
               0.5,
-            ).toColor();
+            ).toColour();
             break;
           case TrackType.value:
             thumbOffset += (box.maxWidth - 30.0) * hsvColor.value;
@@ -1382,12 +1382,12 @@ class ColorPickerSlider extends StatelessWidget {
             break;
           case TrackType.lightness:
             thumbOffset += (box.maxWidth - 30.0) * hsvToHsl(hsvColor).lightness;
-            thumbColor = HSLColor.fromAHSL(
+            thumbColor = HSLColour.fromAHSL(
               1.0,
               hsvColor.hue,
               1.0,
               hsvToHsl(hsvColor).lightness,
-            ).toColor();
+            ).toColour();
             break;
           case TrackType.red:
             thumbOffset +=

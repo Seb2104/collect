@@ -402,8 +402,8 @@ class TrackPainter extends CustomPainter {
         break;
       case TrackType.saturationForHSL:
         final List<Color> colors = [
-          HSLColour.fromAHSL(1.0, hsvColor.hue, 0.0, 0.5).toColor(),
-          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 0.0, 0.5).toColour(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColour(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
@@ -418,9 +418,9 @@ class TrackPainter extends CustomPainter {
         break;
       case TrackType.lightness:
         final List<Color> colors = [
-          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.0).toColor(),
-          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
-          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.0).toColour(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColour(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 1.0).toColour(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
@@ -899,7 +899,7 @@ class ColorPickerSlider extends StatelessWidget {
               hsvColor.hue,
               hsvToHsl(hsvColor).saturation,
               0.5,
-            ).toColor();
+            ).toColour();
             break;
           case TrackType.value:
             thumbOffset += (box.maxWidth - 30.0) * hsvColor.value;
@@ -917,7 +917,7 @@ class ColorPickerSlider extends StatelessWidget {
               hsvColor.hue,
               1.0,
               hsvToHsl(hsvColor).lightness,
-            ).toColor();
+            ).toColour();
             break;
           case TrackType.red:
             thumbOffset +=

@@ -60,7 +60,7 @@ bool useWhiteForeground(Color backgroundColor, {double bias = 0.0}) {
   return v < 130 + bias ? true : false;
 }
 
-HSLColor hsvToHsl(HSVColor color) {
+HSLColour hsvToHsl(HSVColor color) {
   double s = 0.0;
   double l = 0.0;
   l = (2 - color.saturation) * color.value / 2;
@@ -73,7 +73,7 @@ HSLColor hsvToHsl(HSVColor color) {
       s = color.saturation * color.value / (2 - l * 2);
     }
   }
-  return HSLColor.fromAHSL(
+  return HSLColour.fromAHSL(
     color.alpha,
     color.hue,
     s.clamp(0.0, 1.0),
@@ -81,7 +81,7 @@ HSLColor hsvToHsl(HSVColor color) {
   );
 }
 
-HSVColor hslToHsv(HSLColor color) {
+HSVColour hslToHsv(HSLColor color) {
   double s = 0.0;
   double v = 0.0;
 
@@ -91,7 +91,7 @@ HSVColor hslToHsv(HSLColor color) {
           (color.lightness < 0.5 ? color.lightness : 1 - color.lightness);
   if (v != 0) s = 2 - 2 * color.lightness / v;
 
-  return HSVColor.fromAHSV(
+  return HSVColour.fromAHSV(
     color.alpha,
     color.hue,
     s.clamp(0.0, 1.0),

@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class HSLColour extends Col implements HSLColor {
+class HSLColour implements HSLColor {
   const HSLColour.fromAHSL(
     this.alpha,
     this.hue,
@@ -15,7 +15,32 @@ class HSLColour extends Col implements HSLColor {
       assert(lightness >= 0.0),
       assert(lightness <= 1.0);
 
+  const HSLColour({
+    this.alpha = 1.0,
+    this.hue = 360,
+    this.saturation = 1.0,
+    this.lightness = 1,
+  });
+
   factory HSLColour.fromColor(Color color) {
+    final double red = color.red / 0xFF;
+    final double green = color.green / 0xFF;
+    final double blue = color.blue / 0xFF;
+
+    final double max = math.max(red, math.max(green, blue));
+    final double min = math.min(red, math.min(green, blue));
+    final double delta = max - min;
+
+    final double alpha = color.alpha / 0xFF;
+    final double hue = _getHue(red, green, blue, max, delta);
+    final double lightness = (max + min) / 2.0;
+    final double saturation = min == max
+        ? 0.0
+        : clampDouble(delta / (1.0 - (2.0 * lightness - 1.0).abs()), 0.0, 1.0);
+    return HSLColour.fromAHSL(alpha, hue, saturation, lightness);
+  }
+
+  factory HSLColour.fromColour(Colour color) {
     final double red = color.red / 0xFF;
     final double green = color.green / 0xFF;
     final double blue = color.blue / 0xFF;
@@ -65,14 +90,23 @@ class HSLColour extends Col implements HSLColor {
     return HSLColour.fromAHSL(alpha, hue, saturation, lightness);
   }
 
-  @override
-  Colour toColor() {
+  Colour toColour() {
     final double chroma = (1.0 - (2.0 * lightness - 1.0).abs()) * saturation;
     final double secondary =
         chroma * (1.0 - (((hue / 60.0) % 2.0) - 1.0).abs());
     final double match = lightness - chroma / 2.0;
 
     return _colourFromHue(alpha, hue, chroma, secondary, match);
+  }
+
+  @override
+  Color toColor() {
+    final double chroma = (1.0 - (2.0 * lightness - 1.0).abs()) * saturation;
+    final double secondary =
+        chroma * (1.0 - (((hue / 60.0) % 2.0) - 1.0).abs());
+    final double match = lightness - chroma / 2.0;
+
+    return _colorFromHue(alpha, hue, chroma, secondary, match);
   }
 
   HSLColour _scaleAlpha(double factor) {
@@ -115,4 +149,15 @@ class HSLColour extends Col implements HSLColor {
   @override
   String toString() =>
       '${objectRuntimeType(this, 'HSLColour')}($alpha, $hue, $saturation, $lightness)';
+}
+
+extension Hslcolour on HSLColor {
+  HSLColour get toHSLColour {
+    return HSLColour(
+      alpha: alpha,
+      hue: hue,
+      lightness: lightness,
+      saturation: saturation,
+    );
+  }
 }
