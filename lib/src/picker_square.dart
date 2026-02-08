@@ -12,17 +12,12 @@ class SquarePicker extends StatefulWidget {
     this.onHsvColorChanged,
     this.paletteType = PaletteType.hsvWithHue,
     this.enableAlpha = true,
-    @Deprecated('Use empty list in [labelTypes] to disable label.')
     this.showLabel = true,
     this.labelTypes = const [
       ColorLabelType.rgb,
       ColorLabelType.hsv,
       ColorLabelType.hsl,
     ],
-    @Deprecated(
-      'Use Theme.of(context).textTheme.bodyText1 & 2 to alter text style.',
-    )
-    this.labelTextStyle,
     this.displayThumbColor = false,
     this.portraitOnly = false,
     this.colorPickerWidth = 300.0,
@@ -42,7 +37,6 @@ class SquarePicker extends StatefulWidget {
   final bool enableAlpha;
   final bool showLabel;
   final List<ColorLabelType> labelTypes;
-  final TextStyle? labelTextStyle;
   final bool displayThumbColor;
   final bool portraitOnly;
   final double colorPickerWidth;
@@ -249,7 +243,6 @@ class _SquarePickerState extends State<SquarePicker> {
               child: ColorPickerLabel(
                 currentHsvColor,
                 enableAlpha: widget.enableAlpha,
-                textStyle: widget.labelTextStyle,
                 colorLabelTypes: widget.labelTypes,
               ),
             ),
@@ -349,7 +342,6 @@ class _SquarePickerState extends State<SquarePicker> {
                   child: ColorPickerLabel(
                     currentHsvColor,
                     enableAlpha: widget.enableAlpha,
-                    textStyle: widget.labelTextStyle,
                     colorLabelTypes: widget.labelTypes,
                   ),
                 ),

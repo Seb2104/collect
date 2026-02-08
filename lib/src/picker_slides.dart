@@ -13,17 +13,10 @@ class SlidePicker extends StatefulWidget {
     this.enableAlpha = true,
     this.sliderSize = const Size(260, 40),
     this.showSliderText = true,
-    @Deprecated(
-      'Use Theme.of(context).textTheme.bodyText1 & 2 to alter text style.',
-    )
     this.sliderTextStyle,
     this.showParams = true,
-    @Deprecated('Use empty list in [labelTypes] to disable label.')
     this.showLabel = true,
     this.labelTypes = const [],
-    @Deprecated(
-      'Use Theme.of(context).textTheme.bodyText1 & 2 to alter text style.',
-    )
     this.labelTextStyle,
     this.showIndicator = true,
     this.indicatorSize = const Size(280, 50),

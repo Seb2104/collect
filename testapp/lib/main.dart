@@ -19,6 +19,7 @@ class Main extends StatelessWidget {
         backgroundColor: AppTheme.background(context),
         body: Center(
           child: Container(
+            height: 600,
             child: ColourPicker.wheel(
               pickerColor: colour,
               onColorChanged: (value) {
