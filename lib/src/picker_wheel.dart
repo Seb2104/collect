@@ -10,7 +10,6 @@ class WheelPicker extends StatefulWidget {
     super.key,
     required this.pickerColor,
     required this.onColorChanged,
-    this.size = 600,
     this.pickerHsvColor,
     this.onHsvColorChanged,
     this.enableAlpha = true,
@@ -29,7 +28,6 @@ class WheelPicker extends StatefulWidget {
 
   final Color pickerColor;
   final ValueChanged<Color> onColorChanged;
-  final double size;
   final HSVColour? pickerHsvColor;
   final ValueChanged<HSVColour>? onHsvColorChanged;
   final bool enableAlpha;
@@ -224,91 +222,94 @@ class _WheelPickerState extends State<WheelPicker> {
         ],
       );
     } else {
-      return Row(
-        children: <Widget>[
-          SizedBox(
-            width: widget.colorPickerSize,
-            height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
-            child: colorPicker(),
-          ),
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  const SizedBox(width: 20.0),
-                  GestureDetector(
-                    onTap: () => setState(() {
-                      if (widget.onHistoryChanged != null &&
-                          !colorHistory.contains(currentHsvColor.toColor())) {
-                        colorHistory.add(currentHsvColor.toColor());
-                        widget.onHistoryChanged!(colorHistory);
-                      }
-                    }),
-                    child: ColorIndicator(currentHsvColor),
-                  ),
-                  Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 40.0,
-                        width: 260.0,
-                        child: colorPickerSlider(TrackType.value),
-                      ),
-                      if (widget.enableAlpha)
+      return SizedBox(
+        height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
+        child: Row(
+          children: <Widget>[
+            SizedBox(
+              width: widget.colorPickerSize,
+              height: widget.colorPickerSize * widget.pickerAreaHeightPercent,
+              child: colorPicker(),
+            ),
+            Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    const SizedBox(width: 20.0),
+                    GestureDetector(
+                      onTap: () => setState(() {
+                        if (widget.onHistoryChanged != null &&
+                            !colorHistory.contains(currentHsvColor.toColor())) {
+                          colorHistory.add(currentHsvColor.toColor());
+                          widget.onHistoryChanged!(colorHistory);
+                        }
+                      }),
+                      child: ColorIndicator(currentHsvColor),
+                    ),
+                    Column(
+                      children: <Widget>[
                         SizedBox(
                           height: 40.0,
                           width: 260.0,
-                          child: colorPickerSlider(TrackType.alpha),
+                          child: colorPickerSlider(TrackType.value),
                         ),
-                    ],
-                  ),
-                  const SizedBox(width: 10.0),
-                ],
-              ),
-              if (colorHistory.isNotEmpty)
-                SizedBox(
-                  width: widget.colorPickerSize,
-                  height: 50,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      for (Color color in colorHistory)
-                        Padding(
-                          key: Key(color.hashCode.toString()),
-                          padding: const EdgeInsets.fromLTRB(15, 18, 0, 0),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  onColorChanging(HSVColour.fromColor(color)),
-                              onLongPress: () {
-                                if (colorHistory.remove(color)) {
-                                  widget.onHistoryChanged!(colorHistory);
-                                  setState(() {});
-                                }
-                              },
-                              child: ColorIndicator(
-                                HSVColour.fromColor(color),
-                                width: 30,
-                                height: 30,
+                        if (widget.enableAlpha)
+                          SizedBox(
+                            height: 40.0,
+                            width: 260.0,
+                            child: colorPickerSlider(TrackType.alpha),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(width: 10.0),
+                  ],
+                ),
+                if (colorHistory.isNotEmpty)
+                  SizedBox(
+                    width: widget.colorPickerSize,
+                    height: 50,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        for (Color color in colorHistory)
+                          Padding(
+                            key: Key(color.hashCode.toString()),
+                            padding: const EdgeInsets.fromLTRB(15, 18, 0, 0),
+                            child: Center(
+                              child: GestureDetector(
+                                onTap: () =>
+                                    onColorChanging(HSVColour.fromColor(color)),
+                                onLongPress: () {
+                                  if (colorHistory.remove(color)) {
+                                    widget.onHistoryChanged!(colorHistory);
+                                    setState(() {});
+                                  }
+                                },
+                                child: ColorIndicator(
+                                  HSVColour.fromColor(color),
+                                  width: 30,
+                                  height: 30,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      const SizedBox(width: 15),
-                    ],
+                        const SizedBox(width: 15),
+                      ],
+                    ),
                   ),
-                ),
-              const SizedBox(height: 20.0),
-              if (widget.showLabel && widget.labelTypes.isNotEmpty)
-                FittedBox(
-                  child: ColourLabel(
-                    currentHsvColor.toColour(),
-                    enableAlpha: widget.enableAlpha,
-                    colorLabelTypes: widget.labelTypes,
+                const SizedBox(height: 20.0),
+                if (widget.showLabel && widget.labelTypes.isNotEmpty)
+                  FittedBox(
+                    child: ColourLabel(
+                      currentHsvColor.toColour(),
+                      enableAlpha: widget.enableAlpha,
+                      colorLabelTypes: widget.labelTypes,
+                    ),
                   ),
-                ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       );
     }
   }
