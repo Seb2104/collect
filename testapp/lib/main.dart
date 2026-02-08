@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 Colour colour = Colours.black;
 
 void main() {
-  runApp(const Main());
+  Colour colour = Colours.lightBlue;
+  runApp(Main());
+}
+
+ineedHSV(HSVColor c) {
+  
 }
 
 class Main extends StatelessWidget {
@@ -18,7 +23,7 @@ class Main extends StatelessWidget {
       home: Scaffold(
         backgroundColor: AppTheme.background(context),
         body: Center(
-          child: Container(
+          child: SizedBox(
             height: 600,
             child: ColourPicker.wheel(
               pickerColor: colour,

@@ -31,8 +31,6 @@ class ColourPicker {
     return WheelPicker(
       pickerColor: pickerColor,
       onColorChanged: onColorChanged,
-      pickerHsvColor: pickerHsvColor,
-      onHsvColorChanged: onHsvColorChanged,
       enableAlpha: enableAlpha,
       showLabel: showLabel,
       labelTypes: labelTypes,

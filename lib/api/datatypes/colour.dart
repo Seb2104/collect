@@ -1,7 +1,6 @@
 part of '../../collect.dart';
 
-// TODO look into implementing HSV colour as well
-class Colour with Colours implements Color {
+class Colour implements Color {
   @override
   final int alpha;
   @override
@@ -66,6 +65,15 @@ class Colour with Colours implements Color {
 
   @override
   double get a => alpha / 255;
+
+  // HSVColor-like properties and methods
+  double get hue => toHSV().hue;
+
+  double get saturation => toHSV().saturation;
+
+  double get hsvValue => toHSV().value;
+
+  double get hsvAlpha => toHSV().alpha;
 
   const Colour({
     this.alpha = 255,
@@ -297,6 +305,31 @@ class Colour with Colours implements Color {
     return HSVColor.fromAHSV(alpha, hue, saturation, max);
   }
 
+  // HSVColor-like methods
+  Colour withHue(double hue) {
+    return Colour.fromHSVColour(
+      hsvColour: HSVColor.fromAHSV(hsvAlpha, hue, saturation, hsvValue),
+    );
+  }
+
+  Colour withSaturation(double saturation) {
+    return Colour.fromHSVColour(
+      hsvColour: HSVColor.fromAHSV(hsvAlpha, hue, saturation, hsvValue),
+    );
+  }
+
+  Colour withHsvValue(double value) {
+    return Colour.fromHSVColour(
+      hsvColour: HSVColor.fromAHSV(hsvAlpha, hue, saturation, value),
+    );
+  }
+
+  Colour withHsvAlpha(double alpha) {
+    return Colour.fromHSVColour(
+      hsvColour: HSVColor.fromAHSV(alpha, hue, saturation, hsvValue),
+    );
+  }
+
   @override
   String toString() {
     return '${Radix.base(alpha, Bases.decimal)}${Radix.base(red, Bases.decimal)}${Radix.base(green, Bases.decimal)}${Radix.base(blue, Bases.decimal)}';
@@ -350,4 +383,13 @@ class Colour with Colours implements Color {
   }) {
     return Colour();
   }
+
+  // Implicit conversion to HSVColor
+  HSVColor asHSVColor() => toHSV();
+}
+
+/// Extension to allow Colour to be used seamlessly where HSVColor is expected
+extension ColourToHSV on Colour {
+  /// Implicitly converts Colour to HSVColor
+  HSVColor get asHSV => toHSV();
 }
