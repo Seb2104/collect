@@ -18,20 +18,19 @@ class Main extends StatelessWidget {
       home: Scaffold(
         backgroundColor: AppTheme.background(context),
         body: Center(
-            child: SizedBox(
-
-              child: ColourPicker.wheel(
-                colorPickerWidth: 300,
-                hexInputBar: true,
-                pickerColor: colour,
-                onColorChanged: (value) {
-                  colour = Colour.fromColor(value);
-                  print(colour.print());
-                },
-              ),
+          child: SizedBox(
+            child: ColourPicker.wheel(
+              // colorPickerWidth: 300,
+              // hexInputBar: true,
+              pickerColor: colour,
+              onColorChanged: (value) {
+                colour = Colour.fromColor(value);
+                print(colour.print());
+              },
             ),
           ),
         ),
+      ),
     );
   }
 }

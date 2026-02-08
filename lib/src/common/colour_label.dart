@@ -29,10 +29,6 @@ class ColourLabel extends StatefulWidget {
 }
 
 class _ColourLabelState extends State<ColourLabel> {
-  // late Widget hex_view;
-  // late Widget rgb_view;
-  // late Widget hsl_view;
-
   Widget base256View() => Center(child: Word.primary(widget.colour.b256));
 
   Widget hexView() => Center(child: Word.primary(widget.colour.hex));

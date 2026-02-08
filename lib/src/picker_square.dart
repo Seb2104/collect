@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../collect.dart';
+import 'common/colour_label.dart';
+import 'common/constant.dart';
 import 'common/painters.dart';
+import 'common/color_picker_slider.dart';
 
 class SquarePicker extends StatefulWidget {
   const SquarePicker({
@@ -241,8 +244,8 @@ class _SquarePickerState extends State<SquarePicker> {
             ),
           if (widget.showLabel && widget.labelTypes.isNotEmpty)
             FittedBox(
-              child: ColorPickerLabel(
-                currentHsvColor,
+              child: ColourLabel(
+                currentHsvColor.toColour(),
                 enableAlpha: widget.enableAlpha,
                 colorLabelTypes: widget.labelTypes,
               ),
@@ -340,8 +343,8 @@ class _SquarePickerState extends State<SquarePicker> {
               const SizedBox(height: 20.0),
               if (widget.showLabel && widget.labelTypes.isNotEmpty)
                 FittedBox(
-                  child: ColorPickerLabel(
-                    currentHsvColor,
+                  child: ColourLabel(
+                    currentHsvColor.toColour(),
                     enableAlpha: widget.enableAlpha,
                     colorLabelTypes: widget.labelTypes,
                   ),
@@ -836,180 +839,6 @@ class RGBWithBlueColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-class _SliderLayout extends MultiChildLayoutDelegate {
-  static const String track = 'track';
-  static const String thumb = 'thumb';
-  static const String gestureContainer = 'gesturecontainer';
-
-  @override
-  void performLayout(Size size) {
-    layoutChild(
-      track,
-      BoxConstraints.tightFor(
-        width: size.width - 30.0,
-        height: size.height / 5,
-      ),
-    );
-    positionChild(track, Offset(15.0, size.height * 0.4));
-    layoutChild(
-      thumb,
-      BoxConstraints.tightFor(width: 5.0, height: size.height / 4),
-    );
-    positionChild(thumb, Offset(0.0, size.height * 0.4));
-    layoutChild(
-      gestureContainer,
-      BoxConstraints.tightFor(width: size.width, height: size.height),
-    );
-    positionChild(gestureContainer, Offset.zero);
-  }
-
-  @override
-  bool shouldRelayout(_SliderLayout oldDelegate) => false;
-}
-
-class ColorPickerLabel extends StatefulWidget {
-  const ColorPickerLabel(
-    this.hsvColor, {
-    super.key,
-    this.enableAlpha = true,
-    this.colorLabelTypes = const [
-      ColorLabelType.rgb,
-      ColorLabelType.hsv,
-      ColorLabelType.hsl,
-    ],
-    this.textStyle,
-  }) : assert(colorLabelTypes.length > 0);
-
-  final HSVColour hsvColor;
-  final bool enableAlpha;
-  final TextStyle? textStyle;
-  final List<ColorLabelType> colorLabelTypes;
-
-  @override
-  State<ColorPickerLabel> createState() => _ColorPickerLabelState();
-}
-
-class _ColorPickerLabelState extends State<ColorPickerLabel> {
-  final Map<ColorLabelType, List<String>> _colorTypes = const {
-    ColorLabelType.hex: ['R', 'G', 'B', 'A'],
-    ColorLabelType.rgb: ['R', 'G', 'B', 'A'],
-    ColorLabelType.hsv: ['H', 'S', 'V', 'A'],
-    ColorLabelType.hsl: ['H', 'S', 'L', 'A'],
-  };
-
-  late ColorLabelType _colorType;
-
-  @override
-  void initState() {
-    super.initState();
-    _colorType = widget.colorLabelTypes[0];
-  }
-
-  List<String> colorValue(HSVColour hsvColor, ColorLabelType colorLabelType) {
-    if (colorLabelType == ColorLabelType.hex) {
-      final Color color = hsvColor.toColor();
-      return [
-        color.red.toRadixString(16).toUpperCase().padLeft(2, '0'),
-        color.green.toRadixString(16).toUpperCase().padLeft(2, '0'),
-        color.blue.toRadixString(16).toUpperCase().padLeft(2, '0'),
-        color.alpha.toRadixString(16).toUpperCase().padLeft(2, '0'),
-      ];
-    } else if (colorLabelType == ColorLabelType.rgb) {
-      final Color color = hsvColor.toColor();
-      return [
-        color.red.toString(),
-        color.green.toString(),
-        color.blue.toString(),
-        '${(color.opacity * 100).round()}%',
-      ];
-    } else if (colorLabelType == ColorLabelType.hsv) {
-      return [
-        '${hsvColor.hue.round()}°',
-        '${(hsvColor.saturation * 100).round()}%',
-        '${(hsvColor.value * 100).round()}%',
-        '${(hsvColor.alpha * 100).round()}%',
-      ];
-    } else if (colorLabelType == ColorLabelType.hsl) {
-      HSLColour hslColor = hsvToHsl(hsvColor);
-      return [
-        '${hslColor.hue.round()}°',
-        '${(hslColor.saturation * 100).round()}%',
-        '${(hslColor.lightness * 100).round()}%',
-        '${(hsvColor.alpha * 100).round()}%',
-      ];
-    } else {
-      return ['??', '??', '??', '??'];
-    }
-  }
-
-  List<Widget> colorValueLabels() {
-    double fontSize = 14;
-    if (widget.textStyle != null && widget.textStyle?.fontSize != null) {
-      fontSize = widget.textStyle?.fontSize ?? 14;
-    }
-
-    return [
-      for (String item in _colorTypes[_colorType] ?? [])
-        if (widget.enableAlpha || item != 'A')
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minWidth: fontSize * 2),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      item,
-                      style:
-                          widget.textStyle ??
-                          Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 10.0),
-                    Expanded(
-                      child: Text(
-                        colorValue(
-                          widget.hsvColor,
-                          _colorType,
-                        )[_colorTypes[_colorType]!.indexOf(item)],
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            widget.textStyle ??
-                            Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        DropdownButton(
-          value: _colorType,
-          onChanged: (ColorLabelType? type) {
-            if (type != null) setState(() => _colorType = type);
-          },
-          items: [
-            for (ColorLabelType type in widget.colorLabelTypes)
-              DropdownMenuItem(
-                value: type,
-                child: Text(type.toString().split('.').last.toUpperCase()),
-              ),
-          ],
-        ),
-        const SizedBox(width: 10.0),
-        ...colorValueLabels(),
-      ],
-    );
-  }
-}
-
 class ColorPickerInput extends StatefulWidget {
   const ColorPickerInput(
     this.color,
@@ -1086,192 +915,6 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ColorPickerSlider extends StatelessWidget {
-  const ColorPickerSlider(
-    this.trackType,
-    this.hsvColor,
-    this.onColorChanged, {
-    super.key,
-    this.displayThumbColor = false,
-    this.fullThumbColor = false,
-  });
-
-  final TrackType trackType;
-  final HSVColour hsvColor;
-  final ValueChanged<HSVColour> onColorChanged;
-  final bool displayThumbColor;
-  final bool fullThumbColor;
-
-  void slideEvent(RenderBox getBox, BoxConstraints box, Offset globalPosition) {
-    double localDx = getBox.globalToLocal(globalPosition).dx - 15.0;
-    double progress =
-        localDx.clamp(0.0, box.maxWidth - 30.0) / (box.maxWidth - 30.0);
-    switch (trackType) {
-      case TrackType.hue:
-        onColorChanged(hsvColor.withHue(progress * 359));
-        break;
-      case TrackType.saturation:
-        onColorChanged(hsvColor.withSaturation(progress));
-        break;
-      case TrackType.saturationForHSL:
-        onColorChanged(hslToHsv(hsvToHsl(hsvColor).withSaturation(progress)));
-        break;
-      case TrackType.value:
-        onColorChanged(hsvColor.withValue(progress));
-        break;
-      case TrackType.lightness:
-        onColorChanged(hslToHsv(hsvToHsl(hsvColor).withLightness(progress)));
-        break;
-      case TrackType.red:
-        onColorChanged(
-          HSVColour.fromColor(
-            hsvColor.toColor().withRed((progress * 0xff).round()),
-          ),
-        );
-        break;
-      case TrackType.green:
-        onColorChanged(
-          HSVColour.fromColor(
-            hsvColor.toColor().withGreen((progress * 0xff).round()),
-          ),
-        );
-        break;
-      case TrackType.blue:
-        onColorChanged(
-          HSVColour.fromColor(
-            hsvColor.toColor().withBlue((progress * 0xff).round()),
-          ),
-        );
-        break;
-      case TrackType.alpha:
-        onColorChanged(
-          hsvColor.withAlpha(
-            localDx.clamp(0.0, box.maxWidth - 30.0) / (box.maxWidth - 30.0),
-          ),
-        );
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints box) {
-        double thumbOffset = 15.0;
-        Color thumbColor;
-        switch (trackType) {
-          case TrackType.hue:
-            thumbOffset += (box.maxWidth - 30.0) * hsvColor.hue / 360;
-            thumbColor = HSVColour.fromAHSV(
-              1.0,
-              hsvColor.hue,
-              1.0,
-              1.0,
-            ).toColor();
-            break;
-          case TrackType.saturation:
-            thumbOffset += (box.maxWidth - 30.0) * hsvColor.saturation;
-            thumbColor = HSVColour.fromAHSV(
-              1.0,
-              hsvColor.hue,
-              hsvColor.saturation,
-              1.0,
-            ).toColor();
-            break;
-          case TrackType.saturationForHSL:
-            thumbOffset +=
-                (box.maxWidth - 30.0) * hsvToHsl(hsvColor).saturation;
-            thumbColor = HSLColour.fromAHSL(
-              1.0,
-              hsvColor.hue,
-              hsvToHsl(hsvColor).saturation,
-              0.5,
-            ).toColour();
-            break;
-          case TrackType.value:
-            thumbOffset += (box.maxWidth - 30.0) * hsvColor.value;
-            thumbColor = HSVColour.fromAHSV(
-              1.0,
-              hsvColor.hue,
-              1.0,
-              hsvColor.value,
-            ).toColor();
-            break;
-          case TrackType.lightness:
-            thumbOffset += (box.maxWidth - 30.0) * hsvToHsl(hsvColor).lightness;
-            thumbColor = HSLColour.fromAHSL(
-              1.0,
-              hsvColor.hue,
-              1.0,
-              hsvToHsl(hsvColor).lightness,
-            ).toColour();
-            break;
-          case TrackType.red:
-            thumbOffset +=
-                (box.maxWidth - 30.0) * hsvColor.toColor().red / 0xff;
-            thumbColor = hsvColor.toColor().withOpacity(1.0);
-            break;
-          case TrackType.green:
-            thumbOffset +=
-                (box.maxWidth - 30.0) * hsvColor.toColor().green / 0xff;
-            thumbColor = hsvColor.toColor().withOpacity(1.0);
-            break;
-          case TrackType.blue:
-            thumbOffset +=
-                (box.maxWidth - 30.0) * hsvColor.toColor().blue / 0xff;
-            thumbColor = hsvColor.toColor().withOpacity(1.0);
-            break;
-          case TrackType.alpha:
-            thumbOffset += (box.maxWidth - 30.0) * hsvColor.toColor().opacity;
-            thumbColor = hsvColor.toColor().withOpacity(hsvColor.alpha);
-            break;
-        }
-
-        return CustomMultiChildLayout(
-          delegate: _SliderLayout(),
-          children: <Widget>[
-            LayoutId(
-              id: _SliderLayout.track,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                child: CustomPaint(painter: TrackPainter(trackType, hsvColor)),
-              ),
-            ),
-            LayoutId(
-              id: _SliderLayout.thumb,
-              child: Transform.translate(
-                offset: Offset(thumbOffset, 0.0),
-                child: CustomPaint(
-                  painter: ThumbPainter(
-                    thumbColor: displayThumbColor ? thumbColor : null,
-                    fullThumbColor: fullThumbColor,
-                  ),
-                ),
-              ),
-            ),
-            LayoutId(
-              id: _SliderLayout.gestureContainer,
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints box) {
-                  RenderBox? getBox = context.findRenderObject() as RenderBox?;
-                  return GestureDetector(
-                    onPanDown: (DragDownDetails details) => getBox != null
-                        ? slideEvent(getBox, box, details.globalPosition)
-                        : null,
-                    onPanUpdate: (DragUpdateDetails details) => getBox != null
-                        ? slideEvent(getBox, box, details.globalPosition)
-                        : null,
-                  );
-                },
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }
