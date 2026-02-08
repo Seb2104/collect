@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class HSLColour implements HSLColor {
+class HSLColour extends Col implements HSLColor {
   const HSLColour.fromAHSL(
     this.alpha,
     this.hue,
@@ -32,7 +32,7 @@ class HSLColour implements HSLColor {
     final double delta = max - min;
 
     final double alpha = color.alpha / 0xFF;
-    final double hue = _getHue(red, green, blue, max, delta);
+    final double hue = Col.getHue(red, green, blue, max, delta);
     final double lightness = (max + min) / 2.0;
     final double saturation = min == max
         ? 0.0
@@ -40,23 +40,9 @@ class HSLColour implements HSLColor {
     return HSLColour.fromAHSL(alpha, hue, saturation, lightness);
   }
 
-  factory HSLColour.fromColour(Colour color) {
-    final double red = color.red / 0xFF;
-    final double green = color.green / 0xFF;
-    final double blue = color.blue / 0xFF;
+  factory HSLColour.fromColour(Colour color) => color.toHSL();
 
-    final double max = math.max(red, math.max(green, blue));
-    final double min = math.min(red, math.min(green, blue));
-    final double delta = max - min;
-
-    final double alpha = color.alpha / 0xFF;
-    final double hue = _getHue(red, green, blue, max, delta);
-    final double lightness = (max + min) / 2.0;
-    final double saturation = min == max
-        ? 0.0
-        : clampDouble(delta / (1.0 - (2.0 * lightness - 1.0).abs()), 0.0, 1.0);
-    return HSLColour.fromAHSL(alpha, hue, saturation, lightness);
-  }
+  factory HSLColour.fromHSVColour(HSVColour hsv) => hsv.toHSL();
 
   @override
   final double alpha;
@@ -90,13 +76,34 @@ class HSLColour implements HSLColor {
     return HSLColour.fromAHSL(alpha, hue, saturation, lightness);
   }
 
+  @override
   Colour toColour() {
     final double chroma = (1.0 - (2.0 * lightness - 1.0).abs()) * saturation;
     final double secondary =
         chroma * (1.0 - (((hue / 60.0) % 2.0) - 1.0).abs());
     final double match = lightness - chroma / 2.0;
 
-    return _colourFromHue(alpha, hue, chroma, secondary, match);
+    return Col.colourFromHue(alpha, hue, chroma, secondary, match);
+  }
+
+  @override
+  HSLColour toHSL() => this;
+
+  @override
+  HSVColour toHSV() {
+    double s = 0.0;
+    double v = 0.0;
+
+    v = lightness +
+        saturation * (lightness < 0.5 ? lightness : 1 - lightness);
+    if (v != 0) s = 2 - 2 * lightness / v;
+
+    return HSVColour.fromAHSV(
+      alpha,
+      hue,
+      s.clamp(0.0, 1.0),
+      v.clamp(0.0, 1.0),
+    );
   }
 
   @override
@@ -106,7 +113,7 @@ class HSLColour implements HSLColor {
         chroma * (1.0 - (((hue / 60.0) % 2.0) - 1.0).abs());
     final double match = lightness - chroma / 2.0;
 
-    return _colorFromHue(alpha, hue, chroma, secondary, match);
+    return Col.colorFromHue(alpha, hue, chroma, secondary, match);
   }
 
   HSLColour _scaleAlpha(double factor) {

@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class HSVColour implements HSVColor {
+class HSVColour extends Col implements HSVColor {
   @override
   final double alpha;
 
@@ -40,7 +40,7 @@ class HSVColour implements HSVColor {
     final double delta = max - min;
 
     final double alpha = color.alpha / 0xFF;
-    final double hue = _getHue(red, green, blue, max, delta);
+    final double hue = Col.getHue(red, green, blue, max, delta);
     final double saturation = max == 0.0 ? 0.0 : delta / max;
 
     return HSVColour.fromAHSV(alpha, hue, saturation, max);
@@ -52,29 +52,116 @@ class HSVColour implements HSVColor {
       saturation = hsvColor.saturation,
       value = hsvColor.value;
 
+  factory HSVColour.fromColour(Colour colour) => colour.toHSV();
+
+  factory HSVColour.fromHSLColour(HSLColour hsl) => hsl.toHSV();
+
+  @override
+  Colour toColour() {
+    double red, green, blue;
+
+    if (saturation == 0) {
+      red = green = blue = value;
+    } else {
+      final double sector = hue / 60;
+      final int i = sector.floor();
+      final double f = sector - i;
+      final double p = value * (1 - saturation);
+      final double q = value * (1 - saturation * f);
+      final double t = value * (1 - saturation * (1 - f));
+
+      switch (i % 6) {
+        case 0:
+          red = value;
+          green = t;
+          blue = p;
+          break;
+        case 1:
+          red = q;
+          green = value;
+          blue = p;
+          break;
+        case 2:
+          red = p;
+          green = value;
+          blue = t;
+          break;
+        case 3:
+          red = p;
+          green = q;
+          blue = value;
+          break;
+        case 4:
+          red = t;
+          green = p;
+          blue = value;
+          break;
+        case 5:
+          red = value;
+          green = p;
+          blue = q;
+          break;
+        default:
+          red = green = blue = 0;
+      }
+    }
+
+    return Colour(
+      alpha: (alpha * 255).round(),
+      red: (red * 255).round(),
+      green: (green * 255).round(),
+      blue: (blue * 255).round(),
+    );
+  }
+
+  @override
+  HSLColour toHSL() {
+    double s = 0.0;
+    double l = 0.0;
+    l = (2 - saturation) * value / 2;
+    if (l != 0) {
+      if (l == 1) {
+        s = 0.0;
+      } else if (l < 0.5) {
+        s = saturation * value / (l * 2);
+      } else {
+        s = saturation * value / (2 - l * 2);
+      }
+    }
+    return HSLColour.fromAHSL(
+      alpha,
+      hue,
+      s.clamp(0.0, 1.0),
+      l.clamp(0.0, 1.0),
+    );
+  }
+
+  @override
+  HSVColour toHSV() => this;
+
   @override
   Color toColor() {
-    throw UnimplementedError();
+    return toColour().color;
   }
 
   @override
   HSVColour withAlpha(double alpha) {
-    throw UnimplementedError();
+    return HSVColour.fromAHSV(alpha, hue, saturation, value);
   }
 
   @override
   HSVColour withHue(double hue) {
-    throw UnimplementedError();
+    return HSVColour.fromAHSV(alpha, hue, saturation, value);
   }
 
   @override
   HSVColour withSaturation(double saturation) {
-    throw UnimplementedError();
+    return HSVColour.fromAHSV(alpha, hue, saturation, value);
   }
 
   @override
   HSVColour withValue(double value) {
-    throw UnimplementedError();
+    return HSVColour.fromAHSV(alpha, hue, saturation, value);
   }
 }
 

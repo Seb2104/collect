@@ -251,28 +251,6 @@ class _SliderLayout extends MultiChildLayoutDelegate {
   bool shouldRelayout(_SliderLayout oldDelegate) => false;
 }
 
-class CheckerPainter extends CustomPainter {
-  const CheckerPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Size chessSize = Size(size.height / 6, size.height / 6);
-    Paint chessPaintB = Paint()..color = const Color(0xffcccccc);
-    Paint chessPaintW = Paint()..color = Colors.white;
-    List.generate((size.height / chessSize.height).round(), (int y) {
-      List.generate((size.width / chessSize.width).round(), (int x) {
-        canvas.drawRect(
-          Offset(chessSize.width * x, chessSize.width * y) & chessSize,
-          (x + y) % 2 != 0 ? chessPaintW : chessPaintB,
-        );
-      });
-    });
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
 class ColorPickerLabel extends StatefulWidget {
   const ColorPickerLabel(
     this.hsvColor, {

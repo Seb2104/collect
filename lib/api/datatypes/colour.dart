@@ -10,7 +10,15 @@ class Colour extends Col implements Color {
   @override
   final int blue;
 
-  HSVColour get hsv {
+  HSVColour get hsv => toHSV();
+
+  HSLColour get hsl => toHSL();
+
+  @override
+  Colour toColour() => this;
+
+  @override
+  HSVColour toHSV() {
     final double red = color.r / 0xFF;
     final double green = color.g / 0xFF;
     final double blue = color.b / 0xFF;
@@ -20,13 +28,14 @@ class Colour extends Col implements Color {
     final double delta = max - min;
 
     final double alpha = color.a / 0xFF;
-    final double hue = _getHue(red, green, blue, max, delta);
+    final double hue = Col.getHue(red, green, blue, max, delta);
     final double saturation = max == 0.0 ? 0.0 : delta / max;
 
     return HSVColour.fromAHSV(alpha, hue, saturation, max);
   }
 
-  HSLColour get hsl {
+  @override
+  HSLColour toHSL() {
     final double red = color.r / 0xFF;
     final double green = color.g / 0xFF;
     final double blue = color.b / 0xFF;
@@ -36,7 +45,7 @@ class Colour extends Col implements Color {
     final double delta = max - min;
 
     final double alpha = color.a / 0xFF;
-    final double hue = _getHue(red, green, blue, max, delta);
+    final double hue = Col.getHue(red, green, blue, max, delta);
     final double lightness = (max + min) / 2.0;
     final double saturation = min == max
         ? 0.0
@@ -233,21 +242,9 @@ class Colour extends Col implements Color {
     );
   }
 
-  factory Colour.fromHSVColour({required HSVColor hsvColour}) {
-    return Colour.fromHSV(
-      h: hsvColour.hue,
-      s: hsvColour.saturation,
-      v: hsvColour.value,
-    );
-  }
+  factory Colour.fromHSVColour(HSVColour hsvColour) => hsvColour.toColour();
 
-  factory Colour.fromHSLColour({required HSLColor hslColour}) {
-    return Colour.fromHSL(
-      h: hslColour.hue,
-      s: hslColour.saturation,
-      l: hslColour.lightness,
-    );
-  }
+  factory Colour.fromHSLColour(HSLColour hslColour) => hslColour.toColour();
 
   factory Colour.fromHSV({
     double a = 1.0,
@@ -331,26 +328,26 @@ class Colour extends Col implements Color {
   // HSVColor-like methods
   Colour withHue(double hue) {
     return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(a, hue, saturation, hsvValue),
+      HSVColour.fromAHSV(a, hue, saturation, hsvValue),
     );
   }
 
   Colour withSaturation(double saturation) {
     return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(a, hue, saturation, hsvValue),
+      HSVColour.fromAHSV(a, hue, saturation, hsvValue),
     );
   }
 
   Colour withHsvValue(double value) {
     return Colour.fromHSVColour(
-      hsvColour: HSVColor.fromAHSV(a, hue, saturation, value),
+      HSVColour.fromAHSV(a, hue, saturation, value),
     );
   }
 
   // HSLColor-like methods
   Colour withLightness(double lightness) {
     return Colour.fromHSLColour(
-      hslColour: HSLColour.fromAHSL(a, hue, saturation, lightness),
+      HSLColour.fromAHSL(a, hue, saturation, lightness),
     );
   }
 
@@ -375,28 +372,6 @@ class Colour extends Col implements Color {
     return p;
   }
 
-  static double _getHue(
-    double red,
-    double green,
-    double blue,
-    double max,
-    double delta,
-  ) {
-    late double hue;
-    if (max == 0.0) {
-      hue = 0.0;
-    } else if (max == red) {
-      hue = 60.0 * (((green - blue) / delta) % 6);
-    } else if (max == green) {
-      hue = 60.0 * (((blue - red) / delta) + 2);
-    } else if (max == blue) {
-      hue = 60.0 * (((red - green) / delta) + 4);
-    }
-
-    /// Set hue to 0.0 when red == green == blue.
-    hue = hue.isNaN ? 0.0 : hue;
-    return hue;
-  }
 
   @override
   Colour withOpacity(double opacity) => withAlpha((255.0 * opacity).round());

@@ -350,7 +350,9 @@ class _SquarePickerState extends State<SquarePicker> {
                 ColorPickerInput(
                   currentHsvColor.toColor(),
                   (Color color) {
-                    setState(() => currentHsvColor = HSVColour.fromColor(color));
+                    setState(
+                      () => currentHsvColor = HSVColour.fromColor(color),
+                    );
                     widget.onColorChanged(currentHsvColor.toColor());
                     if (widget.onHsvColorChanged != null) {
                       widget.onHsvColorChanged!(currentHsvColor);
@@ -865,38 +867,6 @@ class _SliderLayout extends MultiChildLayoutDelegate {
   bool shouldRelayout(_SliderLayout oldDelegate) => false;
 }
 
-class IndicatorPainter extends CustomPainter {
-  const IndicatorPainter(this.color);
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Size chessSize = Size(size.width / 10, size.height / 10);
-    final Paint chessPaintB = Paint()..color = const Color(0xFFCCCCCC);
-    final Paint chessPaintW = Paint()..color = Colors.white;
-    List.generate((size.height / chessSize.height).round(), (int y) {
-      List.generate((size.width / chessSize.width).round(), (int x) {
-        canvas.drawRect(
-          Offset(chessSize.width * x, chessSize.height * y) & chessSize,
-          (x + y) % 2 != 0 ? chessPaintW : chessPaintB,
-        );
-      });
-    });
-
-    canvas.drawCircle(
-      Offset(size.width / 2, size.height / 2),
-      size.height / 2,
-      Paint()
-        ..color = color
-        ..style = PaintingStyle.fill,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
 class ColorPickerLabel extends StatefulWidget {
   const ColorPickerLabel(
     this.hsvColor, {
@@ -1302,35 +1272,6 @@ class ColorPickerSlider extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class ColorIndicator extends StatelessWidget {
-  const ColorIndicator(
-    this.hsvColor, {
-    super.key,
-    this.width = 50.0,
-    this.height = 50.0,
-  });
-
-  final HSVColour hsvColor;
-  final double width;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(1000.0)),
-        border: Border.all(color: const Color(0xffdddddd)),
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(1000.0)),
-        child: CustomPaint(painter: IndicatorPainter(hsvColor.toColor())),
-      ),
     );
   }
 }

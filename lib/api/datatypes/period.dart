@@ -110,12 +110,12 @@ class Period {
 
     int yr = 1970 + (totalDays ~/ 365);
     int remainingDays = totalDays % 365;
-    int mnth = 1 + (remainingDays ~/ 30);
+    int month = 1 + (remainingDays ~/ 30);
     int day = 1 + (remainingDays % 30);
 
     return Moment(
       year: yr,
-      month: mnth,
+      month: month,
       date: day,
       hour: hr,
       minute: min,
