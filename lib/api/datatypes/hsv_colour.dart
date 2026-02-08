@@ -125,7 +125,7 @@ class HSVColour implements HSVColor {
   }
 }
 
-extension hsvColour on HSVColor {
+extension Hsvcolour on HSVColor {
   HSVColour get toHSVColour {
     return HSVColour(
       alpha: alpha,

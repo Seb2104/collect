@@ -10,7 +10,21 @@ class Colour implements Color {
   @override
   final int blue;
 
-  HSVColor get asHSV => toHSV();
+  HSVColor get hsv {
+    final double red = color.r / 0xFF;
+    final double green = color.g / 0xFF;
+    final double blue = color.b / 0xFF;
+
+    final double max = math.max(red, math.max(green, blue));
+    final double min = math.min(red, math.min(green, blue));
+    final double delta = max - min;
+
+    final double alpha = color.a / 0xFF;
+    final double hue = _getHue(red, green, blue, max, delta);
+    final double saturation = max == 0.0 ? 0.0 : delta / max;
+
+    return HSVColour.fromAHSV(alpha, hue, saturation, max);
+  }
 
   @override
   int toARGB32() {
@@ -69,13 +83,13 @@ class Colour implements Color {
   double get a => alpha / 255;
 
   // HSVColor-like properties and methods
-  double get hue => toHSV().hue;
+  double get hue => hsv.hue;
 
-  double get saturation => toHSV().saturation;
+  double get saturation => hsv.saturation;
 
-  double get hsvValue => toHSV().value;
+  double get hsvValue => hsv.value;
 
-  double get hsvAlpha => toHSV().alpha;
+  double get hsvAlpha => hsv.alpha;
 
   const Colour({
     this.alpha = 255,
@@ -292,22 +306,6 @@ class Colour implements Color {
     return Colour(alpha: alpha, red: red, green: green, blue: blue);
   }
 
-  HSVColor toHSV() {
-    final double red = color.r / 0xFF;
-    final double green = color.g / 0xFF;
-    final double blue = color.b / 0xFF;
-
-    final double max = math.max(red, math.max(green, blue));
-    final double min = math.min(red, math.min(green, blue));
-    final double delta = max - min;
-
-    final double alpha = color.a / 0xFF;
-    final double hue = _getHue(red, green, blue, max, delta);
-    final double saturation = max == 0.0 ? 0.0 : delta / max;
-
-    return HSVColor.fromAHSV(alpha, hue, saturation, max);
-  }
-
   // HSVColor-like methods
   Colour withHue(double hue) {
     return Colour.fromHSVColour(
@@ -387,5 +385,4 @@ class Colour implements Color {
     return Colour();
   }
 
-  HSVColor asHSVColor() => toHSV();
 }
