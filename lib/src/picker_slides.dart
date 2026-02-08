@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../collect.dart';
 import 'common/common.dart';
 
-
 class SlidePicker extends StatefulWidget {
   const SlidePicker({
     super.key,
