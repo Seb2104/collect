@@ -1,21 +1,28 @@
 library;
 
+import 'dart:io';
 import 'dart:math' as math;
 import 'dart:math' show sqrt;
 import 'dart:ui';
 
+import 'package:collect/src/picker_ring.dart';
+import 'package:collect/src/picker_slides.dart';
+import 'package:collect/src/picker_square.dart';
+import 'package:collect/src/picker_wheel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide FilterCallback, SearchCallback;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart' as p;
 import 'package:unicode/unicode.dart' as unicode;
 
 part 'api/constants/bases.dart';
 part 'api/constants/colour_pickers.dart';
 part 'api/constants/colours.dart';
 part 'api/constants/moment.dart';
+part 'api/constants/packaged_fonts.dart';
 part 'api/constants/strings.dart';
 part 'api/constants/tab_view.dart';
 part 'api/datatypes/col.dart';
@@ -31,10 +38,12 @@ part 'api/extensions/list.dart';
 part 'api/extensions/num.dart';
 part 'api/extensions/string.dart';
 part 'api/extensions/widget.dart';
+part 'api/helpers/collect_icons.dart';
+part 'api/helpers/fonts.dart';
 part 'api/presentation/action_icon.dart';
 part 'api/presentation/app_theme.dart';
 part 'api/presentation/box.dart';
-part 'api/presentation/fonts.dart';
+part 'api/presentation/colour_picker.dart';
 part 'api/presentation/hex_editor.dart';
 part 'api/presentation/hex_viewer.dart';
 part 'api/presentation/hover_detector.dart';
@@ -45,4 +54,3 @@ part 'api/presentation/word.dart';
 part 'api/utils/notifications.dart';
 part 'api/utils/radix.dart';
 part 'api/utils/strings.dart';
-part 'api/constants/icons.dart';

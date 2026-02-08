@@ -12,32 +12,7 @@ const String LORA = 'Lora';
 const String MONTAGU_SLAB = 'MontaguSlab';
 const String MONTSERRAT = 'Montserrat';
 const String OUTFIT = 'Outfit';
-const String RECOLLECT_ICONS = 'ReCollectIcons';
 const String ROBOTO = 'Roboto';
 const String SOURCE_CODE_PRO = 'SourceCodePro';
 const String WORK_SANS = 'WorkSans';
 const String TIMES_NEW_ROMAN = 'Times New Roman';
-
-enum Fonts {
-  appleColorEmoji('AppleColorEmoji'),
-  crimsonPro('CrimsonPro'),
-  dmSans('DMSans'),
-  ibmPlexSans('IBMPlexSans'),
-  inter('Inter'),
-  jetBrainsMono('JetBrainsMono'),
-  kaTeX('KaTeX'),
-  lato('Lato'),
-  lora('Lora'),
-  montaguSlab('MontaguSlab'),
-  montserrat('Montserrat'),
-  outfit('Outfit'),
-  reCollectIcons('ReCollectIcons'),
-  roboto('Roboto'),
-  sourceCodePro('SourceCodePro'),
-  workSans('WorkSans'),
-  timesNewRoman('Times New Roman');
-
-  final String value;
-
-  const Fonts(this.value);
-}

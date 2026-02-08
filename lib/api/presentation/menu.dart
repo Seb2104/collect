@@ -1,35 +1,14 @@
 part of '../../collect.dart';
 
-/// A beautiful, customizable dropdown menu with search and keyboard navigation.
-///
-/// MenuFlow combines the best features from multiple dropdown libraries:
-/// - Overlay-based positioning (no Stack required)
-/// - Search/filter functionality
-/// - Full keyboard navigation
-/// - Hybrid theming system
-/// - Clean, easy-to-use API
-///
-/// Example:
-/// ```dart
-/// MenuFlow<String>(
-///   items: [
-///     MenuFlowItemString(value: 'apple', label: 'Apple'),
-///     MenuFlowItemString(value: 'banana', label: 'Banana'),
-///   ],
-///   value: selectedFruit,
-///   onChanged: (value) => setState(() => selectedFruit = value),
-/// )
-/// ```
 class Menu<T> extends StatefulWidget {
   const Menu({
     super.key,
     required this.items,
-    this.value,
+    required this.value,
     this.onChanged,
     this.hint,
     this.width,
     this.height,
-    // Theming
     this.theme,
     this.backgroundColor,
     this.borderColor,
@@ -53,7 +32,6 @@ class Menu<T> extends StatefulWidget {
     this.itemTextStyle,
     this.textStyle,
     this.hintStyle,
-    // Configuration
     this.config,
     this.enableSearch,
     this.searchHint,
@@ -62,30 +40,22 @@ class Menu<T> extends StatefulWidget {
     this.maxHeight,
     this.offset,
     this.closeOnSelect,
-    // Controller
     this.controller,
     this.focusNode,
   });
 
-  /// List of items to display in the dropdown
   final List<MenuItem<T>> items;
 
-  /// Currently selected value
   final T? value;
 
-  /// Callback when value changes
   final ValueChanged<T?>? onChanged;
 
-  /// Hint text/widget to display when no value is selected
   final Widget? hint;
 
-  /// Button width
   final double? width;
 
-  /// Button height
   final double? height;
 
-  // Theming properties
   final MenuTheme? theme;
   final Color? backgroundColor;
   final Color? borderColor;
@@ -110,7 +80,6 @@ class Menu<T> extends StatefulWidget {
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
 
-  // Configuration properties
   final MenuConfig? config;
   final bool? enableSearch;
   final String? searchHint;
@@ -120,10 +89,8 @@ class Menu<T> extends StatefulWidget {
   final Offset? offset;
   final bool? closeOnSelect;
 
-  /// Optional controller for programmatic control
   final MenuControl<T>? controller;
 
-  /// Optional FocusNode for external focus control
   final FocusNode? focusNode;
 
   @override
@@ -150,7 +117,6 @@ class _MenuState<T> extends State<Menu<T>> {
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_onFocusChanged);
 
-    // Initialize search controller if search is enabled
     if (_resolvedEnableSearch) {
       _searchController = TextEditingController();
       _searchController!.addListener(_updateFilteredItems);
@@ -158,12 +124,10 @@ class _MenuState<T> extends State<Menu<T>> {
 
     _updateFilteredItems();
 
-    // Register keyboard handler if enabled
     if (_resolvedEnableKeyboardNavigation) {
       HardwareKeyboard.instance.addHandler(_handleKeyEvent);
     }
 
-    // Register controller callbacks
     widget.controller?.registerShowCallback(_showOverlay);
     widget.controller?.registerHideCallback(_hideOverlay);
     widget.controller?.selectedValue = widget.value;
@@ -173,12 +137,10 @@ class _MenuState<T> extends State<Menu<T>> {
   void didUpdateWidget(Menu<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Update filtered items if items list changed
     if (oldWidget.items != widget.items) {
       _updateFilteredItems();
     }
 
-    // Update controller's selected value
     if (widget.controller != null && oldWidget.value != widget.value) {
       widget.controller!.selectedValue = widget.value;
     }
@@ -199,7 +161,6 @@ class _MenuState<T> extends State<Menu<T>> {
     super.dispose();
   }
 
-  // Theme resolution getters (precedence: widget property > theme > default)
   Color get _resolvedBackgroundColor =>
       widget.backgroundColor ?? widget.theme?.backgroundColor ?? Colors.white;
 
@@ -274,7 +235,6 @@ class _MenuState<T> extends State<Menu<T>> {
   TextStyle? get _resolvedHintStyle =>
       widget.hintStyle ?? widget.theme?.hintStyle ?? TextStyle(color: Colors.grey.shade600);
 
-  // Config resolution getters
   bool get _resolvedEnableSearch =>
       widget.enableSearch ?? widget.config?.enableSearch ?? false;
 
@@ -353,7 +313,6 @@ class _MenuState<T> extends State<Menu<T>> {
           .toList();
     }
 
-    // Reset highlight when filtered items change
     if (_highlightedIndex >= _filteredItems.length) {
       _highlightedIndex = -1;
     }
@@ -428,7 +387,6 @@ class _MenuState<T> extends State<Menu<T>> {
         final viewportHeight = _scrollController.position.viewportDimension;
         final currentScroll = _scrollController.offset;
 
-        // Scroll if item is outside visible area
         if (offset < currentScroll || offset + itemHeight > currentScroll + viewportHeight) {
           _scrollController.animateTo(
             offset - (viewportHeight / 2) + (itemHeight / 2),
@@ -637,18 +595,14 @@ class _MenuState<T> extends State<Menu<T>> {
 }
 
 
-/// Controller for programmatic control of MenuFlow dropdown.
-/// Provides methods to show/hide the dropdown and access selected value.
 class MenuControl<T> extends ChangeNotifier {
   T? _selectedValue;
   bool _isOpen = false;
   VoidCallback? _showCallback;
   VoidCallback? _hideCallback;
 
-  /// Gets the currently selected value
   T? get selectedValue => _selectedValue;
 
-  /// Sets the selected value and notifies listeners
   set selectedValue(T? value) {
     if (_selectedValue != value) {
       _selectedValue = value;
@@ -656,10 +610,8 @@ class MenuControl<T> extends ChangeNotifier {
     }
   }
 
-  /// Returns true if the dropdown is currently open
   bool get isOpen => _isOpen;
 
-  /// Internal method to update open state
   void setOpen(bool value) {
     if (_isOpen != value) {
       _isOpen = value;
@@ -667,27 +619,22 @@ class MenuControl<T> extends ChangeNotifier {
     }
   }
 
-  /// Internal method to register show callback
   void registerShowCallback(VoidCallback callback) {
     _showCallback = callback;
   }
 
-  /// Internal method to register hide callback
   void registerHideCallback(VoidCallback callback) {
     _hideCallback = callback;
   }
 
-  /// Shows the dropdown menu
   void show() {
     _showCallback?.call();
   }
 
-  /// Hides the dropdown menu
   void hide() {
     _hideCallback?.call();
   }
 
-  /// Toggles the dropdown menu (show if hidden, hide if shown)
   void toggle() {
     if (_isOpen) {
       hide();
@@ -704,13 +651,11 @@ class MenuControl<T> extends ChangeNotifier {
   }
 }
 
-/// Type definition for custom filter matching function
 typedef FilterMatchFn<T> = bool Function(
     MenuItem<T> item,
     String searchValue,
     );
 
-/// Default filter match function for string-based items (case-insensitive)
 bool defaultFilterMatch<T>(MenuItem<T> item, String searchValue) {
   if (item is MenuItemString<T>) {
     return item.label.toLowerCase().contains(searchValue.toLowerCase());
@@ -718,48 +663,37 @@ bool defaultFilterMatch<T>(MenuItem<T> item, String searchValue) {
   return false;
 }
 
-/// Configuration class for MenuFlow behavior settings.
-/// Controls features like search, keyboard navigation, and dropdown behavior.
 class MenuConfig {
   const MenuConfig({
-    // Search configuration
     this.enableSearch = false,
     this.searchHint = 'Search...',
     this.searchMatchFn,
 
-    // Keyboard navigation
     this.enableKeyboardNavigation = true,
     this.autoScrollOnHighlight = true,
 
-    // Behavior
     this.maxHeight,
     this.closeOnSelect = true,
     this.offset,
 
-    // Animation
     this.animationDuration = const Duration(milliseconds: 200),
     this.animationCurve = Curves.easeOut,
   });
 
-  // Search configuration
   final bool enableSearch;
   final String searchHint;
   final FilterMatchFn? searchMatchFn;
 
-  // Keyboard navigation
   final bool enableKeyboardNavigation;
   final bool autoScrollOnHighlight;
 
-  // Behavior
   final double? maxHeight;
   final bool closeOnSelect;
   final Offset? offset;
 
-  // Animation
   final Duration animationDuration;
   final Curve animationCurve;
 
-  /// Creates a copy of this config with the given fields replaced with new values.
   MenuConfig copyWith({
     bool? enableSearch,
     String? searchHint,
@@ -789,29 +723,18 @@ class MenuConfig {
   }
 }
 
-/// Defines when the dropdown menu should close after an action.
 enum MenuCloseBehavior {
-  /// Close the menu when any item is selected or when clicking outside
   all,
-
-  /// Close the menu only when an item is selected (not when clicking outside)
   self,
-
-  /// Don't automatically close the menu
   none,
 }
 
-/// Type definition for custom filter callback
 typedef MenuFilterCallback<T> = List<T> Function(List<T> entries, String filter);
 
-/// Type definition for custom search callback (returns index of match)
 typedef MenuSearchCallback<T> = int? Function(List<T> entries, String query);
 
-/// Theme data class for MenuFlow styling.
-/// Provides a centralized way to configure the appearance of the dropdown.
 class MenuTheme {
   const MenuTheme({
-    // Button styling
     this.backgroundColor,
     this.borderColor,
     this.border,
@@ -819,37 +742,31 @@ class MenuTheme {
     this.padding,
     this.elevation,
 
-    // Icon styling
     this.iconColor,
     this.icon,
     this.iconSize,
     this.disableIconRotation,
 
-    // Dropdown styling
     this.dropdownColor,
     this.dropdownElevation,
     this.dropdownBorderRadius,
     this.dropdownPadding,
     this.dropdownBorder,
 
-    // Item styling
     this.itemHeight,
     this.itemPadding,
     this.itemHighlightColor,
     this.selectedItemColor,
     this.itemTextStyle,
 
-    // Search styling
     this.searchTextStyle,
     this.searchDecoration,
     this.searchFieldHeight,
 
-    // Text styling
     this.textStyle,
     this.hintStyle,
   });
 
-  // Button styling
   final Color? backgroundColor;
   final Color? borderColor;
   final BorderSide? border;
@@ -857,36 +774,30 @@ class MenuTheme {
   final EdgeInsetsGeometry? padding;
   final double? elevation;
 
-  // Icon styling
   final Color? iconColor;
   final IconData? icon;
   final double? iconSize;
   final bool? disableIconRotation;
 
-  // Dropdown styling
   final Color? dropdownColor;
   final double? dropdownElevation;
   final BorderRadius? dropdownBorderRadius;
   final EdgeInsetsGeometry? dropdownPadding;
   final ShapeBorder? dropdownBorder;
 
-  // Item styling
   final double? itemHeight;
   final EdgeInsetsGeometry? itemPadding;
   final Color? itemHighlightColor;
   final Color? selectedItemColor;
   final TextStyle? itemTextStyle;
 
-  // Search styling
   final TextStyle? searchTextStyle;
   final InputDecoration? searchDecoration;
   final double? searchFieldHeight;
 
-  // Text styling
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
 
-  /// Creates a copy of this theme with the given fields replaced with new values.
   MenuTheme copyWith({
     Color? backgroundColor,
     Color? borderColor,
@@ -944,28 +855,6 @@ class MenuTheme {
   }
 }
 
-/// A TextField-based dropdown menu with MenuFlow's modern overlay system.
-///
-/// Features:
-/// - Type to filter/search items
-/// - Form field integration (label, helper text, error text)
-/// - Leading and trailing icons
-/// - Custom styling per item
-/// - Enabled/disabled state
-/// - Custom filter and search callbacks
-/// - Configurable close behavior
-///
-/// Example:
-/// ```dart
-/// MenuFlowTextField<String>(
-///   entries: [
-///     MenuFlowEntry(value: 'apple', label: 'Apple'),
-///     MenuFlowEntry(value: 'banana', label: 'Banana'),
-///   ],
-///   label: Text('Fruit'),
-///   onSelected: (value) => print(value),
-/// )
-/// ```
 class MenuTextField<T> extends StatefulWidget {
   const MenuTextField({
     super.key,
@@ -974,7 +863,6 @@ class MenuTextField<T> extends StatefulWidget {
     this.onSelected,
     this.controller,
     this.focusNode,
-    // Appearance
     this.enabled = true,
     this.width,
     this.menuHeight,
@@ -986,12 +874,10 @@ class MenuTextField<T> extends StatefulWidget {
     this.trailingIcon,
     this.showTrailingIcon = true,
     this.selectedTrailingIcon,
-    // Filtering/Search
     this.enableFilter = true,
     this.enableSearch = true,
     this.filterCallback,
     this.searchCallback,
-    // Text field properties
     this.textAlign = TextAlign.start,
     this.textStyle,
     this.keyboardType,
@@ -999,32 +885,23 @@ class MenuTextField<T> extends StatefulWidget {
     this.inputFormatters,
     this.maxLines = 1,
     this.cursorHeight,
-    // Behavior
     this.closeBehavior = MenuCloseBehavior.all,
     this.requestFocusOnTap,
-    // Theming
     this.theme,
     this.inputDecoration,
-    // Positioning
     this.offset,
   });
 
-  /// List of menu entries
   final List<MenuEntry<T>> entries;
 
-  /// Initial selected value
   final T? initialSelection;
 
-  /// Callback when an entry is selected
   final ValueChanged<T?>? onSelected;
 
-  /// Optional text controller
   final TextEditingController? controller;
 
-  /// Optional focus node
   final FocusNode? focusNode;
 
-  // Appearance
   final bool enabled;
   final double? width;
   final double? menuHeight;
@@ -1037,13 +914,11 @@ class MenuTextField<T> extends StatefulWidget {
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
 
-  // Filtering/Search
   final bool enableFilter;
   final bool enableSearch;
   final MenuFilterCallback<MenuEntry<T>>? filterCallback;
   final MenuSearchCallback<MenuEntry<T>>? searchCallback;
 
-  // Text field properties
   final TextAlign textAlign;
   final TextStyle? textStyle;
   final TextInputType? keyboardType;
@@ -1052,15 +927,12 @@ class MenuTextField<T> extends StatefulWidget {
   final int maxLines;
   final double? cursorHeight;
 
-  // Behavior
   final MenuCloseBehavior closeBehavior;
   final bool? requestFocusOnTap;
 
-  // Theming
   final MenuTheme? theme;
   final InputDecoration? inputDecoration;
 
-  // Positioning
   final Offset? offset;
 
   @override
@@ -1095,7 +967,6 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
     _initializeSelection();
 
-    // Register keyboard handler
     HardwareKeyboard.instance.addHandler(_handleKeyEvent);
   }
 
@@ -1182,7 +1053,6 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       _filteredEntries = widget.entries;
     }
 
-    // Update highlight
     if (_enableSearch && text.isNotEmpty) {
       if (widget.searchCallback != null) {
         _currentHighlight = widget.searchCallback!(_filteredEntries, text);
@@ -1241,10 +1111,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
       int next = ((_currentHighlight ?? -1) + 1) % _filteredEntries.length;
 
-      // Skip disabled entries
       while (!_filteredEntries[next].enabled) {
         next = (next + 1) % _filteredEntries.length;
-        // Prevent infinite loop if all entries are disabled
         if (next == _currentHighlight) break;
       }
 
@@ -1270,11 +1138,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       prev = (prev - 1) % _filteredEntries.length;
       if (prev < 0) prev = _filteredEntries.length - 1;
 
-      // Skip disabled entries
       while (!_filteredEntries[prev].enabled) {
         prev = prev - 1;
         if (prev < 0) prev = _filteredEntries.length - 1;
-        // Prevent infinite loop if all entries are disabled
         if (prev == _currentHighlight) break;
       }
 
@@ -1300,7 +1166,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients && _currentHighlight! < _filteredEntries.length) {
-        final itemHeight = 48.0; // Default item height
+        final itemHeight = 48.0;
         final offset = _currentHighlight! * itemHeight;
         final viewportHeight = _scrollController.position.viewportDimension;
         final currentScroll = _scrollController.offset;
@@ -1516,23 +1382,18 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   }
 }
 
-/// Base class for MenuFlow items using sealed class pattern for type safety.
-/// Items can be either string-based or widget-based.
 sealed class MenuItem<T> {
   const MenuItem({required this.value});
 
-  /// The actual value associated with this item
   final T value;
 }
 
-/// A menu item that displays a simple text label
 final class MenuItemString<T> extends MenuItem<T> {
   const MenuItemString({
     required super.value,
     required this.label,
   });
 
-  /// The text label to display for this item
   final String label;
 
   @override
@@ -1547,14 +1408,12 @@ final class MenuItemString<T> extends MenuItem<T> {
   int get hashCode => Object.hash(value, label);
 }
 
-/// A menu item that displays a custom widget
 final class MenuItemWidget<T> extends MenuItem<T> {
   const MenuItemWidget({
     required super.value,
     required this.widget,
   });
 
-  /// The custom widget to display for this item
   final Widget widget;
 
   @override
@@ -1568,9 +1427,6 @@ final class MenuItemWidget<T> extends MenuItem<T> {
   int get hashCode => value.hashCode;
 }
 
-/// Enhanced menu entry for MenuFlowTextField with additional customization options.
-///
-/// Supports custom widgets, icons, and styling for individual items.
 class MenuEntry<T> {
   const MenuEntry({
     required this.value,
@@ -1582,25 +1438,18 @@ class MenuEntry<T> {
     this.style,
   });
 
-  /// The value associated with this entry
   final T value;
 
-  /// The text label for this entry (used for searching/filtering)
   final String label;
 
-  /// Optional custom widget to display instead of the text label
   final Widget? labelWidget;
 
-  /// Optional leading icon
   final Widget? leadingIcon;
 
-  /// Optional trailing icon
   final Widget? trailingIcon;
 
-  /// Whether this entry is enabled (can be selected)
   final bool enabled;
 
-  /// Optional custom button style for this entry
   final ButtonStyle? style;
 
   @override

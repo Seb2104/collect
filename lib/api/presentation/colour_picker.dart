@@ -1,16 +1,14 @@
-import 'package:collect/src/picker_ring.dart';
-import 'package:collect/src/picker_slides.dart';
-import 'package:collect/src/picker_square.dart';
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
-import '../../src/picker_wheel.dart';
+part of '../../collect.dart';
 
 class ColourPicker {
   static Widget wheel({
+    /// The size of the container surrounding the colour picker
     required double height,
+
+    /// The size of the container surrounding the colour picker
     required double width,
-    required Color pickerColor,
+
+    required Color currentColour,
     double pickerRadius = 300,
     required ValueChanged<Color> onColorChanged,
     HSVColor? pickerHsvColor,
@@ -31,7 +29,7 @@ class ColourPicker {
     return WheelPicker(
       height: height,
       width: width,
-      pickerColor: pickerColor,
+      pickerColor: currentColour,
       onColorChanged: onColorChanged,
       enableAlpha: enableAlpha,
       showLabel: showLabel,

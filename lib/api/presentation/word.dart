@@ -1,7 +1,5 @@
 part of '../../collect.dart';
 
-typedef Font = Fonts;
-
 enum _WordTextStyle { normal, primary, secondary, tertiary }
 
 class Word extends StatefulWidget {
@@ -86,8 +84,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = Fonts.timesNewRoman,
-    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
+    this.fontFamily = TIMES_NEW_ROMAN,
+    this.fontFamilyFallback = const [APPLE_COLOUR_EMOJI],
     this.package,
   }) : _textStyleType = _WordTextStyle.normal;
 
@@ -130,8 +128,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = Fonts.timesNewRoman,
-    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
+    this.fontFamily = TIMES_NEW_ROMAN,
+    this.fontFamilyFallback = const [APPLE_COLOUR_EMOJI],
     this.package,
   }) : _textStyleType = _WordTextStyle.primary;
 
@@ -174,8 +172,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = Fonts.timesNewRoman,
-    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
+    this.fontFamily = TIMES_NEW_ROMAN,
+    this.fontFamilyFallback = const [APPLE_COLOUR_EMOJI],
     this.package,
   }) : _textStyleType = _WordTextStyle.secondary;
 
@@ -218,8 +216,8 @@ class Word extends StatefulWidget {
     this.decorationStyle,
     this.decorationThickness,
     this.debugLabel,
-    this.fontFamily = Fonts.timesNewRoman,
-    this.fontFamilyFallback = const [Fonts.appleColorEmoji],
+    this.fontFamily = TIMES_NEW_ROMAN,
+    this.fontFamilyFallback = const [APPLE_COLOUR_EMOJI],
     this.package,
   }) : _textStyleType = _WordTextStyle.tertiary;
 
@@ -274,8 +272,8 @@ class _WordState extends State<Word> {
               decorationStyle: widget.decorationStyle,
               decorationThickness: widget.decorationThickness,
               debugLabel: widget.debugLabel,
-              fontFamily: widget.fontFamily?.value,
-              fontFamilyFallback: _getFonts(widget.fontFamilyFallback!),
+              fontFamily: widget.fontFamily!,
+              fontFamilyFallback: widget.fontFamilyFallback!,
               package: widget.package,
               overflow: widget.overflow,
             ),
@@ -318,8 +316,8 @@ class _WordState extends State<Word> {
               decorationStyle: widget.decorationStyle,
               decorationThickness: widget.decorationThickness,
               debugLabel: widget.debugLabel,
-              fontFamily: widget.fontFamily?.value,
-              fontFamilyFallback: _getFonts(widget.fontFamilyFallback!),
+              fontFamily: widget.fontFamily!,
+              fontFamilyFallback: widget.fontFamilyFallback!,
               package: widget.package,
               overflow: widget.overflow,
             ),
@@ -337,13 +335,5 @@ class _WordState extends State<Word> {
             textHeightBehavior: widget.textHeightBehavior,
             selectionColor: widget.selectionColor,
           );
-  }
-
-  List<String> _getFonts(List<Fonts> fonts) {
-    List<String> a = [];
-    for (Fonts font in fonts) {
-      a.add(font.value);
-    }
-    return a;
   }
 }

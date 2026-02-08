@@ -19,6 +19,8 @@ dependencies:
     sdk: flutter
   unicode: ^1.1.9
   file_picker: ^10.3.10
+  system_fonts: ^1.0.1
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:
@@ -27,9 +29,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/icons/
-    - assets/themes/
+#  assets:
+#    - assets/icons/
+#    - assets/themes/
 
   fonts:
     - family: AppleColorEmoji
@@ -113,10 +115,6 @@ flutter:
     - family: Outfit
       fonts:
         - asset: assets/fonts/Outfit-VariableFont_wght.ttf
-
-    - family: ReCollectIcons
-      fonts:
-        - asset: assets/fonts/ReCollectIcons.ttf
 
     - family: Roboto
       fonts:

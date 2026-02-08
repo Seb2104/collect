@@ -1,4 +1,3 @@
-
 import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
@@ -36,12 +35,13 @@ class _ColourLabelState extends State<ColourLabel> {
   String argbView() => widget.colour.argb;
 
   String hslView() => widget.colour.hsl.toString();
-  MenuController menuController = MenuController();
+  MenuControl menuController = MenuControl();
   String selectedFormat = 'b256';
 
   @override
   void initState() {
     super.initState();
+    menuController.selectedValue = selectedFormat;
   }
 
   String getViewForFormat(String format) {
@@ -66,33 +66,24 @@ class _ColourLabelState extends State<ColourLabel> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DropdownMenu(
-            menuStyle: MenuStyle(
-              padding: WidgetStateProperty.all(EdgeInsets.zero),
-              visualDensity: VisualDensity.compact,
+          Flexible(
+            child: Menu(
+              width: 100,
+              value: selectedFormat,
+              onChanged: (val) {
+                selectedFormat = val!;
+                menuController.selectedValue = selectedFormat;
+                print(selectedFormat);
+                setState(() {});
+              },
+              textStyle: TextStyle(fontSize: 11),
+              items: [
+                MenuItemString(value: 'b256', label: 'b256'),
+                MenuItemString(value: 'hex', label: 'HEX'),
+                MenuItemString(value: 'argb', label: 'ARGB'),
+                MenuItemString(value: 'hsl', label: 'HSL'),
+              ],
             ),
-            inputDecorationTheme: InputDecorationTheme(
-              isDense: true,
-              // contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            textStyle: TextStyle(fontSize: 11),
-            menuController: menuController,
-            initialSelection: selectedFormat,
-            onSelected: (value) {
-              setState(() {
-                selectedFormat = value!;
-              });
-            },
-            width: 105,
-            dropdownMenuEntries: [
-              DropdownMenuEntry(value: "b256", label: 'B256'),
-              DropdownMenuEntry(value: "hex", label: 'HEX'),
-              DropdownMenuEntry(value: "argb", label: 'ARGB'),
-              DropdownMenuEntry(value: "hsl", label: 'HSL'),
-            ],
           ),
           Word(
             getViewForFormat(selectedFormat),
