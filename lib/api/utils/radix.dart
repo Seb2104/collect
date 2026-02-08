@@ -17,12 +17,12 @@ class Radix {
           );
   }
 
-  static dynamic toRadix(dynamic data, Base currentRadix, Base toRadix) {
+  static dynamic toRadix(int data, Base toRadix) {
     int.parse(
       _crypt(
         data: data,
-        from: _base.substring(0, toRadix.value),
-        to: _base.substring(0, 10),
+        from: _base.substring(0, 10),
+        to: _base.substring(0, toRadix.value),
       ),
     );
   }
@@ -41,6 +41,10 @@ class Radix {
 
   static String dec(int data) {
     return base(data, Bases.b10);
+  }
+
+  static String b256(int data) {
+    return toRadix(data, Bases.b256);
   }
 
   static String _crypt({
@@ -105,3 +109,5 @@ class Radix {
   static const String _base =
       '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/!@%^\$&*()-_=[]{}|;:,.<>?~`\'"\\ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψϏϐϑϒϓϔϕϖϗϘϙϚϛϜϝϞϟϠϡϢϣϤϥϦϧϨϩϪϫϬϭϮϯϰϱϲϳϴϵ϶ϷϸϹϺϻϼϽϾϿЀЏАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя#';
 }
+
+

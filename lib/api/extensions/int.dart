@@ -1,5 +1,27 @@
 part of '../../collect.dart';
 
+extension Ba on int {
+  String get oct {
+    return Radix.toRadix(this, Bases.b8);
+  }
+
+  String get bin {
+    return Radix.toRadix(this, Bases.b2).toUpperCase();
+  }
+
+  String get hex {
+    return Radix.toRadix(this, Bases.b16).toUpperCase();
+  }
+
+  String get dec {
+    return Radix.toRadix(this, Bases.b10);
+  }
+
+  String get b256 {
+    return Radix.toRadix(this, Bases.b256);
+  }
+}
+
 extension Int on int? {
   /// Validate given int is not null and returns given value if null.
   int validate({int value = 0}) {

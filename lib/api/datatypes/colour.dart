@@ -10,7 +10,7 @@ class Colour extends Col implements Color {
   @override
   final int blue;
 
-  HSVColor get hsv {
+  HSVColour get hsv {
     final double red = color.r / 0xFF;
     final double green = color.g / 0xFF;
     final double blue = color.b / 0xFF;
@@ -26,7 +26,7 @@ class Colour extends Col implements Color {
     return HSVColour.fromAHSV(alpha, hue, saturation, max);
   }
 
-  HSLColor get hsl {
+  HSLColour get hsl {
     final double red = color.r / 0xFF;
     final double green = color.g / 0xFF;
     final double blue = color.b / 0xFF;
@@ -90,6 +90,8 @@ class Colour extends Col implements Color {
 
   String get hex =>
       Radix.hex(alpha) + Radix.hex(red) + Radix.hex(green) + Radix.hex(blue);
+
+  String get b256 => alpha.b256 + red.b256 + green.b256 + blue.b256;
 
   String get argb => '$alpha,$red,$green,$blue';
 
@@ -356,6 +358,8 @@ class Colour extends Col implements Color {
   HSVColor toHSVColor() => hsv;
 
   HSLColor toHSLColor() => hsl;
+
+  String print() => b256;
 
   @override
   String toString() {
