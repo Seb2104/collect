@@ -65,9 +65,11 @@ class _ColourLabelState extends State<ColourLabel> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Menu(textStyle: TextStyle(fontSize: 11), items: [
-            MenuItemString(value: 'TITS', label: 'sexy')
-          ],),
+          Flexible(
+            child: Menu(textStyle: TextStyle(fontSize: 11), items: [
+              MenuItemString(value: 'TITS', label: 'sexy')
+            ],),
+          ),
           Word(
             getViewForFormat(selectedFormat),
             fontWeight: FontWeight.bold,
