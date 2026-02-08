@@ -82,8 +82,6 @@ class ColourPicker {
       portraitOnly: portraitOnly,
       colorPickerWidth: colorPickerWidth,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
-      hexInputBar: false,
-      hexInputController: hexInputController,
       colorHistory: colorHistory,
       onHistoryChanged: onHistoryChanged,
     );

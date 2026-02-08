@@ -23,8 +23,6 @@ class SquarePicker extends StatefulWidget {
     this.colorPickerWidth = 300.0,
     this.pickerAreaHeightPercent = 1.0,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
-    this.hexInputBar = false,
-    this.hexInputController,
     this.colorHistory,
     this.onHistoryChanged,
   });
@@ -42,8 +40,6 @@ class SquarePicker extends StatefulWidget {
   final double colorPickerWidth;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
-  final bool hexInputBar;
-  final TextEditingController? hexInputController;
   final List<Color>? colorHistory;
   final ValueChanged<List<Color>>? onHistoryChanged;
 
@@ -60,16 +56,6 @@ class _SquarePickerState extends State<SquarePicker> {
     currentHsvColor = (widget.pickerHsvColor != null)
         ? widget.pickerHsvColor as HSVColour
         : HSVColour.fromColor(widget.pickerColor);
-    if (widget.hexInputController?.text.isEmpty == true) {
-      widget.hexInputController?.text = colorToHex(
-        currentHsvColor.toColor(),
-        enableAlpha: widget.enableAlpha,
-      );
-    }
-    widget.hexInputController?.addListener(colorPickerTextInputListener);
-    if (widget.colorHistory != null && widget.onHistoryChanged != null) {
-      colorHistory = widget.colorHistory ?? [];
-    }
     super.initState();
   }
 
@@ -81,33 +67,8 @@ class _SquarePickerState extends State<SquarePicker> {
         : HSVColour.fromColor(widget.pickerColor);
   }
 
-  void colorPickerTextInputListener() {
-    if (widget.hexInputController == null) return;
-    final Color? color = colorFromHex(
-      widget.hexInputController!.text,
-      enableAlpha: widget.enableAlpha,
-    );
-    if (color != null) {
-      setState(() => currentHsvColor = HSVColour.fromColor(color));
-      widget.onColorChanged(color);
-      if (widget.onHsvColorChanged != null) {
-        widget.onHsvColorChanged!(currentHsvColor);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.hexInputController?.removeListener(colorPickerTextInputListener);
-    super.dispose();
-  }
-
   Widget colorPickerSlider(TrackType trackType) {
     return ColourPickerSlider(trackType, currentHsvColor, (HSVColour color) {
-      widget.hexInputController?.text = colorToHex(
-        color.toColor(),
-        enableAlpha: widget.enableAlpha,
-      );
       setState(() => currentHsvColor = color);
       widget.onColorChanged(currentHsvColor.toColor());
       if (widget.onHsvColorChanged != null) {
@@ -117,10 +78,6 @@ class _SquarePickerState extends State<SquarePicker> {
   }
 
   void onColorChanging(HSVColour color) {
-    widget.hexInputController?.text = colorToHex(
-      color.toColor(),
-      enableAlpha: widget.enableAlpha,
-    );
     setState(() => currentHsvColor = color);
     widget.onColorChanged(currentHsvColor.toColor());
     if (widget.onHsvColorChanged != null) {
@@ -246,20 +203,6 @@ class _SquarePickerState extends State<SquarePicker> {
                 colorLabelTypes: widget.labelTypes,
               ),
             ),
-          if (widget.hexInputBar)
-            ColourPickerInput(
-              currentHsvColor.toColour(),
-              (Color color) {
-                setState(() => currentHsvColor = HSVColour.fromColor(color));
-                widget.onColorChanged(currentHsvColor.toColor());
-                if (widget.onHsvColorChanged != null) {
-                  widget.onHsvColorChanged!(currentHsvColor);
-                }
-              },
-              enableAlpha: widget.enableAlpha,
-              embeddedText: false,
-            ),
-          const SizedBox(height: 20.0),
         ],
       );
     } else {
@@ -345,22 +288,6 @@ class _SquarePickerState extends State<SquarePicker> {
                     colorLabelTypes: widget.labelTypes,
                   ),
                 ),
-              if (widget.hexInputBar)
-                ColourPickerInput(
-                  currentHsvColor.toColour(),
-                  (Color color) {
-                    setState(
-                      () => currentHsvColor = HSVColour.fromColor(color),
-                    );
-                    widget.onColorChanged(currentHsvColor.toColor());
-                    if (widget.onHsvColorChanged != null) {
-                      widget.onHsvColorChanged!(currentHsvColor);
-                    }
-                  },
-                  enableAlpha: widget.enableAlpha,
-                  embeddedText: false,
-                ),
-              const SizedBox(height: 5),
             ],
           ),
         ],

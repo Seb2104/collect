@@ -105,22 +105,6 @@ class _HueRingPickerState extends State<HueRingPicker> {
               children: <Widget>[
                 const SizedBox(width: 10),
                 ColorIndicator(currentHsvColor),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 20),
-                    child: ColourPickerInput(
-                      currentHsvColor.toColour(),
-                      (Color color) {
-                        setState(
-                          () => currentHsvColor = HSVColour.fromColor(color),
-                        );
-                        widget.onColorChanged(currentHsvColor.toColor());
-                      },
-                      enableAlpha: widget.enableAlpha,
-                      embeddedText: true,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -167,19 +151,6 @@ class _HueRingPickerState extends State<HueRingPicker> {
                     children: [
                       SizedBox(height: widget.colorPickerHeight / 8.5),
                       ColorIndicator(currentHsvColor),
-                      const SizedBox(height: 10),
-                      ColourPickerInput(
-                        currentHsvColor.toColour(),
-                        (Color color) {
-                          setState(
-                            () => currentHsvColor = HSVColour.fromColor(color),
-                          );
-                          widget.onColorChanged(currentHsvColor.toColor());
-                        },
-                        enableAlpha: widget.enableAlpha,
-                        embeddedText: true,
-                        disable: true,
-                      ),
                       if (widget.enableAlpha) const SizedBox(height: 5),
                       if (widget.enableAlpha)
                         SizedBox(

@@ -6,13 +6,13 @@ import 'constant.dart';
 
 class ColourPickerSlider extends StatelessWidget {
   const ColourPickerSlider(
-      this.trackType,
-      this.hsvColor,
-      this.onColorChanged, {
-        super.key,
-        this.displayThumbColor = false,
-        this.fullThumbColor = false,
-      });
+    this.trackType,
+    this.hsvColor,
+    this.onColorChanged, {
+    super.key,
+    this.displayThumbColor = false,
+    this.fullThumbColor = false,
+  });
 
   final TrackType trackType;
   final HSVColour hsvColor;
@@ -65,8 +65,8 @@ class ColourPickerSlider extends StatelessWidget {
         onColorChanged(
           hsvColor
               .withAlpha(
-            localDx.clamp(0.0, box.maxWidth - 30.0) / (box.maxWidth - 30.0),
-          )
+                localDx.clamp(0.0, box.maxWidth - 30.0) / (box.maxWidth - 30.0),
+              )
               .toHSVColour,
         );
         break;

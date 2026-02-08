@@ -221,20 +221,6 @@ class _WheelPickerState extends State<WheelPicker> {
                 colorLabelTypes: widget.labelTypes,
               ),
             ),
-          if (widget.hexInputBar)
-            ColourPickerInput(
-              currentHsvColor.toColour(),
-              (Color color) {
-                setState(() => currentHsvColor = HSVColour.fromColor(color));
-                widget.onColorChanged(currentHsvColor.toColor());
-                if (widget.onHsvColorChanged != null) {
-                  widget.onHsvColorChanged!(currentHsvColor);
-                }
-              },
-              enableAlpha: widget.enableAlpha,
-              embeddedText: false,
-            ),
-          const SizedBox(height: 20.0),
         ],
       );
     } else {
@@ -320,22 +306,6 @@ class _WheelPickerState extends State<WheelPicker> {
                     colorLabelTypes: widget.labelTypes,
                   ),
                 ),
-              if (widget.hexInputBar)
-                ColourPickerInput(
-                  currentHsvColor.toColour(),
-                  (Color color) {
-                    setState(
-                      () => currentHsvColor = HSVColour.fromColor(color),
-                    );
-                    widget.onColorChanged(currentHsvColor.toColor());
-                    if (widget.onHsvColorChanged != null) {
-                      widget.onHsvColorChanged!(currentHsvColor);
-                    }
-                  },
-                  enableAlpha: widget.enableAlpha,
-                  embeddedText: false,
-                ),
-              const SizedBox(height: 5),
             ],
           ),
         ],
