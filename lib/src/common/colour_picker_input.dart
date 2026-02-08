@@ -3,29 +3,29 @@ import 'package:flutter/services.dart';
 
 import '../../collect.dart';
 
-class ColorPickerInput extends StatefulWidget {
-  const ColorPickerInput(
-    this.color,
-    this.onColorChanged, {
+class ColourPickerInput extends StatefulWidget {
+  const ColourPickerInput(
+    this.colour,
+    this.onColourChanged, {
     super.key,
     this.enableAlpha = true,
     this.embeddedText = false,
     this.disable = false,
   });
 
-  final Color color;
-  final ValueChanged<Color> onColorChanged;
+  final Colour colour;
+  final ValueChanged<Colour> onColourChanged;
   final bool enableAlpha;
   final bool embeddedText;
   final bool disable;
 
   @override
-  State<ColorPickerInput> createState() => _ColorPickerInputState();
+  State<ColourPickerInput> createState() => _ColourPickerInputState();
 }
 
-class _ColorPickerInputState extends State<ColorPickerInput> {
+class _ColourPickerInputState extends State<ColourPickerInput> {
   TextEditingController textEditingController = TextEditingController();
-  int inputColor = 0;
+  int inputColour = 0;
 
   @override
   void dispose() {
@@ -35,9 +35,9 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
 
   @override
   Widget build(BuildContext context) {
-    if (inputColor != widget.color.value) {
+    if (inputColour != widget.colour.value) {
       textEditingController.text =
-          '#${widget.color.red.toRadixString(16).toUpperCase().padLeft(2, '0')}${widget.color.green.toRadixString(16).toUpperCase().padLeft(2, '0')}${widget.color.blue.toRadixString(16).toUpperCase().padLeft(2, '0')}${widget.enableAlpha ? widget.color.alpha.toRadixString(16).toUpperCase().padLeft(2, '0') : ''}';
+          '#${widget.colour.red.toRadixString(16).toUpperCase().padLeft(2, '0')}${widget.colour.green.toRadixString(16).toUpperCase().padLeft(2, '0')}${widget.colour.blue.toRadixString(16).toUpperCase().padLeft(2, '0')}${widget.enableAlpha ? widget.colour.alpha.toRadixString(16).toUpperCase().padLeft(2, '0') : ''}';
     }
     return Padding(
       padding: const EdgeInsets.only(top: 5.0),
@@ -69,10 +69,10 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
                       value.split('').getRange(7, 9).join() +
                       value.split('').getRange(1, 7).join();
                 }
-                final Color? color = colorFromHex(input);
-                if (color != null) {
-                  widget.onColorChanged(color);
-                  inputColor = color.value;
+                final Colour? colour = Colour.fromColor(colorFromHex(input) ?? Colours.white);
+                if (colour != null) {
+                  widget.onColourChanged(colour);
+                  inputColour = colour.value;
                 }
               },
             ),

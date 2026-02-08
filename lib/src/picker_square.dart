@@ -247,8 +247,8 @@ class _SquarePickerState extends State<SquarePicker> {
               ),
             ),
           if (widget.hexInputBar)
-            ColorPickerInput(
-              currentHsvColor.toColor(),
+            ColourPickerInput(
+              currentHsvColor.toColour(),
               (Color color) {
                 setState(() => currentHsvColor = HSVColour.fromColor(color));
                 widget.onColorChanged(currentHsvColor.toColor());
@@ -346,8 +346,8 @@ class _SquarePickerState extends State<SquarePicker> {
                   ),
                 ),
               if (widget.hexInputBar)
-                ColorPickerInput(
-                  currentHsvColor.toColor(),
+                ColourPickerInput(
+                  currentHsvColor.toColour(),
                   (Color color) {
                     setState(
                       () => currentHsvColor = HSVColour.fromColor(color),

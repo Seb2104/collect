@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../collect.dart';
 import 'common/common.dart';
@@ -109,8 +108,8 @@ class _HueRingPickerState extends State<HueRingPicker> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 20),
-                    child: ColorPickerInput(
-                      currentHsvColor.toColor(),
+                    child: ColourPickerInput(
+                      currentHsvColor.toColour(),
                       (Color color) {
                         setState(
                           () => currentHsvColor = HSVColour.fromColor(color),
@@ -169,8 +168,8 @@ class _HueRingPickerState extends State<HueRingPicker> {
                       SizedBox(height: widget.colorPickerHeight / 8.5),
                       ColorIndicator(currentHsvColor),
                       const SizedBox(height: 10),
-                      ColorPickerInput(
-                        currentHsvColor.toColor(),
+                      ColourPickerInput(
+                        currentHsvColor.toColour(),
                         (Color color) {
                           setState(
                             () => currentHsvColor = HSVColour.fromColor(color),
@@ -324,8 +323,6 @@ class HueRingPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
-
-
 
 class ColorPickerArea extends StatelessWidget {
   const ColorPickerArea(
