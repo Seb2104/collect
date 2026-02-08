@@ -19,6 +19,8 @@ part 'api/constants/moment.dart';
 part 'api/constants/strings.dart';
 part 'api/constants/tab_view.dart';
 part 'api/datatypes/colour.dart';
+part 'api/datatypes/hsl_colour.dart';
+part 'api/datatypes/hsv_colour.dart';
 part 'api/datatypes/moment.dart';
 part 'api/datatypes/period.dart';
 part 'api/extensions/build_context.dart';

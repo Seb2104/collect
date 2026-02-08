@@ -10,6 +10,8 @@ class Colour implements Color {
   @override
   final int blue;
 
+  HSVColor get asHSV => toHSV();
+
   @override
   int toARGB32() {
     return _floatToInt8(a) << 24 |
@@ -212,6 +214,7 @@ class Colour implements Color {
   }
 
   factory Colour.fromHSV({
+    double a = 1.0,
     required double h,
     required double s,
     required double v,
@@ -265,7 +268,7 @@ class Colour implements Color {
     }
 
     return Colour(
-      alpha: 255,
+      alpha: (a * 255).round(),
       red: (red * 255).round(),
       green: (green * 255).round(),
       blue: (blue * 255).round(),
@@ -384,12 +387,5 @@ class Colour implements Color {
     return Colour();
   }
 
-  // Implicit conversion to HSVColor
   HSVColor asHSVColor() => toHSV();
-}
-
-/// Extension to allow Colour to be used seamlessly where HSVColor is expected
-extension ColourToHSV on Colour {
-  /// Implicitly converts Colour to HSVColor
-  HSVColor get asHSV => toHSV();
 }
