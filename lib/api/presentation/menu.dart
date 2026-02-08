@@ -1,145 +1,1144 @@
 part of '../../collect.dart';
 
+/// A beautiful, customizable dropdown menu with search and keyboard navigation.
+///
+/// MenuFlow combines the best features from multiple dropdown libraries:
+/// - Overlay-based positioning (no Stack required)
+/// - Search/filter functionality
+/// - Full keyboard navigation
+/// - Hybrid theming system
+/// - Clean, easy-to-use API
+///
+/// Example:
+/// ```dart
+/// MenuFlow<String>(
+///   items: [
+///     MenuFlowItemString(value: 'apple', label: 'Apple'),
+///     MenuFlowItemString(value: 'banana', label: 'Banana'),
+///   ],
+///   value: selectedFruit,
+///   onChanged: (value) => setState(() => selectedFruit = value),
+/// )
+/// ```
 class Menu<T> extends StatefulWidget {
   const Menu({
     super.key,
-    this.enabled = true,
-    this.width,
-    this.menuHeight,
-    this.leadingIcon,
-    this.trailingIcon,
-    this.showTrailingIcon = true,
-    this.trailingIconFocusNode,
-    this.label,
-    this.hintText,
-    this.helperText,
-    this.errorText,
-    this.selectedTrailingIcon,
-    this.enableFilter = false,
-    this.enableSearch = true,
-    this.keyboardType,
-    this.textStyle,
-    this.textAlign = TextAlign.start,
-    Object? inputDecorationTheme,
-    this.menuStyle,
-    this.controller,
-    this.initialSelection,
-    this.onSelected,
-    this.focusNode,
-    this.requestFocusOnTap,
-    this.expandedInsets,
-    this.filterCallback,
-    this.searchCallback,
-    this.alignmentOffset,
     required this.items,
-    this.inputFormatters,
-    this.closeBehavior = MenuCloseBehavior.all,
-    this.maxLines = 1,
-    this.textInputAction,
-    this.cursorHeight,
-    this.restorationId,
-    this.menuController,
-  }) : assert(filterCallback == null || enableFilter),
-       assert(
-         inputDecorationTheme == null ||
-             (inputDecorationTheme is InputDecorationTheme ||
-                 inputDecorationTheme is InputDecorationThemeData),
-       ),
-       assert(trailingIconFocusNode == null || showTrailingIcon),
-       _inputDecorationTheme = inputDecorationTheme;
+    this.value,
+    this.onChanged,
+    this.hint,
+    this.width,
+    this.height,
+    // Theming
+    this.theme,
+    this.backgroundColor,
+    this.borderColor,
+    this.border,
+    this.borderRadius,
+    this.padding,
+    this.elevation,
+    this.iconColor,
+    this.icon,
+    this.iconSize,
+    this.disableIconRotation,
+    this.dropdownColor,
+    this.dropdownElevation,
+    this.dropdownBorderRadius,
+    this.dropdownPadding,
+    this.dropdownBorder,
+    this.itemHeight,
+    this.itemPadding,
+    this.itemHighlightColor,
+    this.selectedItemColor,
+    this.itemTextStyle,
+    this.textStyle,
+    this.hintStyle,
+    // Configuration
+    this.config,
+    this.enableSearch,
+    this.searchHint,
+    this.searchMatchFn,
+    this.enableKeyboardNavigation,
+    this.maxHeight,
+    this.offset,
+    this.closeOnSelect,
+    // Controller
+    this.controller,
+    this.focusNode,
+  });
 
-  final bool enabled;
+  /// List of items to display in the dropdown
+  final List<MenuItem<T>> items;
+
+  /// Currently selected value
+  final T? value;
+
+  /// Callback when value changes
+  final ValueChanged<T?>? onChanged;
+
+  /// Hint text/widget to display when no value is selected
+  final Widget? hint;
+
+  /// Button width
   final double? width;
-  final double? menuHeight;
-  final Widget? leadingIcon;
-  final Widget? trailingIcon;
-  final bool showTrailingIcon;
-  final FocusNode? trailingIconFocusNode;
-  final Widget? label;
-  final String? hintText;
-  final String? helperText;
-  final String? errorText;
-  final Widget? selectedTrailingIcon;
-  final bool enableFilter;
-  final bool enableSearch;
-  final TextInputType? keyboardType;
-  final TextStyle? textStyle;
-  final TextAlign textAlign;
-  final Object? _inputDecorationTheme;
-  final MenuStyle? menuStyle;
-  final TextEditingController? controller;
-  final T? initialSelection;
-  final ValueChanged<T?>? onSelected;
-  final FocusNode? focusNode;
-  final bool? requestFocusOnTap;
-  final List<MenuEntry<T>> items;
-  final EdgeInsetsGeometry? expandedInsets;
-  final FilterCallback<T>? filterCallback;
-  final SearchCallback<T>? searchCallback;
-  final List<TextInputFormatter>? inputFormatters;
-  final Offset? alignmentOffset;
-  final MenuCloseBehavior closeBehavior;
-  final int? maxLines;
-  final TextInputAction? textInputAction;
-  final double? cursorHeight;
-  final String? restorationId;
-  final MenuController? menuController;
 
-  InputDecorationThemeData? get inputDecorationTheme {
-    if (_inputDecorationTheme == null) return null;
-    return _inputDecorationTheme is InputDecorationTheme
-        ? _inputDecorationTheme.data
-        : _inputDecorationTheme as InputDecorationThemeData;
-  }
+  /// Button height
+  final double? height;
+
+  // Theming properties
+  final MenuTheme? theme;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final BorderSide? border;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final double? elevation;
+  final Color? iconColor;
+  final IconData? icon;
+  final double? iconSize;
+  final bool? disableIconRotation;
+  final Color? dropdownColor;
+  final double? dropdownElevation;
+  final BorderRadius? dropdownBorderRadius;
+  final EdgeInsetsGeometry? dropdownPadding;
+  final ShapeBorder? dropdownBorder;
+  final double? itemHeight;
+  final EdgeInsetsGeometry? itemPadding;
+  final Color? itemHighlightColor;
+  final Color? selectedItemColor;
+  final TextStyle? itemTextStyle;
+  final TextStyle? textStyle;
+  final TextStyle? hintStyle;
+
+  // Configuration properties
+  final MenuConfig? config;
+  final bool? enableSearch;
+  final String? searchHint;
+  final FilterMatchFn<T>? searchMatchFn;
+  final bool? enableKeyboardNavigation;
+  final double? maxHeight;
+  final Offset? offset;
+  final bool? closeOnSelect;
+
+  /// Optional controller for programmatic control
+  final MenuControl<T>? controller;
+
+  /// Optional FocusNode for external focus control
+  final FocusNode? focusNode;
 
   @override
   State<Menu<T>> createState() => _MenuState<T>();
 }
+
 class _MenuState<T> extends State<Menu<T>> {
-  final GlobalKey _anchorKey = GlobalKey();
-  final GlobalKey _leadingKey = GlobalKey();
-  final FocusNode _internalFocusNode = FocusNode();
+  late final FocusNode _focusNode;
+  late final LayerLink _layerLink;
+  final ScrollController _scrollController = ScrollController();
 
-  late List<GlobalKey> _buttonKeys;
-  late MenuController _controller;
-  late List<MenuEntry<T>> _filteredEntries;
+  OverlayEntry? _overlayEntry;
+  TextEditingController? _searchController;
+  List<MenuItem<T>> _filteredItems = [];
+  int _highlightedIndex = -1;
+  double _iconTurns = 0;
 
-  TextEditingController? _localTextController;
-  FocusNode? _localTrailingIconFocusNode;
-  List<Widget>? _initialMenu;
-
-  bool _enableFilter = false;
-  late bool _enableSearch;
-  bool _menuHasEnabledItem = false;
-
-  int? _currentHighlight;
-  int? _selectedEntryIndex;
-  double? _leadingPadding;
-
-  TextEditingController get _textController =>
-      widget.controller ?? (_localTextController ??= TextEditingController());
-
-  FocusNode get _trailingIconFocusNode =>
-      widget.trailingIconFocusNode ?? (_localTrailingIconFocusNode ??= FocusNode());
+  bool get _isOverlayVisible => _overlayEntry != null;
 
   @override
   void initState() {
     super.initState();
-    _textController.addListener(_clearSelectedEntryIndex);
+    _layerLink = LayerLink();
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.addListener(_onFocusChanged);
+
+    // Initialize search controller if search is enabled
+    if (_resolvedEnableSearch) {
+      _searchController = TextEditingController();
+      _searchController!.addListener(_updateFilteredItems);
+    }
+
+    _updateFilteredItems();
+
+    // Register keyboard handler if enabled
+    if (_resolvedEnableKeyboardNavigation) {
+      HardwareKeyboard.instance.addHandler(_handleKeyEvent);
+    }
+
+    // Register controller callbacks
+    widget.controller?.registerShowCallback(_showOverlay);
+    widget.controller?.registerHideCallback(_hideOverlay);
+    widget.controller?.selectedValue = widget.value;
+  }
+
+  @override
+  void didUpdateWidget(Menu<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Update filtered items if items list changed
+    if (oldWidget.items != widget.items) {
+      _updateFilteredItems();
+    }
+
+    // Update controller's selected value
+    if (widget.controller != null && oldWidget.value != widget.value) {
+      widget.controller!.selectedValue = widget.value;
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_resolvedEnableKeyboardNavigation) {
+      HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
+    }
+    _overlayEntry?.remove();
+    _searchController?.dispose();
+    _scrollController.dispose();
+    _focusNode.removeListener(_onFocusChanged);
+    if (widget.focusNode == null) {
+      _focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  // Theme resolution getters (precedence: widget property > theme > default)
+  Color get _resolvedBackgroundColor =>
+      widget.backgroundColor ?? widget.theme?.backgroundColor ?? Colors.white;
+
+  Color get _resolvedBorderColor =>
+      widget.borderColor ?? widget.theme?.borderColor ?? Colors.grey.shade300;
+
+  BorderSide get _resolvedBorder =>
+      widget.border ??
+          widget.theme?.border ??
+          BorderSide(color: _resolvedBorderColor);
+
+  BorderRadius get _resolvedBorderRadius =>
+      widget.borderRadius ?? widget.theme?.borderRadius ?? BorderRadius.circular(8);
+
+  EdgeInsetsGeometry get _resolvedPadding =>
+      widget.padding ?? widget.theme?.padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+
+  double get _resolvedElevation =>
+      widget.elevation ?? widget.theme?.elevation ?? 0;
+
+  Color get _resolvedIconColor =>
+      widget.iconColor ?? widget.theme?.iconColor ?? Colors.grey.shade700;
+
+  IconData get _resolvedIcon =>
+      widget.icon ?? widget.theme?.icon ?? Icons.arrow_drop_down;
+
+  double get _resolvedIconSize =>
+      widget.iconSize ?? widget.theme?.iconSize ?? 24;
+
+  bool get _resolvedDisableIconRotation =>
+      widget.disableIconRotation ?? widget.theme?.disableIconRotation ?? false;
+
+  Color get _resolvedDropdownColor =>
+      widget.dropdownColor ?? widget.theme?.dropdownColor ?? Colors.white;
+
+  double get _resolvedDropdownElevation =>
+      widget.dropdownElevation ?? widget.theme?.dropdownElevation ?? 8;
+
+  BorderRadius get _resolvedDropdownBorderRadius =>
+      widget.dropdownBorderRadius ??
+          widget.theme?.dropdownBorderRadius ??
+          BorderRadius.circular(8);
+
+  EdgeInsetsGeometry get _resolvedDropdownPadding =>
+      widget.dropdownPadding ?? widget.theme?.dropdownPadding ?? const EdgeInsets.symmetric(vertical: 8);
+
+  ShapeBorder? get _resolvedDropdownBorder =>
+      widget.dropdownBorder ?? widget.theme?.dropdownBorder;
+
+  double get _resolvedItemHeight =>
+      widget.itemHeight ?? widget.theme?.itemHeight ?? 48;
+
+  EdgeInsetsGeometry get _resolvedItemPadding =>
+      widget.itemPadding ?? widget.theme?.itemPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+
+  Color get _resolvedItemHighlightColor =>
+      widget.itemHighlightColor ??
+          widget.theme?.itemHighlightColor ??
+          Colors.grey.shade200;
+
+  Color get _resolvedSelectedItemColor =>
+      widget.selectedItemColor ??
+          widget.theme?.selectedItemColor ??
+          Colors.blue.shade50;
+
+  TextStyle? get _resolvedItemTextStyle =>
+      widget.itemTextStyle ?? widget.theme?.itemTextStyle;
+
+  TextStyle? get _resolvedTextStyle =>
+      widget.textStyle ?? widget.theme?.textStyle;
+
+  TextStyle? get _resolvedHintStyle =>
+      widget.hintStyle ?? widget.theme?.hintStyle ?? TextStyle(color: Colors.grey.shade600);
+
+  // Config resolution getters
+  bool get _resolvedEnableSearch =>
+      widget.enableSearch ?? widget.config?.enableSearch ?? false;
+
+  String get _resolvedSearchHint =>
+      widget.searchHint ?? widget.config?.searchHint ?? 'Search...';
+
+  FilterMatchFn<T> get _resolvedSearchMatchFn =>
+      widget.searchMatchFn ?? widget.config?.searchMatchFn ?? defaultFilterMatch;
+
+  bool get _resolvedEnableKeyboardNavigation =>
+      widget.enableKeyboardNavigation ?? widget.config?.enableKeyboardNavigation ?? true;
+
+  double? get _resolvedMaxHeight =>
+      widget.maxHeight ?? widget.config?.maxHeight;
+
+  Offset get _resolvedOffset =>
+      widget.offset ?? widget.config?.offset ?? const Offset(0, 5);
+
+  bool get _resolvedCloseOnSelect =>
+      widget.closeOnSelect ?? widget.config?.closeOnSelect ?? true;
+
+  void _onFocusChanged() {
+    if (_focusNode.hasFocus) {
+      _showOverlay();
+    } else {
+      _hideOverlay();
+    }
+  }
+
+  void _toggleOverlay() {
+    if (_isOverlayVisible) {
+      _hideOverlay();
+      _focusNode.unfocus();
+    } else {
+      _showOverlay();
+      _focusNode.requestFocus();
+    }
+  }
+
+  void _showOverlay() {
+    if (_isOverlayVisible) return;
+
+    setState(() {
+      if (!_resolvedDisableIconRotation) {
+        _iconTurns += 0.5;
+      }
+    });
+
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+    widget.controller?.setOpen(true);
+  }
+
+  void _hideOverlay() {
+    if (!_isOverlayVisible) return;
+
+    setState(() {
+      if (!_resolvedDisableIconRotation) {
+        _iconTurns -= 0.5;
+      }
+      _highlightedIndex = -1;
+    });
+
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    _searchController?.clear();
+    widget.controller?.setOpen(false);
+  }
+
+  void _updateFilteredItems() {
+    if (!_resolvedEnableSearch || _searchController == null || _searchController!.text.isEmpty) {
+      _filteredItems = widget.items;
+    } else {
+      _filteredItems = widget.items
+          .where((item) => _resolvedSearchMatchFn(item, _searchController!.text))
+          .toList();
+    }
+
+    // Reset highlight when filtered items change
+    if (_highlightedIndex >= _filteredItems.length) {
+      _highlightedIndex = -1;
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  bool _handleKeyEvent(KeyEvent event) {
+    if (!_isOverlayVisible || !_resolvedEnableKeyboardNavigation) return false;
+    if (event is! KeyDownEvent) return false;
+
+    final key = event.logicalKey;
+
+    if (key == LogicalKeyboardKey.arrowDown) {
+      _highlightNext();
+      return true;
+    }
+
+    if (key == LogicalKeyboardKey.arrowUp) {
+      _highlightPrevious();
+      return true;
+    }
+
+    if (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.numpadEnter) {
+      if (_highlightedIndex >= 0 && _highlightedIndex < _filteredItems.length) {
+        _selectItem(_filteredItems[_highlightedIndex].value);
+      }
+      return true;
+    }
+
+    if (key == LogicalKeyboardKey.escape) {
+      _hideOverlay();
+      return true;
+    }
+
+    return false;
+  }
+
+  void _highlightNext() {
+    setState(() {
+      if (_filteredItems.isEmpty) {
+        _highlightedIndex = -1;
+      } else {
+        _highlightedIndex = (_highlightedIndex + 1) % _filteredItems.length;
+      }
+    });
+    _scrollToHighlighted();
+  }
+
+  void _highlightPrevious() {
+    setState(() {
+      if (_filteredItems.isEmpty) {
+        _highlightedIndex = -1;
+      } else if (_highlightedIndex <= 0) {
+        _highlightedIndex = _filteredItems.length - 1;
+      } else {
+        _highlightedIndex--;
+      }
+    });
+    _scrollToHighlighted();
+  }
+
+  void _scrollToHighlighted() {
+    if (_highlightedIndex < 0) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        final itemHeight = _resolvedItemHeight;
+        final offset = _highlightedIndex * itemHeight;
+        final viewportHeight = _scrollController.position.viewportDimension;
+        final currentScroll = _scrollController.offset;
+
+        // Scroll if item is outside visible area
+        if (offset < currentScroll || offset + itemHeight > currentScroll + viewportHeight) {
+          _scrollController.animateTo(
+            offset - (viewportHeight / 2) + (itemHeight / 2),
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    });
+  }
+
+  void _selectItem(T? value) {
+    widget.onChanged?.call(value);
+    widget.controller?.selectedValue = value;
+
+    if (_resolvedCloseOnSelect) {
+      _hideOverlay();
+    }
+  }
+
+  MenuItem<T>? get _selectedItem {
+    if (widget.value == null) return null;
+    try {
+      return widget.items.firstWhere((item) => item.value == widget.value);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Focus(
+      focusNode: _focusNode,
+      child: CompositedTransformTarget(
+        link: _layerLink,
+        child: SizedBox(
+          width: widget.width,
+          height: widget.height,
+          child: Material(
+            color: _resolvedBackgroundColor,
+            elevation: _resolvedElevation,
+            shape: RoundedRectangleBorder(
+              side: _resolvedBorder,
+              borderRadius: _resolvedBorderRadius,
+            ),
+            child: InkWell(
+              onTap: _toggleOverlay,
+              borderRadius: _resolvedBorderRadius,
+              child: Padding(
+                padding: _resolvedPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: _buildSelectedDisplay()),
+                    _buildIcon(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSelectedDisplay() {
+    final selectedItem = _selectedItem;
+
+    if (selectedItem == null) {
+      return widget.hint ??
+          Text(
+            'Select...',
+            style: _resolvedHintStyle,
+          );
+    }
+
+    return switch (selectedItem) {
+      MenuItemString<T> item => Text(
+        item.label,
+        style: _resolvedTextStyle,
+        overflow: TextOverflow.ellipsis,
+      ),
+      MenuItemWidget<T> item => item.widget,
+    };
+  }
+
+  Widget _buildIcon() {
+    return AnimatedRotation(
+      turns: _iconTurns,
+      duration: const Duration(milliseconds: 200),
+      child: Icon(
+        _resolvedIcon,
+        color: _resolvedIconColor,
+        size: _resolvedIconSize,
+      ),
+    );
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    final renderBox = context.findRenderObject()! as RenderBox;
+    final size = renderBox.size;
+
+    return OverlayEntry(
+      builder: (context) => GestureDetector(
+        onTap: () => _focusNode.unfocus(),
+        behavior: HitTestBehavior.translucent,
+        child: SizedBox.expand(
+          child: Stack(
+            children: [
+              CompositedTransformFollower(
+                link: _layerLink,
+                targetAnchor: Alignment.bottomLeft,
+                followerAnchor: Alignment.topLeft,
+                offset: _resolvedOffset,
+                showWhenUnlinked: false,
+                child: SizedBox(
+                  width: widget.width ?? size.width,
+                  child: Material(
+                    elevation: _resolvedDropdownElevation,
+                    shape: _resolvedDropdownBorder ??
+                        RoundedRectangleBorder(
+                          borderRadius: _resolvedDropdownBorderRadius,
+                        ),
+                    color: _resolvedDropdownColor,
+                    child: _buildMenuContent(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuContent() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: _resolvedMaxHeight ?? MediaQuery.of(context).size.height * 0.4,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_resolvedEnableSearch) _buildSearchField(),
+          Flexible(
+            child: Padding(
+              padding: _resolvedDropdownPadding,
+              child: ListView.builder(
+                controller: _scrollController,
+                shrinkWrap: true,
+                itemCount: _filteredItems.length,
+                itemBuilder: (context, index) => _buildItem(_filteredItems[index], index),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: _searchController,
+        decoration: InputDecoration(
+          hintText: _resolvedSearchHint,
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        ),
+        autofocus: false,
+      ),
+    );
+  }
+
+  Widget _buildItem(MenuItem<T> item, int index) {
+    final isHighlighted = index == _highlightedIndex;
+    final isSelected = item.value == widget.value;
+
+    return Material(
+      color: isHighlighted
+          ? _resolvedItemHighlightColor
+          : isSelected
+          ? _resolvedSelectedItemColor
+          : Colors.transparent,
+      child: InkWell(
+        onTap: () => _selectItem(item.value),
+        child: Container(
+          height: _resolvedItemHeight,
+          padding: _resolvedItemPadding,
+          alignment: Alignment.centerLeft,
+          child: switch (item) {
+            MenuItemString<T> stringItem => Text(
+              stringItem.label,
+              style: _resolvedItemTextStyle,
+            ),
+            MenuItemWidget<T> widgetItem => widgetItem.widget,
+          },
+        ),
+      ),
+    );
+  }
+}
+
+
+/// Controller for programmatic control of MenuFlow dropdown.
+/// Provides methods to show/hide the dropdown and access selected value.
+class MenuControl<T> extends ChangeNotifier {
+  T? _selectedValue;
+  bool _isOpen = false;
+  VoidCallback? _showCallback;
+  VoidCallback? _hideCallback;
+
+  /// Gets the currently selected value
+  T? get selectedValue => _selectedValue;
+
+  /// Sets the selected value and notifies listeners
+  set selectedValue(T? value) {
+    if (_selectedValue != value) {
+      _selectedValue = value;
+      notifyListeners();
+    }
+  }
+
+  /// Returns true if the dropdown is currently open
+  bool get isOpen => _isOpen;
+
+  /// Internal method to update open state
+  void setOpen(bool value) {
+    if (_isOpen != value) {
+      _isOpen = value;
+      notifyListeners();
+    }
+  }
+
+  /// Internal method to register show callback
+  void registerShowCallback(VoidCallback callback) {
+    _showCallback = callback;
+  }
+
+  /// Internal method to register hide callback
+  void registerHideCallback(VoidCallback callback) {
+    _hideCallback = callback;
+  }
+
+  /// Shows the dropdown menu
+  void show() {
+    _showCallback?.call();
+  }
+
+  /// Hides the dropdown menu
+  void hide() {
+    _hideCallback?.call();
+  }
+
+  /// Toggles the dropdown menu (show if hidden, hide if shown)
+  void toggle() {
+    if (_isOpen) {
+      hide();
+    } else {
+      show();
+    }
+  }
+
+  @override
+  void dispose() {
+    _showCallback = null;
+    _hideCallback = null;
+    super.dispose();
+  }
+}
+
+/// Type definition for custom filter matching function
+typedef FilterMatchFn<T> = bool Function(
+    MenuItem<T> item,
+    String searchValue,
+    );
+
+/// Default filter match function for string-based items (case-insensitive)
+bool defaultFilterMatch<T>(MenuItem<T> item, String searchValue) {
+  if (item is MenuItemString<T>) {
+    return item.label.toLowerCase().contains(searchValue.toLowerCase());
+  }
+  return false;
+}
+
+/// Configuration class for MenuFlow behavior settings.
+/// Controls features like search, keyboard navigation, and dropdown behavior.
+class MenuConfig {
+  const MenuConfig({
+    // Search configuration
+    this.enableSearch = false,
+    this.searchHint = 'Search...',
+    this.searchMatchFn,
+
+    // Keyboard navigation
+    this.enableKeyboardNavigation = true,
+    this.autoScrollOnHighlight = true,
+
+    // Behavior
+    this.maxHeight,
+    this.closeOnSelect = true,
+    this.offset,
+
+    // Animation
+    this.animationDuration = const Duration(milliseconds: 200),
+    this.animationCurve = Curves.easeOut,
+  });
+
+  // Search configuration
+  final bool enableSearch;
+  final String searchHint;
+  final FilterMatchFn? searchMatchFn;
+
+  // Keyboard navigation
+  final bool enableKeyboardNavigation;
+  final bool autoScrollOnHighlight;
+
+  // Behavior
+  final double? maxHeight;
+  final bool closeOnSelect;
+  final Offset? offset;
+
+  // Animation
+  final Duration animationDuration;
+  final Curve animationCurve;
+
+  /// Creates a copy of this config with the given fields replaced with new values.
+  MenuConfig copyWith({
+    bool? enableSearch,
+    String? searchHint,
+    FilterMatchFn? searchMatchFn,
+    bool? enableKeyboardNavigation,
+    bool? autoScrollOnHighlight,
+    double? maxHeight,
+    bool? closeOnSelect,
+    Offset? offset,
+    Duration? animationDuration,
+    Curve? animationCurve,
+  }) {
+    return MenuConfig(
+      enableSearch: enableSearch ?? this.enableSearch,
+      searchHint: searchHint ?? this.searchHint,
+      searchMatchFn: searchMatchFn ?? this.searchMatchFn,
+      enableKeyboardNavigation:
+      enableKeyboardNavigation ?? this.enableKeyboardNavigation,
+      autoScrollOnHighlight:
+      autoScrollOnHighlight ?? this.autoScrollOnHighlight,
+      maxHeight: maxHeight ?? this.maxHeight,
+      closeOnSelect: closeOnSelect ?? this.closeOnSelect,
+      offset: offset ?? this.offset,
+      animationDuration: animationDuration ?? this.animationDuration,
+      animationCurve: animationCurve ?? this.animationCurve,
+    );
+  }
+}
+
+/// Defines when the dropdown menu should close after an action.
+enum MenuCloseBehavior {
+  /// Close the menu when any item is selected or when clicking outside
+  all,
+
+  /// Close the menu only when an item is selected (not when clicking outside)
+  self,
+
+  /// Don't automatically close the menu
+  none,
+}
+
+/// Type definition for custom filter callback
+typedef MenuFilterCallback<T> = List<T> Function(List<T> entries, String filter);
+
+/// Type definition for custom search callback (returns index of match)
+typedef MenuSearchCallback<T> = int? Function(List<T> entries, String query);
+
+/// Theme data class for MenuFlow styling.
+/// Provides a centralized way to configure the appearance of the dropdown.
+class MenuTheme {
+  const MenuTheme({
+    // Button styling
+    this.backgroundColor,
+    this.borderColor,
+    this.border,
+    this.borderRadius,
+    this.padding,
+    this.elevation,
+
+    // Icon styling
+    this.iconColor,
+    this.icon,
+    this.iconSize,
+    this.disableIconRotation,
+
+    // Dropdown styling
+    this.dropdownColor,
+    this.dropdownElevation,
+    this.dropdownBorderRadius,
+    this.dropdownPadding,
+    this.dropdownBorder,
+
+    // Item styling
+    this.itemHeight,
+    this.itemPadding,
+    this.itemHighlightColor,
+    this.selectedItemColor,
+    this.itemTextStyle,
+
+    // Search styling
+    this.searchTextStyle,
+    this.searchDecoration,
+    this.searchFieldHeight,
+
+    // Text styling
+    this.textStyle,
+    this.hintStyle,
+  });
+
+  // Button styling
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final BorderSide? border;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final double? elevation;
+
+  // Icon styling
+  final Color? iconColor;
+  final IconData? icon;
+  final double? iconSize;
+  final bool? disableIconRotation;
+
+  // Dropdown styling
+  final Color? dropdownColor;
+  final double? dropdownElevation;
+  final BorderRadius? dropdownBorderRadius;
+  final EdgeInsetsGeometry? dropdownPadding;
+  final ShapeBorder? dropdownBorder;
+
+  // Item styling
+  final double? itemHeight;
+  final EdgeInsetsGeometry? itemPadding;
+  final Color? itemHighlightColor;
+  final Color? selectedItemColor;
+  final TextStyle? itemTextStyle;
+
+  // Search styling
+  final TextStyle? searchTextStyle;
+  final InputDecoration? searchDecoration;
+  final double? searchFieldHeight;
+
+  // Text styling
+  final TextStyle? textStyle;
+  final TextStyle? hintStyle;
+
+  /// Creates a copy of this theme with the given fields replaced with new values.
+  MenuTheme copyWith({
+    Color? backgroundColor,
+    Color? borderColor,
+    BorderSide? border,
+    BorderRadius? borderRadius,
+    EdgeInsetsGeometry? padding,
+    double? elevation,
+    Color? iconColor,
+    IconData? icon,
+    double? iconSize,
+    bool? disableIconRotation,
+    Color? dropdownColor,
+    double? dropdownElevation,
+    BorderRadius? dropdownBorderRadius,
+    EdgeInsetsGeometry? dropdownPadding,
+    ShapeBorder? dropdownBorder,
+    double? itemHeight,
+    EdgeInsetsGeometry? itemPadding,
+    Color? itemHighlightColor,
+    Color? selectedItemColor,
+    TextStyle? itemTextStyle,
+    TextStyle? searchTextStyle,
+    InputDecoration? searchDecoration,
+    double? searchFieldHeight,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+  }) {
+    return MenuTheme(
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      borderColor: borderColor ?? this.borderColor,
+      border: border ?? this.border,
+      borderRadius: borderRadius ?? this.borderRadius,
+      padding: padding ?? this.padding,
+      elevation: elevation ?? this.elevation,
+      iconColor: iconColor ?? this.iconColor,
+      icon: icon ?? this.icon,
+      iconSize: iconSize ?? this.iconSize,
+      disableIconRotation: disableIconRotation ?? this.disableIconRotation,
+      dropdownColor: dropdownColor ?? this.dropdownColor,
+      dropdownElevation: dropdownElevation ?? this.dropdownElevation,
+      dropdownBorderRadius: dropdownBorderRadius ?? this.dropdownBorderRadius,
+      dropdownPadding: dropdownPadding ?? this.dropdownPadding,
+      dropdownBorder: dropdownBorder ?? this.dropdownBorder,
+      itemHeight: itemHeight ?? this.itemHeight,
+      itemPadding: itemPadding ?? this.itemPadding,
+      itemHighlightColor: itemHighlightColor ?? this.itemHighlightColor,
+      selectedItemColor: selectedItemColor ?? this.selectedItemColor,
+      itemTextStyle: itemTextStyle ?? this.itemTextStyle,
+      searchTextStyle: searchTextStyle ?? this.searchTextStyle,
+      searchDecoration: searchDecoration ?? this.searchDecoration,
+      searchFieldHeight: searchFieldHeight ?? this.searchFieldHeight,
+      textStyle: textStyle ?? this.textStyle,
+      hintStyle: hintStyle ?? this.hintStyle,
+    );
+  }
+}
+
+/// A TextField-based dropdown menu with MenuFlow's modern overlay system.
+///
+/// Features:
+/// - Type to filter/search items
+/// - Form field integration (label, helper text, error text)
+/// - Leading and trailing icons
+/// - Custom styling per item
+/// - Enabled/disabled state
+/// - Custom filter and search callbacks
+/// - Configurable close behavior
+///
+/// Example:
+/// ```dart
+/// MenuFlowTextField<String>(
+///   entries: [
+///     MenuFlowEntry(value: 'apple', label: 'Apple'),
+///     MenuFlowEntry(value: 'banana', label: 'Banana'),
+///   ],
+///   label: Text('Fruit'),
+///   onSelected: (value) => print(value),
+/// )
+/// ```
+class MenuTextField<T> extends StatefulWidget {
+  const MenuTextField({
+    super.key,
+    required this.entries,
+    this.initialSelection,
+    this.onSelected,
+    this.controller,
+    this.focusNode,
+    // Appearance
+    this.enabled = true,
+    this.width,
+    this.menuHeight,
+    this.label,
+    this.hintText,
+    this.helperText,
+    this.errorText,
+    this.leadingIcon,
+    this.trailingIcon,
+    this.showTrailingIcon = true,
+    this.selectedTrailingIcon,
+    // Filtering/Search
+    this.enableFilter = true,
+    this.enableSearch = true,
+    this.filterCallback,
+    this.searchCallback,
+    // Text field properties
+    this.textAlign = TextAlign.start,
+    this.textStyle,
+    this.keyboardType,
+    this.textInputAction,
+    this.inputFormatters,
+    this.maxLines = 1,
+    this.cursorHeight,
+    // Behavior
+    this.closeBehavior = MenuCloseBehavior.all,
+    this.requestFocusOnTap,
+    // Theming
+    this.theme,
+    this.inputDecoration,
+    // Positioning
+    this.offset,
+  });
+
+  /// List of menu entries
+  final List<MenuEntry<T>> entries;
+
+  /// Initial selected value
+  final T? initialSelection;
+
+  /// Callback when an entry is selected
+  final ValueChanged<T?>? onSelected;
+
+  /// Optional text controller
+  final TextEditingController? controller;
+
+  /// Optional focus node
+  final FocusNode? focusNode;
+
+  // Appearance
+  final bool enabled;
+  final double? width;
+  final double? menuHeight;
+  final Widget? label;
+  final String? hintText;
+  final String? helperText;
+  final String? errorText;
+  final Widget? leadingIcon;
+  final Widget? trailingIcon;
+  final bool showTrailingIcon;
+  final Widget? selectedTrailingIcon;
+
+  // Filtering/Search
+  final bool enableFilter;
+  final bool enableSearch;
+  final MenuFilterCallback<MenuEntry<T>>? filterCallback;
+  final MenuSearchCallback<MenuEntry<T>>? searchCallback;
+
+  // Text field properties
+  final TextAlign textAlign;
+  final TextStyle? textStyle;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
+  final int maxLines;
+  final double? cursorHeight;
+
+  // Behavior
+  final MenuCloseBehavior closeBehavior;
+  final bool? requestFocusOnTap;
+
+  // Theming
+  final MenuTheme? theme;
+  final InputDecoration? inputDecoration;
+
+  // Positioning
+  final Offset? offset;
+
+  @override
+  State<MenuTextField<T>> createState() => _MenuTextFieldState<T>();
+}
+
+class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
+  late final TextEditingController _textController;
+  late final FocusNode _focusNode;
+  final FocusNode _internalFocusNode = FocusNode();
+  final LayerLink _layerLink = LayerLink();
+  final ScrollController _scrollController = ScrollController();
+
+  OverlayEntry? _overlayEntry;
+  List<MenuEntry<T>> _filteredEntries = [];
+  int? _currentHighlight;
+  int? _selectedEntryIndex;
+  bool _isOverlayVisible = false;
+  bool _enableFilter = false;
+  bool _enableSearch = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = widget.controller ?? TextEditingController();
+    _focusNode = widget.focusNode ?? FocusNode();
     _enableSearch = widget.enableSearch;
-    _filteredEntries = widget.items;
-    _buttonKeys = List.generate(widget.items.length, (_) => GlobalKey());
-    _menuHasEnabledItem = _filteredEntries.any((e) => e.enabled);
-    _controller = widget.menuController ?? MenuController();
+    _filteredEntries = widget.entries;
+
+    _textController.addListener(_onTextChanged);
+    _focusNode.addListener(_onFocusChanged);
+
     _initializeSelection();
-    _refreshLeadingPadding();
+
+    // Register keyboard handler
+    HardwareKeyboard.instance.addHandler(_handleKeyEvent);
+  }
+
+  @override
+  void didUpdateWidget(MenuTextField<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.entries != widget.entries) {
+      _filteredEntries = widget.entries;
+      _currentHighlight = null;
+    }
+
+    if (oldWidget.initialSelection != widget.initialSelection) {
+      _initializeSelection();
+    }
+  }
+
+  @override
+  void dispose() {
+    HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
+    _textController.removeListener(_onTextChanged);
+    _focusNode.removeListener(_onFocusChanged);
+    _overlayEntry?.remove();
+    _scrollController.dispose();
+    _internalFocusNode.dispose();
+
+    if (widget.controller == null) {
+      _textController.dispose();
+    }
+    if (widget.focusNode == null) {
+      _focusNode.dispose();
+    }
+
+    super.dispose();
   }
 
   void _initializeSelection() {
-    final index = _filteredEntries.indexWhere((e) => e.value == widget.initialSelection);
-    if (index != -1) {
-      _updateTextController(_filteredEntries[index].label);
-      _selectedEntryIndex = index;
+    if (widget.initialSelection != null) {
+      final index = widget.entries.indexWhere((e) => e.value == widget.initialSelection);
+      if (index != -1) {
+        _updateTextController(widget.entries[index].label);
+        _selectedEntryIndex = index;
+      }
     }
   }
 
@@ -150,520 +1149,429 @@ class _MenuState<T> extends State<Menu<T>> {
     );
   }
 
-  void _clearSelectedEntryIndex() => _selectedEntryIndex = null;
-
-  @override
-  void dispose() {
-    _textController.removeListener(_clearSelectedEntryIndex);
-    _localTextController?.dispose();
-    _internalFocusNode.dispose();
-    _localTrailingIconFocusNode?.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(Menu<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.controller != widget.controller) {
-      oldWidget.controller?.removeListener(_clearSelectedEntryIndex);
-      _localTextController?.dispose();
-      _localTextController = null;
-      _textController.addListener(_clearSelectedEntryIndex);
-      _selectedEntryIndex = null;
-    }
-
-    if (!widget.enableFilter) _enableFilter = false;
-    if (!widget.enableSearch) {
-      _enableSearch = false;
-      _currentHighlight = null;
-    }
-
-    if (oldWidget.items != widget.items) {
-      _currentHighlight = null;
-      _filteredEntries = widget.items;
-      _buttonKeys = List.generate(widget.items.length, (_) => GlobalKey());
-      _menuHasEnabledItem = _filteredEntries.any((e) => e.enabled);
-      _updateSelectionAfterItemsChange(oldWidget);
-    }
-
-    if (oldWidget.leadingIcon != widget.leadingIcon) _refreshLeadingPadding();
-    if (oldWidget.initialSelection != widget.initialSelection) _initializeSelection();
-    if (oldWidget.menuController != widget.menuController) {
-      _controller = widget.menuController ?? MenuController();
+  void _onTextChanged() {
+    if (_isOverlayVisible) {
+      setState(() {
+        _enableFilter = widget.enableFilter;
+        _enableSearch = widget.enableSearch;
+        _updateFilteredEntries();
+      });
     }
   }
 
-  void _updateSelectionAfterItemsChange(Menu<T> oldWidget) {
-    if (_selectedEntryIndex != null) {
-      final oldValue = oldWidget.items[_selectedEntryIndex!].value;
-      final newIndex = _filteredEntries.indexWhere((e) => e.value == oldValue);
-      if (newIndex != -1) {
-        _updateTextController(_filteredEntries[newIndex].label);
-        _selectedEntryIndex = newIndex;
-      } else {
-        _selectedEntryIndex = null;
+  void _onFocusChanged() {
+    if (!_focusNode.hasFocus && _isOverlayVisible) {
+      if (widget.closeBehavior == MenuCloseBehavior.all) {
+        _hideOverlay();
       }
     }
   }
 
+  void _updateFilteredEntries() {
+    final text = _textController.text;
+
+    if (_enableFilter && text.isNotEmpty) {
+      if (widget.filterCallback != null) {
+        _filteredEntries = widget.filterCallback!(widget.entries, text);
+      } else {
+        _filteredEntries = widget.entries
+            .where((e) => e.label.toLowerCase().contains(text.toLowerCase()))
+            .toList();
+      }
+    } else {
+      _filteredEntries = widget.entries;
+    }
+
+    // Update highlight
+    if (_enableSearch && text.isNotEmpty) {
+      if (widget.searchCallback != null) {
+        _currentHighlight = widget.searchCallback!(_filteredEntries, text);
+      } else {
+        final searchText = text.toLowerCase();
+        final index = _filteredEntries.indexWhere(
+              (e) => e.label.toLowerCase().contains(searchText),
+        );
+        _currentHighlight = index != -1 ? index : null;
+      }
+
+      if (_currentHighlight != null) {
+        _scrollToHighlight();
+      }
+    }
+  }
+
+  bool _handleKeyEvent(KeyEvent event) {
+    if (!_isOverlayVisible || !widget.enabled) return false;
+    if (event is! KeyDownEvent) return false;
+
+    final key = event.logicalKey;
+
+    if (key == LogicalKeyboardKey.arrowDown) {
+      _highlightNext();
+      return true;
+    }
+
+    if (key == LogicalKeyboardKey.arrowUp) {
+      _highlightPrevious();
+      return true;
+    }
+
+    if (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.numpadEnter) {
+      _handleEnter();
+      return true;
+    }
+
+    if (key == LogicalKeyboardKey.escape) {
+      _hideOverlay();
+      return true;
+    }
+
+    return false;
+  }
+
+  void _highlightNext() {
+    setState(() {
+      _enableFilter = false;
+      _enableSearch = false;
+
+      if (_filteredEntries.isEmpty) {
+        _currentHighlight = null;
+        return;
+      }
+
+      int next = ((_currentHighlight ?? -1) + 1) % _filteredEntries.length;
+
+      // Skip disabled entries
+      while (!_filteredEntries[next].enabled) {
+        next = (next + 1) % _filteredEntries.length;
+        // Prevent infinite loop if all entries are disabled
+        if (next == _currentHighlight) break;
+      }
+
+      _currentHighlight = next;
+      if (_filteredEntries[next].enabled) {
+        _updateTextController(_filteredEntries[next].label);
+      }
+    });
+    _scrollToHighlight();
+  }
+
+  void _highlightPrevious() {
+    setState(() {
+      _enableFilter = false;
+      _enableSearch = false;
+
+      if (_filteredEntries.isEmpty) {
+        _currentHighlight = null;
+        return;
+      }
+
+      int prev = _currentHighlight ?? 0;
+      prev = (prev - 1) % _filteredEntries.length;
+      if (prev < 0) prev = _filteredEntries.length - 1;
+
+      // Skip disabled entries
+      while (!_filteredEntries[prev].enabled) {
+        prev = prev - 1;
+        if (prev < 0) prev = _filteredEntries.length - 1;
+        // Prevent infinite loop if all entries are disabled
+        if (prev == _currentHighlight) break;
+      }
+
+      _currentHighlight = prev;
+      if (_filteredEntries[prev].enabled) {
+        _updateTextController(_filteredEntries[prev].label);
+      }
+    });
+    _scrollToHighlight();
+  }
+
+  void _handleEnter() {
+    if (_currentHighlight != null && _currentHighlight! < _filteredEntries.length) {
+      final entry = _filteredEntries[_currentHighlight!];
+      if (entry.enabled) {
+        _selectEntry(entry, _currentHighlight!);
+      }
+    }
+  }
+
+  void _scrollToHighlight() {
+    if (_currentHighlight == null) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients && _currentHighlight! < _filteredEntries.length) {
+        final itemHeight = 48.0; // Default item height
+        final offset = _currentHighlight! * itemHeight;
+        final viewportHeight = _scrollController.position.viewportDimension;
+        final currentScroll = _scrollController.offset;
+
+        if (offset < currentScroll || offset + itemHeight > currentScroll + viewportHeight) {
+          _scrollController.animateTo(
+            offset - (viewportHeight / 2) + (itemHeight / 2),
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    });
+  }
+
+  void _toggleOverlay() {
+    if (_isOverlayVisible) {
+      _hideOverlay();
+    } else {
+      _showOverlay();
+    }
+  }
+
+  void _showOverlay() {
+    if (_isOverlayVisible || !widget.enabled) return;
+
+    setState(() {
+      _filteredEntries = widget.entries;
+      _enableFilter = false;
+      _isOverlayVisible = true;
+    });
+
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+    _internalFocusNode.requestFocus();
+  }
+
+  void _hideOverlay() {
+    if (!_isOverlayVisible) return;
+
+    setState(() {
+      _isOverlayVisible = false;
+      _currentHighlight = null;
+    });
+
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  void _selectEntry(MenuEntry<T> entry, int index) {
+    _updateTextController(entry.label);
+    _selectedEntryIndex = index;
+    _currentHighlight = widget.enableSearch ? index : null;
+    widget.onSelected?.call(entry.value);
+
+    if (widget.closeBehavior == MenuCloseBehavior.self ||
+        widget.closeBehavior == MenuCloseBehavior.all) {
+      _hideOverlay();
+    }
+  }
+
   bool _canRequestFocus() {
-    return widget.focusNode?.canRequestFocus ??
-        widget.requestFocusOnTap ??
+    return widget.requestFocusOnTap ??
         switch (Theme.of(context).platform) {
           TargetPlatform.iOS || TargetPlatform.android || TargetPlatform.fuchsia => false,
           TargetPlatform.macOS || TargetPlatform.linux || TargetPlatform.windows => true,
         };
   }
 
-  void _refreshLeadingPadding() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) setState(() => _leadingPadding = _getWidth(_leadingKey));
-    }, debugLabel: 'Menu.refreshLeadingPadding');
-  }
-
-  void _scrollToHighlight() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final context = _buttonKeys[_currentHighlight!].currentContext;
-      if (context != null) {
-        Scrollable.of(context).position.ensureVisible(context.findRenderObject()!);
-      }
-    }, debugLabel: 'Menu.scrollToHighlight');
-  }
-
-  double? _getWidth(GlobalKey key) {
-    final context = key.currentContext;
-    if (context != null) {
-      final box = context.findRenderObject()! as RenderBox;
-      return box.hasSize ? box.size.width : null;
-    }
-    return null;
-  }
-
-  List<MenuEntry<T>> _filterEntries(List<MenuEntry<T>> entries, String text) {
-    final filterText = text.toLowerCase();
-    return entries.where((e) => e.label.toLowerCase().contains(filterText)).toList();
-  }
-
-  int? _searchEntries(List<MenuEntry<T>> entries, String text) {
-    final searchText = text.toLowerCase();
-    if (searchText.isEmpty) return null;
-    final index = entries.indexWhere((e) => e.label.toLowerCase().contains(searchText));
-    return index != -1 ? index : null;
-  }
-
-  bool _shouldUpdateHighlight(List<MenuEntry<T>> entries) {
-    final searchText = _textController.text.toLowerCase();
-    if (searchText.isEmpty) return true;
-    if (_currentHighlight == null || _currentHighlight! >= entries.length) return true;
-    return !entries[_currentHighlight!].label.toLowerCase().contains(searchText);
-  }
-
-  void _handleUpKey(ArrowUpIntent _) {
-    if (!widget.enabled || !_menuHasEnabledItem || !_controller.isOpen) return;
-
-    setState(() {
-      _enableFilter = false;
-      _enableSearch = false;
-      _currentHighlight = ((_currentHighlight ?? 0) - 1) % _filteredEntries.length;
-      while (!_filteredEntries[_currentHighlight!].enabled) {
-        _currentHighlight = (_currentHighlight! - 1) % _filteredEntries.length;
-      }
-      _updateTextController(_filteredEntries[_currentHighlight!].label);
-    });
-  }
-
-  void _handleDownKey(ArrowDownIntent _) {
-    if (!widget.enabled || !_menuHasEnabledItem || !_controller.isOpen) return;
-
-    setState(() {
-      _enableFilter = false;
-      _enableSearch = false;
-      _currentHighlight = ((_currentHighlight ?? -1) + 1) % _filteredEntries.length;
-      while (!_filteredEntries[_currentHighlight!].enabled) {
-        _currentHighlight = (_currentHighlight! + 1) % _filteredEntries.length;
-      }
-      _updateTextController(_filteredEntries[_currentHighlight!].label);
-    });
-  }
-
-  void _toggleMenu({bool focusForKeyboard = true}) {
-    if (_controller.isOpen) {
-      _currentHighlight = null;
-      _controller.close();
-    } else {
-      _filteredEntries = widget.items;
-      if (_textController.text.isNotEmpty) _enableFilter = false;
-      _controller.open();
-      if (focusForKeyboard) _internalFocusNode.requestFocus();
-    }
-    setState(() {});
-  }
-
-  void _handleEditingComplete() {
-    if (_currentHighlight != null) {
-      final entry = _filteredEntries[_currentHighlight!];
-      if (entry.enabled) {
-        _updateTextController(entry.label);
-        _selectedEntryIndex = _currentHighlight;
-        widget.onSelected?.call(entry.value);
-      }
-    } else {
-      if (_controller.isOpen) widget.onSelected?.call(null);
-    }
-    if (!widget.enableSearch) _currentHighlight = null;
-    _controller.close();
-  }
-
-  void _selectEntry(MenuEntry<T> entry, int index) {
-    if (!mounted) {
-      widget.controller?.value = TextEditingValue(
-        text: entry.label,
-        selection: TextSelection.collapsed(offset: entry.label.length),
-      );
-      widget.onSelected?.call(entry.value);
-      return;
-    }
-
-    _updateTextController(entry.label);
-    _selectedEntryIndex = index;
-    _currentHighlight = widget.enableSearch ? index : null;
-    widget.onSelected?.call(entry.value);
-    _enableFilter = false;
-
-    if (widget.closeBehavior == MenuCloseBehavior.self) {
-      _controller.close();
-    }
-  }
-
-  Widget _buildMenuItem(MenuEntry<T> entry, int index, {
-    bool isFocused = false,
-    bool enableScrollToHighlight = true,
-    bool excludeSemantics = false,
-    required bool useMaterial3,
-  }) {
-    final padding = entry.leadingIcon == null
-        ? (_leadingPadding ?? kDefaultHorizontalPadding)
-        : kDefaultHorizontalPadding;
-
-    ButtonStyle style = entry.style ?? MenuItemButton.styleFrom(
-      padding: EdgeInsetsDirectional.only(
-        start: padding,
-        end: kDefaultHorizontalPadding,
-      ),
-    );
-
-    if (entry.enabled && isFocused) {
-      style = _applyFocusedStyle(style, entry);
-    }
-
-    Widget label = entry.labelWidget ?? Text(entry.label);
-    if (widget.width != null) {
-      final horizontalPadding = padding + kDefaultHorizontalPadding +
-          (useMaterial3 ? kInputStartGap : 0.0);
-      label = ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: widget.width! - horizontalPadding),
-        child: label,
-      );
-    }
-
-    return ExcludeSemantics(
-      excluding: excludeSemantics,
-      child: MenuItemButton(
-        key: enableScrollToHighlight ? _buttonKeys[index] : null,
-        style: style,
-        leadingIcon: entry.leadingIcon,
-        trailingIcon: entry.trailingIcon,
-        closeOnActivate: widget.closeBehavior == MenuCloseBehavior.all,
-        onPressed: entry.enabled && widget.enabled ? () => _selectEntry(entry, index) : null,
-        requestFocusOnHover: false,
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(start: useMaterial3 ? kInputStartGap : 0),
-          child: label,
-        ),
-      ),
-    );
-  }
-
-  ButtonStyle _applyFocusedStyle(ButtonStyle baseStyle, MenuEntry<T> entry) {
-    final themeStyle = MenuButtonTheme.of(context).style;
-    final defaultStyle = const MenuItemButton().defaultStyleOf(context);
-
-    Color? resolveFocused(WidgetStateProperty<Color?>? prop) {
-      return prop?.resolve({WidgetState.focused});
-    }
-
-    final foreground = resolveFocused(entry.style?.foregroundColor ?? themeStyle?.foregroundColor ?? defaultStyle.foregroundColor!)!;
-    final icon = resolveFocused(entry.style?.iconColor ?? themeStyle?.iconColor ?? defaultStyle.iconColor!)!;
-    final overlay = resolveFocused(entry.style?.overlayColor ?? themeStyle?.overlayColor ?? defaultStyle.overlayColor!)!;
-    final background = resolveFocused(entry.style?.backgroundColor ?? themeStyle?.backgroundColor) ??
-        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12);
-
-    return baseStyle.copyWith(
-      backgroundColor: WidgetStatePropertyAll(background),
-      foregroundColor: WidgetStatePropertyAll(foreground),
-      iconColor: WidgetStatePropertyAll(icon),
-      overlayColor: WidgetStatePropertyAll(overlay),
-    );
-  }
-
-  List<Widget> _buildMenuItems({
-    required List<MenuEntry<T>> entries,
-    int? focusedIndex,
-    bool enableScrollToHighlight = true,
-    bool excludeSemantics = false,
-    required bool useMaterial3,
-  }) {
-    return List.generate(entries.length, (i) {
-      return _buildMenuItem(
-        entries[i],
-        i,
-        isFocused: i == focusedIndex,
-        enableScrollToHighlight: enableScrollToHighlight,
-        excludeSemantics: excludeSemantics,
-        useMaterial3: useMaterial3,
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final useMaterial3 = Theme.of(context).useMaterial3;
-    Directionality.of(context);
-    final theme = DropdownMenuTheme.of(context);
-    final defaults = MenuDefaults(context);
-
-    _initialMenu ??= _buildMenuItems(
-      entries: widget.items,
-      enableScrollToHighlight: false,
-      excludeSemantics: true,
-      useMaterial3: useMaterial3,
-    );
-
-    if (_enableFilter) {
-      _filteredEntries = widget.filterCallback?.call(_filteredEntries, _textController.text) ??
-          _filterEntries(widget.items, _textController.text);
-    }
-    _menuHasEnabledItem = _filteredEntries.any((e) => e.enabled);
-
-    if (_enableSearch) {
-      if (_shouldUpdateHighlight(_filteredEntries)) {
-        _currentHighlight = widget.searchCallback?.call(_filteredEntries, _textController.text) ??
-            _searchEntries(_filteredEntries, _textController.text);
-      }
-      if (_currentHighlight != null) _scrollToHighlight();
-    }
-
-    final menuItems = _buildMenuItems(
-      entries: _filteredEntries,
-      focusedIndex: _currentHighlight,
-      useMaterial3: useMaterial3,
-    );
-
-    final textStyle = _getEffectiveTextStyle(theme, defaults);
-    final menuStyle = _getEffectiveMenuStyle(theme, defaults);
-    final inputDecoration = _getEffectiveInputDecoration(theme, defaults);
-    final mouseCursor = widget.enabled
-        ? (_canRequestFocus() ? SystemMouseCursors.text : SystemMouseCursors.click)
-        : null;
-
-    Widget menuAnchor = MenuAnchor(
-      style: menuStyle,
-      alignmentOffset: widget.alignmentOffset,
-      reservedPadding: EdgeInsets.zero,
-      controller: _controller,
-      menuChildren: menuItems,
-      crossAxisUnconstrained: false,
-      builder: (context, controller, child) => _buildMenuAnchorContent(
-        controller,
-        textStyle,
-        inputDecoration,
-        mouseCursor,
-      ),
-    );
-
-    if (widget.expandedInsets != null) {
-      menuAnchor = Padding(
-        padding: widget.expandedInsets!.clamp(
-          EdgeInsets.zero,
-          const EdgeInsets.only(left: double.infinity, right: double.infinity)
-              .add(const EdgeInsetsDirectional.only(end: double.infinity, start: double.infinity)),
-        ),
-        child: menuAnchor,
-      );
-    }
-
-    menuAnchor = Align(
-      alignment: AlignmentDirectional.topStart,
-      widthFactor: 1.0,
-      heightFactor: 1.0,
-      child: menuAnchor,
-    );
-
-    return Actions(
-      actions: {
-        ArrowUpIntent: CallbackAction<ArrowUpIntent>(onInvoke: _handleUpKey),
-        ArrowDownIntent: CallbackAction<ArrowDownIntent>(onInvoke: _handleDownKey),
-        EnterIntent: CallbackAction<EnterIntent>(onInvoke: (_) => _handleEditingComplete()),
-      },
-      child: Stack(
-        children: [
-          Shortcuts(
-            shortcuts: const {
-              SingleActivator(LogicalKeyboardKey.arrowUp): ArrowUpIntent(),
-              SingleActivator(LogicalKeyboardKey.arrowDown): ArrowDownIntent(),
-              SingleActivator(LogicalKeyboardKey.enter): EnterIntent(),
-            },
-            child: Focus(
-              focusNode: _internalFocusNode,
-              skipTraversal: true,
-              child: const SizedBox.shrink(),
-            ),
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: SizedBox(
+        width: widget.width,
+        child: TextField(
+          controller: _textController,
+          focusNode: _focusNode,
+          enabled: widget.enabled,
+          canRequestFocus: _canRequestFocus(),
+          enableInteractiveSelection: _canRequestFocus(),
+          readOnly: !_canRequestFocus(),
+          keyboardType: widget.keyboardType,
+          textAlign: widget.textAlign,
+          textAlignVertical: TextAlignVertical.center,
+          maxLines: widget.maxLines,
+          textInputAction: widget.textInputAction,
+          cursorHeight: widget.cursorHeight,
+          style: widget.textStyle,
+          inputFormatters: widget.inputFormatters,
+          onTap: widget.enabled ? _toggleOverlay : null,
+          onChanged: (text) {
+            if (!_isOverlayVisible) {
+              _showOverlay();
+            }
+          },
+          decoration: (widget.inputDecoration ??
+              InputDecoration(
+                border: const OutlineInputBorder(),
+                label: widget.label,
+                hintText: widget.hintText,
+                helperText: widget.helperText,
+                errorText: widget.errorText,
+              ))
+              .copyWith(
+            prefixIcon: widget.leadingIcon,
+            suffixIcon: widget.showTrailingIcon
+                ? IconButton(
+              icon: _isOverlayVisible
+                  ? (widget.selectedTrailingIcon ?? const Icon(Icons.arrow_drop_up))
+                  : (widget.trailingIcon ?? const Icon(Icons.arrow_drop_down)),
+              onPressed: widget.enabled ? _toggleOverlay : null,
+            )
+                : null,
           ),
-          menuAnchor,
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildMenuAnchorContent(
-      MenuController controller,
-      TextStyle? textStyle,
-      InputDecorationThemeData inputDecoration,
-      MouseCursor? mouseCursor,
-      ) {
-    final isCollapsed = widget.inputDecorationTheme?.isCollapsed ?? false;
+  OverlayEntry _createOverlayEntry() {
+    final renderBox = context.findRenderObject()! as RenderBox;
+    final size = renderBox.size;
 
-    final trailingButton = widget.showTrailingIcon
-        ? IconButton(
-      focusNode: _trailingIconFocusNode,
-      isSelected: controller.isOpen,
-      constraints: widget.inputDecorationTheme?.suffixIconConstraints,
-      padding: isCollapsed ? EdgeInsets.zero : null,
-      icon: widget.trailingIcon ?? const Icon(Icons.keyboard_arrow_down_sharp, size: 16),
-      selectedIcon: widget.selectedTrailingIcon ?? const Icon(Icons.keyboard_arrow_up_sharp, size: 16),
-      onPressed: widget.enabled ? () => _toggleMenu() : null,
-    )
-        : const SizedBox.shrink();
-
-    final textField = TextField(
-      key: _anchorKey,
-      enabled: widget.enabled,
-      mouseCursor: mouseCursor,
-      focusNode: widget.focusNode,
-      canRequestFocus: _canRequestFocus(),
-      enableInteractiveSelection: _canRequestFocus(),
-      readOnly: !_canRequestFocus(),
-      keyboardType: widget.keyboardType,
-      textAlign: widget.textAlign,
-      textAlignVertical: TextAlignVertical.center,
-      maxLines: widget.maxLines,
-      textInputAction: widget.textInputAction,
-      cursorHeight: widget.cursorHeight,
-      style: textStyle,
-      controller: _textController,
-      onEditingComplete: _handleEditingComplete,
-      onTap: widget.enabled ? () => _toggleMenu(focusForKeyboard: !_canRequestFocus()) : null,
-      onChanged: (text) {
-        controller.open();
-        setState(() {
-          _filteredEntries = widget.items;
-          _enableFilter = widget.enableFilter;
-          _enableSearch = widget.enableSearch;
-        });
-      },
-      inputFormatters: widget.inputFormatters,
-      decoration: InputDecoration(
-        label: widget.label,
-        hintText: widget.hintText,
-        helperText: widget.helperText,
-        errorText: widget.errorText,
-        prefixIcon: widget.leadingIcon != null ? SizedBox(key: _leadingKey, child: widget.leadingIcon) : null,
-        suffixIcon: widget.showTrailingIcon ? trailingButton : null,
-      ).applyDefaults(inputDecoration),
-      restorationId: widget.restorationId,
-    );
-
-    final body = widget.expandedInsets != null
-        ? textField
-        : MenuBody(
-      width: widget.width,
-      children: [
-        textField,
-        ..._initialMenu!.map((item) => ExcludeFocus(excluding: !controller.isOpen, child: item)),
-        if (widget.label != null)
-          ExcludeSemantics(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: DefaultTextStyle(style: textStyle!, child: widget.label!),
-            ),
+    return OverlayEntry(
+      builder: (context) => GestureDetector(
+        onTap: () {
+          if (widget.closeBehavior == MenuCloseBehavior.all) {
+            _hideOverlay();
+          }
+        },
+        behavior: HitTestBehavior.translucent,
+        child: SizedBox.expand(
+          child: Stack(
+            children: [
+              CompositedTransformFollower(
+                link: _layerLink,
+                targetAnchor: Alignment.bottomLeft,
+                followerAnchor: Alignment.topLeft,
+                offset: widget.offset ?? const Offset(0, 5),
+                showWhenUnlinked: false,
+                child: SizedBox(
+                  width: widget.width ?? size.width,
+                  child: Material(
+                    elevation: 8,
+                    borderRadius: BorderRadius.circular(8),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: widget.menuHeight ?? MediaQuery.of(context).size.height * 0.4,
+                      ),
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        itemCount: _filteredEntries.length,
+                        itemBuilder: (context, index) => _buildItem(_filteredEntries[index], index),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        trailingButton,
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: widget.leadingIcon ?? const SizedBox.shrink(),
         ),
-      ],
-    );
-
-    return Shortcuts(
-      shortcuts: const {
-        SingleActivator(LogicalKeyboardKey.arrowLeft): ExtendSelectionByCharacterIntent(forward: false, collapseSelection: true),
-        SingleActivator(LogicalKeyboardKey.arrowRight): ExtendSelectionByCharacterIntent(forward: true, collapseSelection: true),
-        SingleActivator(LogicalKeyboardKey.arrowUp): ArrowUpIntent(),
-        SingleActivator(LogicalKeyboardKey.arrowDown): ArrowDownIntent(),
-      },
-      child: body,
+      ),
     );
   }
 
-  TextStyle? _getEffectiveTextStyle(DropdownMenuThemeData theme, MenuDefaults defaults) {
-    final baseStyle = widget.textStyle ?? theme.textStyle ?? defaults.textStyle;
-    final disabledColor = theme.disabledColor ?? defaults.disabledColor;
-    return widget.enabled
-        ? baseStyle
-        : baseStyle?.copyWith(color: disabledColor) ?? TextStyle(color: disabledColor);
-  }
+  Widget _buildItem(MenuEntry<T> entry, int index) {
+    final isHighlighted = index == _currentHighlight;
+    final isSelected = index == _selectedEntryIndex;
 
-  MenuStyle _getEffectiveMenuStyle(DropdownMenuThemeData theme, MenuDefaults defaults) {
-    MenuStyle style = widget.menuStyle ?? theme.menuStyle ?? defaults.menuStyle;
-    final anchorWidth = _getWidth(_anchorKey);
-    final targetWidth = widget.width ?? anchorWidth;
-
-    if (targetWidth != null) {
-      style = style.copyWith(
-        minimumSize: WidgetStateProperty.resolveWith((states) {
-          final maxWidth = style.maximumSize?.resolve(states)?.width;
-          return Size(math.min(targetWidth, maxWidth ?? targetWidth), 0.0);
-        }),
-      );
+    Color? backgroundColor;
+    if (isHighlighted) {
+      backgroundColor = Theme.of(context).colorScheme.primary.withOpacity(0.12);
+    } else if (isSelected) {
+      backgroundColor = Theme.of(context).colorScheme.primary.withOpacity(0.08);
     }
 
-    if (widget.menuHeight != null) {
-      style = style.copyWith(
-        maximumSize: WidgetStatePropertyAll(Size(double.infinity, widget.menuHeight!)),
-      );
-    }
-
-    return style;
-  }
-
-  InputDecorationThemeData _getEffectiveInputDecoration(
-      DropdownMenuThemeData theme,
-      MenuDefaults defaults,
-      ) {
-    return widget.inputDecorationTheme ?? theme.inputDecorationTheme ?? defaults.inputDecorationTheme;
+    return Material(
+      color: backgroundColor,
+      child: InkWell(
+        onTap: entry.enabled ? () => _selectEntry(entry, index) : null,
+        child: Container(
+          height: 48,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              if (entry.leadingIcon != null) ...[
+                entry.leadingIcon!,
+                const SizedBox(width: 12),
+              ],
+              Expanded(
+                child: entry.labelWidget ??
+                    Text(
+                      entry.label,
+                      style: widget.textStyle?.copyWith(
+                        color: entry.enabled
+                            ? null
+                            : Theme.of(context).disabledColor,
+                      ),
+                    ),
+              ),
+              if (entry.trailingIcon != null) ...[
+                const SizedBox(width: 12),
+                entry.trailingIcon!,
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
-class MenuEntry<T> {
-  final T value;
-  final String label;
-  final Widget? labelWidget;
-  final Widget? leadingIcon;
-  final Widget? trailingIcon;
-  final bool enabled;
-  final ButtonStyle? style;
 
+/// Base class for MenuFlow items using sealed class pattern for type safety.
+/// Items can be either string-based or widget-based.
+sealed class MenuItem<T> {
+  const MenuItem({required this.value});
+
+  /// The actual value associated with this item
+  final T value;
+}
+
+/// A menu item that displays a simple text label
+final class MenuItemString<T> extends MenuItem<T> {
+  const MenuItemString({
+    required super.value,
+    required this.label,
+  });
+
+  /// The text label to display for this item
+  final String label;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is MenuItemString<T> &&
+              runtimeType == other.runtimeType &&
+              value == other.value &&
+              label == other.label;
+
+  @override
+  int get hashCode => Object.hash(value, label);
+}
+
+/// A menu item that displays a custom widget
+final class MenuItemWidget<T> extends MenuItem<T> {
+  const MenuItemWidget({
+    required super.value,
+    required this.widget,
+  });
+
+  /// The custom widget to display for this item
+  final Widget widget;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is MenuItemWidget<T> &&
+              runtimeType == other.runtimeType &&
+              value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
+}
+
+/// Enhanced menu entry for MenuFlowTextField with additional customization options.
+///
+/// Supports custom widgets, icons, and styling for individual items.
+class MenuEntry<T> {
   const MenuEntry({
     required this.value,
     required this.label,
@@ -673,243 +1581,36 @@ class MenuEntry<T> {
     this.enabled = true,
     this.style,
   });
+
+  /// The value associated with this entry
+  final T value;
+
+  /// The text label for this entry (used for searching/filtering)
+  final String label;
+
+  /// Optional custom widget to display instead of the text label
+  final Widget? labelWidget;
+
+  /// Optional leading icon
+  final Widget? leadingIcon;
+
+  /// Optional trailing icon
+  final Widget? trailingIcon;
+
+  /// Whether this entry is enabled (can be selected)
+  final bool enabled;
+
+  /// Optional custom button style for this entry
+  final ButtonStyle? style;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is MenuEntry<T> &&
+              runtimeType == other.runtimeType &&
+              value == other.value &&
+              label == other.label;
+
+  @override
+  int get hashCode => Object.hash(value, label);
 }
-
-
-
-typedef FilterCallback<T> = List<MenuEntry<T>> Function(List<MenuEntry<T>> entries, String filter);
-typedef SearchCallback<T> = int? Function(List<MenuEntry<T>> entries, String query);
-
-class MenuBody extends MultiChildRenderObjectWidget {
-  const MenuBody({super.key, super.children, this.width});
-
-  final double? width;
-
-  @override
-  RenderMenuBody createRenderObject(BuildContext context) => RenderMenuBody(width: width);
-
-  @override
-  void updateRenderObject(BuildContext context, RenderMenuBody renderObject) {
-    renderObject.width = width;
-  }
-}
-
-class MenuBodyParentData extends ContainerBoxParentData<RenderBox> {}
-
-class RenderMenuBody extends RenderBox
-    with
-        ContainerRenderObjectMixin<RenderBox, MenuBodyParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, MenuBodyParentData> {
-  RenderMenuBody({double? width}) : _width = width;
-
-  double? get width => _width;
-  double? _width;
-
-  set width(double? value) {
-    if (_width == value) return;
-    _width = value;
-    markNeedsLayout();
-  }
-
-  @override
-  void setupParentData(RenderBox child) {
-    if (child.parentData is! MenuBodyParentData) {
-      child.parentData = MenuBodyParentData();
-    }
-  }
-
-  @override
-  void performLayout() {
-    final constraints = this.constraints;
-    double maxWidth = 0.0;
-    double? maxHeight;
-    RenderBox? child = firstChild;
-
-    final intrinsicWidth = width ?? getMaxIntrinsicWidth(constraints.maxHeight);
-    final widthConstraint = math.min(intrinsicWidth, constraints.maxWidth);
-    final innerConstraints = BoxConstraints(
-      maxWidth: widthConstraint,
-      maxHeight: getMaxIntrinsicHeight(widthConstraint),
-    );
-
-    while (child != null) {
-      child.layout(innerConstraints, parentUsesSize: true);
-      final childParentData = child.parentData! as MenuBodyParentData;
-
-      if (child == firstChild) {
-        maxHeight ??= child.size.height;
-      } else {
-        childParentData.offset = Offset.zero;
-        maxWidth = math.max(maxWidth, child.size.width);
-        maxHeight ??= child.size.height;
-      }
-
-      child = childParentData.nextSibling;
-    }
-
-    maxWidth = math.max(kMinimumWidth, maxWidth);
-    size = constraints.constrain(Size(width ?? maxWidth, maxHeight!));
-  }
-
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    final child = firstChild;
-    if (child != null) {
-      final childParentData = child.parentData! as MenuBodyParentData;
-      context.paintChild(child, offset + childParentData.offset);
-    }
-  }
-
-  @override
-  Size computeDryLayout(BoxConstraints constraints) {
-    double maxWidth = 0.0;
-    double? maxHeight;
-    RenderBox? child = firstChild;
-
-    final intrinsicWidth = width ?? getMaxIntrinsicWidth(constraints.maxHeight);
-    final widthConstraint = math.min(intrinsicWidth, constraints.maxWidth);
-    final innerConstraints = BoxConstraints(
-      maxWidth: widthConstraint,
-      maxHeight: getMaxIntrinsicHeight(widthConstraint),
-    );
-
-    while (child != null) {
-      final childSize = child.getDryLayout(innerConstraints);
-      final childParentData = child.parentData! as MenuBodyParentData;
-
-      if (child == firstChild) {
-        maxHeight ??= childSize.height;
-      } else {
-        maxWidth = math.max(maxWidth, childSize.width);
-        maxHeight ??= childSize.height;
-      }
-
-      child = childParentData.nextSibling;
-    }
-
-    maxWidth = math.max(kMinimumWidth, maxWidth);
-    return constraints.constrain(Size(width ?? maxWidth, maxHeight!));
-  }
-
-  @override
-  double computeMinIntrinsicWidth(double height) {
-    RenderBox? child = firstChild;
-    double width = 0;
-
-    while (child != null) {
-      final childParentData = child.parentData! as MenuBodyParentData;
-      if (child != firstChild) {
-        final minWidth = child.getMinIntrinsicWidth(height);
-        if (child == lastChild || child == childBefore(lastChild!)) {
-          width += minWidth;
-        }
-        width = math.max(width, minWidth);
-      }
-      child = childParentData.nextSibling;
-    }
-
-    return math.max(width, kMinimumWidth);
-  }
-
-  @override
-  double computeMaxIntrinsicWidth(double height) {
-    RenderBox? child = firstChild;
-    double width = 0;
-
-    while (child != null) {
-      final childParentData = child.parentData! as MenuBodyParentData;
-      if (child != firstChild) {
-        final maxWidth = child.getMaxIntrinsicWidth(height);
-        if (child == lastChild || child == childBefore(lastChild!)) {
-          width += maxWidth;
-        }
-        width = math.max(width, maxWidth);
-      }
-      child = childParentData.nextSibling;
-    }
-
-    return math.max(width, kMinimumWidth);
-  }
-
-  @override
-  double computeMinIntrinsicHeight(double width) {
-    final child = firstChild;
-    return child != null ? child.getMinIntrinsicHeight(width) : 0;
-  }
-
-  @override
-  double computeMaxIntrinsicHeight(double width) {
-    final child = firstChild;
-    return child != null ? child.getMaxIntrinsicHeight(width) : 0;
-  }
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    final child = firstChild;
-    if (child != null) {
-      final childParentData = child.parentData! as MenuBodyParentData;
-      return result.addWithPaintOffset(
-        offset: childParentData.offset,
-        position: position,
-        hitTest: (result, transformed) {
-          assert(transformed == position - childParentData.offset);
-          return child.hitTest(result, position: transformed);
-        },
-      );
-    }
-    return false;
-  }
-
-  @override
-  void visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    visitChildren((renderObjectChild) {
-      if (renderObjectChild == firstChild) visitor(renderObjectChild);
-    });
-  }
-}
-
-class ArrowUpIntent extends Intent {
-  const ArrowUpIntent();
-}
-
-class ArrowDownIntent extends Intent {
-  const ArrowDownIntent();
-}
-
-class EnterIntent extends Intent {
-  const EnterIntent();
-}
-
-const double kMinimumWidth = 112.0;
-const double kDefaultHorizontalPadding = 12.0;
-const double kInputStartGap = 4.0;
-
-enum MenuCloseBehavior { all, self, none }
-
-class MenuDefaults extends DropdownMenuThemeData {
-  MenuDefaults(this.context)
-    : super(
-        disabledColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
-      );
-
-  final BuildContext context;
-
-  @override
-  TextStyle? get textStyle => Theme.of(context).textTheme.bodyLarge;
-
-  @override
-  MenuStyle get menuStyle {
-    return const MenuStyle(
-      minimumSize: WidgetStatePropertyAll(Size(kMinimumWidth, 0.0)),
-      maximumSize: WidgetStatePropertyAll(Size.infinite),
-      visualDensity: VisualDensity.standard,
-    );
-  }
-
-  @override
-  InputDecorationThemeData get inputDecorationTheme {
-    return const InputDecorationThemeData(border: OutlineInputBorder());
-  }
-}
-
-
