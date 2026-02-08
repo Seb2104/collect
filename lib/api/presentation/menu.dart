@@ -429,7 +429,7 @@ class _MenuState<T> extends State<Menu<T>> {
   @override
   Widget build(BuildContext context) {
     final useMaterial3 = Theme.of(context).useMaterial3;
-    final textDirection = Directionality.of(context);
+    Directionality.of(context);
     final theme = DropdownMenuTheme.of(context);
     final defaults = MenuDefaults(context);
 
@@ -626,7 +626,7 @@ class _MenuState<T> extends State<Menu<T>> {
   }
 
   MenuStyle _getEffectiveMenuStyle(DropdownMenuThemeData theme, MenuDefaults defaults) {
-    MenuStyle style = widget.menuStyle ?? theme.menuStyle ?? defaults.menuStyle!;
+    MenuStyle style = widget.menuStyle ?? theme.menuStyle ?? defaults.menuStyle;
     final anchorWidth = _getWidth(_anchorKey);
     final targetWidth = widget.width ?? anchorWidth;
 
@@ -652,7 +652,7 @@ class _MenuState<T> extends State<Menu<T>> {
       DropdownMenuThemeData theme,
       MenuDefaults defaults,
       ) {
-    return widget.inputDecorationTheme ?? theme.inputDecorationTheme ?? defaults.inputDecorationTheme!;
+    return widget.inputDecorationTheme ?? theme.inputDecorationTheme ?? defaults.inputDecorationTheme;
   }
 }
 class MenuEntry<T> {

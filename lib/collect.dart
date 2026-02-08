@@ -45,3 +45,4 @@ part 'api/presentation/word.dart';
 part 'api/utils/notifications.dart';
 part 'api/utils/radix.dart';
 part 'api/utils/strings.dart';
+part 'api/constants/icons.dart';

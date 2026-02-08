@@ -1,0 +1,210 @@
+{
+  "name": "LaTeX",
+  "version": "1.0.0",
+  "fileTypes": [
+    "tex",
+    "latex"
+  ],
+  "scopeName": "source.latex",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#environments"
+    },
+    {
+      "include": "#commands"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#delimiters"
+    },
+    {
+      "include": "#numbers"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.percentage.latex",
+          "match": "%.*$"
+        }
+      ]
+    },
+    "environments": {
+      "patterns": [
+        {
+          "name": "keyword.control.environment.latex",
+          "begin": "(\\\\begin)(\\{)([a-zA-Z]+)(\\})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.latex"
+            },
+            "2": {
+              "name": "punctuation.definition.brace.latex"
+            },
+            "3": {
+              "name": "entity.name.environment.latex"
+            },
+            "4": {
+              "name": "punctuation.definition.brace.latex"
+            }
+          },
+          "end": "(\\\\end)(\\{)(\\3)(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.control.latex"
+            },
+            "2": {
+              "name": "punctuation.definition.brace.latex"
+            },
+            "3": {
+              "name": "entity.name.environment.latex"
+            },
+            "4": {
+              "name": "punctuation.definition.brace.latex"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#commands"
+            },
+            {
+              "include": "#operators"
+            },
+            {
+              "include": "#delimiters"
+            },
+            {
+              "include": "#numbers"
+            }
+          ]
+        }
+      ]
+    },
+    "commands": {
+      "patterns": [
+        {
+          "name": "support.function.calculus.latex",
+          "match": "\\\\(?:int|oint|iint|iiint|sum|prod|lim|partial|nabla|Delta)\\b"
+        },
+        {
+          "name": "support.function.fraction.latex",
+          "match": "\\\\(?:frac|dfrac|tfrac|cfrac)\\b"
+        },
+        {
+          "name": "support.function.root.latex",
+          "match": "\\\\(?:sqrt)\\b"
+        },
+        {
+          "name": "support.function.trig.latex",
+          "match": "\\\\(?:sin|cos|tan|cot|sec|csc|arcsin|arccos|arctan|sinh|cosh|tanh)\\b"
+        },
+        {
+          "name": "support.function.log.latex",
+          "match": "\\\\(?:log|ln|lg|exp)\\b"
+        },
+        {
+          "name": "constant.character.greek.latex",
+          "match": "\\\\(?:alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|mu|nu|xi|pi|rho|sigma|tau|upsilon|phi|chi|psi|omega|Gamma|Delta|Theta|Lambda|Xi|Pi|Sigma|Upsilon|Phi|Psi|Omega)\\b"
+        },
+        {
+          "name": "support.function.formatting.latex",
+          "match": "\\\\(?:text|mathbf|mathit|mathbb|mathcal|overline|underline|hat|vec|dot|ddot|bar)\\b"
+        },
+        {
+          "name": "keyword.operator.comparison.latex",
+          "match": "\\\\(?:leq|geq|neq|approx|equiv|propto|sim|ll|gg)\\b"
+        },
+        {
+          "name": "keyword.operator.set.latex",
+          "match": "\\\\(?:in|notin|subset|supset|subseteq|supseteq|cup|cap|emptyset|forall|exists|nexists)\\b"
+        },
+        {
+          "name": "keyword.operator.logic.latex",
+          "match": "\\\\(?:land|lor|neg|Rightarrow|Leftarrow|Leftrightarrow|therefore|because)\\b"
+        },
+        {
+          "name": "keyword.operator.arrow.latex",
+          "match": "\\\\(?:rightarrow|leftarrow|leftrightarrow|uparrow|downarrow|updownarrow|Rightarrow|Leftarrow|Leftrightarrow|rightleftharpoons)\\b"
+        },
+        {
+          "name": "keyword.operator.misc.latex",
+          "match": "\\\\(?:pm|mp|times|div|cdot|infty|degree|Re|Im|arg)\\b"
+        },
+        {
+          "name": "support.function.delimiter.latex",
+          "match": "\\\\(?:left|right|big|Big|bigg|Bigg)\\b"
+        },
+        {
+          "name": "entity.name.set.latex",
+          "match": "\\\\mathbb\\{[NZQRC]\\}"
+        },
+        {
+          "name": "support.function.general.latex",
+          "match": "\\\\[a-zA-Z]+\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.superscript.latex",
+          "match": "\\^"
+        },
+        {
+          "name": "keyword.operator.subscript.latex",
+          "match": "_"
+        },
+        {
+          "name": "keyword.operator.arithmetic.latex",
+          "match": "[+\\-*/=<>]"
+        },
+        {
+          "name": "punctuation.separator.latex",
+          "match": "[,;:]"
+        },
+        {
+          "name": "keyword.operator.ampersand.latex",
+          "match": "&"
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "punctuation.definition.brace.latex",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.definition.bracket.latex",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.definition.parenthesis.latex",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.definition.pipe.latex",
+          "match": "\\|"
+        },
+        {
+          "name": "punctuation.definition.angle.latex",
+          "match": "\\\\(?:langle|rangle)"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.latex",
+          "match": "\\b\\d+\\.?\\d*\\b"
+        }
+      ]
+    }
+  }
+}

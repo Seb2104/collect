@@ -1,4 +1,3 @@
-import 'package:collect/api/presentation/colour_picker.dart';
 import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
@@ -21,18 +20,7 @@ class Main extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 1,
           width: MediaQuery.of(context).size.width * 1,
           child: Center(
-            child: Container(
-              child: ColourPicker.wheel(
-                width: 700,
-                height: 250,
-                pickerAreaHeightPercent: 0.7,
-                pickerColor: colour,
-                onColorChanged: (value) {
-                  colour = Colour.fromColor(value);
-                  print(colour.print());
-                },
-              ),
-            ),
+            child: Container(child: ReCollectIcons.backgroundColour),
           ),
         ),
       ),
