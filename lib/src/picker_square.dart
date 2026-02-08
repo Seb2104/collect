@@ -6,7 +6,7 @@ import 'common/common.dart';
 class SquarePicker extends StatefulWidget {
   const SquarePicker({
     super.key,
-    required this.pickerColor,
+    required this.currentColour,
     required this.onColorChanged,
     this.pickerHsvColor,
     this.onHsvColorChanged,
@@ -27,7 +27,7 @@ class SquarePicker extends StatefulWidget {
     this.onHistoryChanged,
   });
 
-  final Color pickerColor;
+  final Color currentColour;
   final ValueChanged<Color> onColorChanged;
   final HSVColour? pickerHsvColor;
   final ValueChanged<HSVColour>? onHsvColorChanged;
@@ -55,7 +55,7 @@ class _SquarePickerState extends State<SquarePicker> {
   void initState() {
     currentHsvColor = (widget.pickerHsvColor != null)
         ? widget.pickerHsvColor as HSVColour
-        : HSVColour.fromColor(widget.pickerColor);
+        : HSVColour.fromColor(widget.currentColour);
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _SquarePickerState extends State<SquarePicker> {
     super.didUpdateWidget(oldWidget);
     currentHsvColor = (widget.pickerHsvColor != null)
         ? widget.pickerHsvColor as HSVColour
-        : HSVColour.fromColor(widget.pickerColor);
+        : HSVColour.fromColor(widget.currentColour);
   }
 
   Widget colorPickerSlider(TrackType trackType) {

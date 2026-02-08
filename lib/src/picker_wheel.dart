@@ -8,9 +8,8 @@ import 'common/common.dart';
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
     super.key,
-    required this.pickerColor,
+    required this.currentColour,
     required this.onColorChanged,
-    this.size = 600,
     this.pickerHsvColor,
     this.onHsvColorChanged,
     this.enableAlpha = true,
@@ -21,15 +20,12 @@ class WheelPicker extends StatefulWidget {
     this.colorPickerSize = 300.0,
     this.pickerAreaHeightPercent = 1.0,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
-    this.hexInputBar = false,
-    this.hexInputController,
     this.colorHistory,
     this.onHistoryChanged,
   });
 
-  final Color pickerColor;
+  final Color currentColour;
   final ValueChanged<Color> onColorChanged;
-  final double size;
   final HSVColour? pickerHsvColor;
   final ValueChanged<HSVColour>? onHsvColorChanged;
   final bool enableAlpha;
@@ -40,8 +36,6 @@ class WheelPicker extends StatefulWidget {
   final double colorPickerSize;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
-  final bool hexInputBar;
-  final TextEditingController? hexInputController;
   final List<Color>? colorHistory;
   final ValueChanged<List<Color>>? onHistoryChanged;
 
@@ -57,17 +51,7 @@ class _WheelPickerState extends State<WheelPicker> {
   void initState() {
     currentHsvColor = (widget.pickerHsvColor != null)
         ? widget.pickerHsvColor as HSVColour
-        : HSVColour.fromColor(widget.pickerColor);
-    if (widget.hexInputController?.text.isEmpty == true) {
-      widget.hexInputController?.text = colorToHex(
-        currentHsvColor.toColor(),
-        enableAlpha: widget.enableAlpha,
-      );
-    }
-    widget.hexInputController?.addListener(colorPickerTextInputListener);
-    if (widget.colorHistory != null && widget.onHistoryChanged != null) {
-      colorHistory = widget.colorHistory ?? [];
-    }
+        : HSVColour.fromColor(widget.currentColour);
     super.initState();
   }
 
@@ -76,36 +60,11 @@ class _WheelPickerState extends State<WheelPicker> {
     super.didUpdateWidget(oldWidget);
     currentHsvColor = (widget.pickerHsvColor != null)
         ? widget.pickerHsvColor as HSVColour
-        : HSVColour.fromColor(widget.pickerColor);
-  }
-
-  void colorPickerTextInputListener() {
-    if (widget.hexInputController == null) return;
-    final Color? color = colorFromHex(
-      widget.hexInputController!.text,
-      enableAlpha: widget.enableAlpha,
-    );
-    if (color != null) {
-      setState(() => currentHsvColor = HSVColour.fromColor(color));
-      widget.onColorChanged(color);
-      if (widget.onHsvColorChanged != null) {
-        widget.onHsvColorChanged!(currentHsvColor);
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.hexInputController?.removeListener(colorPickerTextInputListener);
-    super.dispose();
+        : HSVColour.fromColor(widget.currentColour);
   }
 
   Widget colorPickerSlider(TrackType trackType) {
     return ColourPickerSlider(trackType, currentHsvColor, (HSVColour color) {
-      widget.hexInputController?.text = colorToHex(
-        color.toColor(),
-        enableAlpha: widget.enableAlpha,
-      );
       setState(() => currentHsvColor = color);
       widget.onColorChanged(currentHsvColor.toColor());
       if (widget.onHsvColorChanged != null) {
@@ -115,10 +74,6 @@ class _WheelPickerState extends State<WheelPicker> {
   }
 
   void onColorChanging(HSVColour color) {
-    widget.hexInputController?.text = colorToHex(
-      color.toColor(),
-      enableAlpha: widget.enableAlpha,
-    );
     setState(() => currentHsvColor = color);
     widget.onColorChanged(currentHsvColor.toColor());
     if (widget.onHsvColorChanged != null) {

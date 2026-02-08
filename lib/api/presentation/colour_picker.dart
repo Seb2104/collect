@@ -8,7 +8,7 @@ import '../../src/picker_wheel.dart';
 
 class ColourPicker {
   static Widget wheel({
-    required Color pickerColor,
+    required Color currentColour,
     required ValueChanged<Color> onColorChanged,
     HSVColor? pickerHsvColor,
     ValueChanged<HSVColor>? onHsvColorChanged,
@@ -20,28 +20,22 @@ class ColourPicker {
     ],
     bool displayThumbColor = true,
     bool portraitOnly = false,
-    double size = 600,
     double colorPickerWidth = 300,
     double pickerAreaHeightPercent = 1.0,
-    bool hexInputBar = false,
-    TextEditingController? hexInputController,
     BorderRadius? pickerAreaBorderRadius,
     List<Color>? colorHistory,
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return WheelPicker(
-      pickerColor: pickerColor,
+      currentColour: currentColour,
       onColorChanged: onColorChanged,
       enableAlpha: enableAlpha,
       showLabel: showLabel,
       labelTypes: labelTypes,
       displayThumbColor: displayThumbColor,
       portraitOnly: portraitOnly,
-      size: size,
       colorPickerSize: colorPickerWidth,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
-      hexInputBar: false,
-      hexInputController: hexInputController,
       colorHistory: colorHistory,
       onHistoryChanged: onHistoryChanged,
     );
@@ -70,7 +64,7 @@ class ColourPicker {
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return SquarePicker(
-      pickerColor: pickerColor,
+      currentColour: pickerColor,
       onColorChanged: onColorChanged,
       pickerHsvColor: pickerHsvColor,
       onHsvColorChanged: onHsvColorChanged,
@@ -107,7 +101,7 @@ class ColourPicker {
     BorderRadius indicatorBorderRadius = const BorderRadius.all(Radius.zero),
   }) {
     return SlidePicker(
-      pickerColor: pickerColor,
+      currentColour: pickerColor,
       onColorChanged: onColorChanged,
       colorModel: colorModel,
       enableAlpha: enableAlpha,
@@ -138,7 +132,7 @@ class ColourPicker {
     BorderRadius pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
   }) {
     return HueRingPicker(
-      pickerColor: pickerColor,
+      currentColour: pickerColor,
       onColorChanged: onColorChanged,
       portraitOnly: portraitOnly,
       colorPickerHeight: colorPickerHeight,

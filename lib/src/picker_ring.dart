@@ -8,7 +8,7 @@ import 'common/common.dart';
 class HueRingPicker extends StatefulWidget {
   const HueRingPicker({
     super.key,
-    required this.pickerColor,
+    required this.currentColour,
     required this.onColorChanged,
     this.portraitOnly = false,
     this.colorPickerHeight = 250.0,
@@ -18,7 +18,7 @@ class HueRingPicker extends StatefulWidget {
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
   });
 
-  final Color pickerColor;
+  final Color currentColour;
   final ValueChanged<Color> onColorChanged;
   final bool portraitOnly;
   final double colorPickerHeight;
@@ -36,14 +36,14 @@ class _HueRingPickerState extends State<HueRingPicker> {
 
   @override
   void initState() {
-    currentHsvColor = HSVColour.fromColor(widget.pickerColor);
+    currentHsvColor = HSVColour.fromColor(widget.currentColour);
     super.initState();
   }
 
   @override
   void didUpdateWidget(HueRingPicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    currentHsvColor = HSVColour.fromColor(widget.pickerColor);
+    currentHsvColor = HSVColour.fromColor(widget.currentColour);
   }
 
   void onColorChanging(HSVColour color) {
