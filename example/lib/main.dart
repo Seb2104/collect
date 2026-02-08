@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 Colour colour = Colours.black;
 
 void main() {
-  Colour colour = Colours.lightBlue;
   runApp(Main());
 }
-
-ineedHSV(HSVColor c) {}
 
 class Main extends StatelessWidget {
   const Main({super.key});

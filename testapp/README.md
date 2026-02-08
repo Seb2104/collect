@@ -1,3 +1,0 @@
-# testapp
-
-For testing collect
