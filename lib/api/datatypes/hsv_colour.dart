@@ -93,6 +93,12 @@ class HSVColour implements HSVColor {
     return HSVColour.fromAHSV(alpha, hue, saturation, max);
   }
 
+  HSVColour.fromHSVColor(HSVColor hsvColor)
+    : alpha = hsvColor.alpha,
+      hue = hsvColor.hue,
+      saturation = hsvColor.saturation,
+      value = hsvColor.value;
+
   @override
   Color toColor() {
     throw UnimplementedError();
@@ -116,5 +122,16 @@ class HSVColour implements HSVColor {
   @override
   HSVColor withValue(double value) {
     throw UnimplementedError();
+  }
+}
+
+extension hsvColour on HSVColor {
+  HSVColour get toHSVColour {
+    return HSVColour(
+      alpha: alpha,
+      hue: hue,
+      saturation: saturation,
+      value: value,
+    );
   }
 }

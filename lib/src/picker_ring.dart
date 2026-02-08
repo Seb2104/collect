@@ -32,21 +32,21 @@ class HueRingPicker extends StatefulWidget {
 }
 
 class _HueRingPickerState extends State<HueRingPicker> {
-  HSVColor currentHsvColor = const HSVColor.fromAHSV(0.0, 0.0, 0.0, 0.0);
+  HSVColour currentHsvColor = const HSVColour.fromAHSV(0.0, 0.0, 0.0, 0.0);
 
   @override
   void initState() {
-    currentHsvColor = HSVColor.fromColor(widget.pickerColor);
+    currentHsvColor = HSVColour.fromColor(widget.pickerColor);
     super.initState();
   }
 
   @override
   void didUpdateWidget(HueRingPicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    currentHsvColor = HSVColor.fromColor(widget.pickerColor);
+    currentHsvColor = HSVColour.fromColor(widget.pickerColor);
   }
 
-  void onColorChanging(HSVColor color) {
+  void onColorChanging(HSVColour color) {
     setState(() => currentHsvColor = color);
     widget.onColorChanged(currentHsvColor.toColor());
   }
@@ -112,7 +112,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
                       currentHsvColor.toColor(),
                       (Color color) {
                         setState(
-                          () => currentHsvColor = HSVColor.fromColor(color),
+                          () => currentHsvColor = HSVColour.fromColor(color),
                         );
                         widget.onColorChanged(currentHsvColor.toColor());
                       },
@@ -172,7 +172,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
                         currentHsvColor.toColor(),
                         (Color color) {
                           setState(
-                            () => currentHsvColor = HSVColor.fromColor(color),
+                            () => currentHsvColor = HSVColour.fromColor(color),
                           );
                           widget.onColorChanged(currentHsvColor.toColor());
                         },
@@ -210,7 +210,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
 class HSVWithHueColorPainter extends CustomPainter {
   const HSVWithHueColorPainter(this.hsvColor, {this.pointerColor});
 
-  final HSVColor hsvColor;
+  final HSVColour hsvColor;
   final Color? pointerColor;
 
   @override
@@ -224,7 +224,7 @@ class HSVWithHueColorPainter extends CustomPainter {
     final Gradient gradientH = LinearGradient(
       colors: [
         Colors.white,
-        HSVColor.fromAHSV(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
+        HSVColour.fromAHSV(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
       ],
     );
     canvas.drawRect(rect, Paint()..shader = gradientV.createShader(rect));
@@ -264,7 +264,7 @@ class HueRingPainter extends CustomPainter {
     this.strokeWidth = 5,
   });
 
-  final HSVColor hsvColor;
+  final HSVColour hsvColor;
   final bool displayThumbColor;
   final double strokeWidth;
 
@@ -275,13 +275,13 @@ class HueRingPainter extends CustomPainter {
     double radio = size.width <= size.height ? size.width / 2 : size.height / 2;
 
     final List<Color> colors = [
-      const HSVColor.fromAHSV(1.0, 360.0, 1.0, 1.0).toColor(),
-      const HSVColor.fromAHSV(1.0, 300.0, 1.0, 1.0).toColor(),
-      const HSVColor.fromAHSV(1.0, 240.0, 1.0, 1.0).toColor(),
-      const HSVColor.fromAHSV(1.0, 180.0, 1.0, 1.0).toColor(),
-      const HSVColor.fromAHSV(1.0, 120.0, 1.0, 1.0).toColor(),
-      const HSVColor.fromAHSV(1.0, 60.0, 1.0, 1.0).toColor(),
-      const HSVColor.fromAHSV(1.0, 0.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 360.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 300.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 240.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 180.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 120.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 60.0, 1.0, 1.0).toColor(),
+      const HSVColour.fromAHSV(1.0, 0.0, 1.0, 1.0).toColor(),
     ];
     canvas.drawCircle(
       center,
@@ -359,7 +359,7 @@ class TrackPainter extends CustomPainter {
   const TrackPainter(this.trackType, this.hsvColor);
 
   final TrackType trackType;
-  final HSVColor hsvColor;
+  final HSVColour hsvColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -381,46 +381,46 @@ class TrackPainter extends CustomPainter {
     switch (trackType) {
       case TrackType.hue:
         final List<Color> colors = [
-          const HSVColor.fromAHSV(1.0, 0.0, 1.0, 1.0).toColor(),
-          const HSVColor.fromAHSV(1.0, 60.0, 1.0, 1.0).toColor(),
-          const HSVColor.fromAHSV(1.0, 120.0, 1.0, 1.0).toColor(),
-          const HSVColor.fromAHSV(1.0, 180.0, 1.0, 1.0).toColor(),
-          const HSVColor.fromAHSV(1.0, 240.0, 1.0, 1.0).toColor(),
-          const HSVColor.fromAHSV(1.0, 300.0, 1.0, 1.0).toColor(),
-          const HSVColor.fromAHSV(1.0, 360.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 0.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 60.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 120.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 180.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 240.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 300.0, 1.0, 1.0).toColor(),
+          const HSVColour.fromAHSV(1.0, 360.0, 1.0, 1.0).toColor(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
         break;
       case TrackType.saturation:
         final List<Color> colors = [
-          HSVColor.fromAHSV(1.0, hsvColor.hue, 0.0, 1.0).toColor(),
-          HSVColor.fromAHSV(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
+          HSVColour.fromAHSV(1.0, hsvColor.hue, 0.0, 1.0).toColor(),
+          HSVColour.fromAHSV(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
         break;
       case TrackType.saturationForHSL:
         final List<Color> colors = [
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 0.0, 0.5).toColor(),
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 0.0, 0.5).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
         break;
       case TrackType.value:
         final List<Color> colors = [
-          HSVColor.fromAHSV(1.0, hsvColor.hue, 1.0, 0.0).toColor(),
-          HSVColor.fromAHSV(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
+          HSVColour.fromAHSV(1.0, hsvColor.hue, 1.0, 0.0).toColor(),
+          HSVColour.fromAHSV(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
         break;
       case TrackType.lightness:
         final List<Color> colors = [
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 0.0).toColor(),
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
-          HSLColor.fromAHSL(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.0).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 0.5).toColor(),
+          HSLColour.fromAHSL(1.0, hsvColor.hue, 1.0, 1.0).toColor(),
         ];
         Gradient gradient = LinearGradient(colors: colors);
         canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
@@ -625,7 +625,7 @@ class ColorIndicator extends StatelessWidget {
     this.height = 50.0,
   });
 
-  final HSVColor hsvColor;
+  final HSVColour hsvColor;
   final double width;
   final double height;
 
@@ -654,12 +654,12 @@ class ColorPickerArea extends StatelessWidget {
     super.key,
   });
 
-  final HSVColor hsvColor;
-  final ValueChanged<HSVColor> onColorChanged;
+  final HSVColour hsvColor;
+  final ValueChanged<HSVColour> onColorChanged;
   final PaletteType paletteType;
 
   void _handleColorRectChange(double horizontal, double vertical) {
-    onColorChanged(hsvColor.withSaturation(horizontal).withValue(vertical));
+    onColorChanged(HSVColour.fromHSVColor(hsvColor.withSaturation(horizontal).withValue(vertical)));
   }
 
   void _handleGesture(
@@ -724,8 +724,8 @@ class ColorPickerHueRing extends StatelessWidget {
     this.strokeWidth = 5.0,
   });
 
-  final HSVColor hsvColor;
-  final ValueChanged<HSVColor> onColorChanged;
+  final HSVColour hsvColor;
+  final ValueChanged<HSVColour> onColorChanged;
   final bool displayThumbColor;
   final double strokeWidth;
 
@@ -752,7 +752,7 @@ class ColorPickerHueRing extends StatelessWidget {
         2 *
         360;
     if (dist > 0.7 && dist < 1.3) {
-      onColorChanged(hsvColor.withHue(((rad + 90) % 360).clamp(0, 360)));
+      onColorChanged(hsvColor.withHue(((rad + 90) % 360).clamp(0, 360)).toHSVColour);
     }
   }
 
@@ -810,8 +810,8 @@ class ColorPickerSlider extends StatelessWidget {
   });
 
   final TrackType trackType;
-  final HSVColor hsvColor;
-  final ValueChanged<HSVColor> onColorChanged;
+  final HSVColour hsvColor;
+  final ValueChanged<HSVColour> onColorChanged;
   final bool displayThumbColor;
   final bool fullThumbColor;
 
@@ -821,37 +821,37 @@ class ColorPickerSlider extends StatelessWidget {
         localDx.clamp(0.0, box.maxWidth - 30.0) / (box.maxWidth - 30.0);
     switch (trackType) {
       case TrackType.hue:
-        onColorChanged(hsvColor.withHue(progress * 359));
+        onColorChanged(hsvColor.withHue(progress * 359).toHSVColour);
         break;
       case TrackType.saturation:
-        onColorChanged(hsvColor.withSaturation(progress));
+        onColorChanged(hsvColor.withSaturation(progress).toHSVColour);
         break;
       case TrackType.saturationForHSL:
-        onColorChanged(hslToHsv(hsvToHsl(hsvColor).withSaturation(progress)));
+        onColorChanged(hslToHsv(hsvToHsl(hsvColor).withSaturation(progress)).toHSVColour);
         break;
       case TrackType.value:
-        onColorChanged(hsvColor.withValue(progress));
+        onColorChanged(hsvColor.withValue(progress).toHSVColour);
         break;
       case TrackType.lightness:
-        onColorChanged(hslToHsv(hsvToHsl(hsvColor).withLightness(progress)));
+        onColorChanged(hslToHsv(hsvToHsl(hsvColor).withLightness(progress)).toHSVColour);
         break;
       case TrackType.red:
         onColorChanged(
-          HSVColor.fromColor(
+          HSVColour.fromColor(
             hsvColor.toColor().withRed((progress * 0xff).round()),
           ),
         );
         break;
       case TrackType.green:
         onColorChanged(
-          HSVColor.fromColor(
+          HSVColour.fromColor(
             hsvColor.toColor().withGreen((progress * 0xff).round()),
           ),
         );
         break;
       case TrackType.blue:
         onColorChanged(
-          HSVColor.fromColor(
+          HSVColour.fromColor(
             hsvColor.toColor().withBlue((progress * 0xff).round()),
           ),
         );
@@ -860,7 +860,7 @@ class ColorPickerSlider extends StatelessWidget {
         onColorChanged(
           hsvColor.withAlpha(
             localDx.clamp(0.0, box.maxWidth - 30.0) / (box.maxWidth - 30.0),
-          ),
+          ).toHSVColour,
         );
         break;
     }
@@ -875,7 +875,7 @@ class ColorPickerSlider extends StatelessWidget {
         switch (trackType) {
           case TrackType.hue:
             thumbOffset += (box.maxWidth - 30.0) * hsvColor.hue / 360;
-            thumbColor = HSVColor.fromAHSV(
+            thumbColor = HSVColour.fromAHSV(
               1.0,
               hsvColor.hue,
               1.0,
@@ -884,7 +884,7 @@ class ColorPickerSlider extends StatelessWidget {
             break;
           case TrackType.saturation:
             thumbOffset += (box.maxWidth - 30.0) * hsvColor.saturation;
-            thumbColor = HSVColor.fromAHSV(
+            thumbColor = HSVColour.fromAHSV(
               1.0,
               hsvColor.hue,
               hsvColor.saturation,
@@ -894,7 +894,7 @@ class ColorPickerSlider extends StatelessWidget {
           case TrackType.saturationForHSL:
             thumbOffset +=
                 (box.maxWidth - 30.0) * hsvToHsl(hsvColor).saturation;
-            thumbColor = HSLColor.fromAHSL(
+            thumbColor = HSLColour.fromAHSL(
               1.0,
               hsvColor.hue,
               hsvToHsl(hsvColor).saturation,
@@ -903,7 +903,7 @@ class ColorPickerSlider extends StatelessWidget {
             break;
           case TrackType.value:
             thumbOffset += (box.maxWidth - 30.0) * hsvColor.value;
-            thumbColor = HSVColor.fromAHSV(
+            thumbColor = HSVColour.fromAHSV(
               1.0,
               hsvColor.hue,
               1.0,
@@ -912,7 +912,7 @@ class ColorPickerSlider extends StatelessWidget {
             break;
           case TrackType.lightness:
             thumbOffset += (box.maxWidth - 30.0) * hsvToHsl(hsvColor).lightness;
-            thumbColor = HSLColor.fromAHSL(
+            thumbColor = HSLColour.fromAHSL(
               1.0,
               hsvColor.hue,
               1.0,
