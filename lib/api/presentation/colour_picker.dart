@@ -48,7 +48,7 @@ class ColourPicker {
   static Widget square({
     required Color pickerColor,
     required ValueChanged<Color> onColorChanged,
-    HSVColor? pickerHsvColor,
+    HSVColour? pickerHsvColor,
     ValueChanged<HSVColor>? onHsvColorChanged,
     PaletteType paletteType = PaletteType.hueWheel,
     bool enableAlpha = true,
