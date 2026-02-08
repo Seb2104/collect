@@ -12,7 +12,6 @@ class WheelPicker extends StatefulWidget {
     required this.onColorChanged,
     this.pickerHsvColor,
     this.onHsvColorChanged,
-    this.paletteType = PaletteType.hueWheel,
     this.enableAlpha = true,
     this.showLabel = true,
     this.labelTypes = const [ColorLabelType.rgb, ColorLabelType.hex],
@@ -31,7 +30,6 @@ class WheelPicker extends StatefulWidget {
   final ValueChanged<Color> onColorChanged;
   final HSVColor? pickerHsvColor;
   final ValueChanged<HSVColor>? onHsvColorChanged;
-  final PaletteType paletteType;
   final bool enableAlpha;
   final bool showLabel;
   final List<ColorLabelType> labelTypes;
@@ -134,7 +132,7 @@ class _WheelPickerState extends State<WheelPicker> {
         child: ColorPickerArea(
           currentHsvColor,
           onColorChanging,
-          widget.paletteType,
+          PaletteType.hueWheel,
         ),
       ),
     );

@@ -12,7 +12,6 @@ class ColourPicker {
     required ValueChanged<Color> onColorChanged,
     HSVColor? pickerHsvColor,
     ValueChanged<HSVColor>? onHsvColorChanged,
-    PaletteType paletteType = PaletteType.hueWheel,
     bool enableAlpha = true,
     bool showLabel = true,
     List<ColorLabelType> labelTypes = const [
@@ -34,7 +33,6 @@ class ColourPicker {
       onColorChanged: onColorChanged,
       pickerHsvColor: pickerHsvColor,
       onHsvColorChanged: onHsvColorChanged,
-      paletteType: paletteType,
       enableAlpha: enableAlpha,
       showLabel: showLabel,
       labelTypes: labelTypes,
