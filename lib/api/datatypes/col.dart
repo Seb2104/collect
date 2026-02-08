@@ -3,12 +3,10 @@ part of '../../collect.dart';
 sealed class Col {
   const Col();
 
-  // Conversion methods to be implemented by subclasses
   Colour toColour();
   HSLColour toHSL();
   HSVColour toHSV();
 
-  // Shared helper function for calculating hue
   static double getHue(
     double red,
     double green,
@@ -31,7 +29,6 @@ sealed class Col {
     return hue;
   }
 
-  // Shared helper function for converting from hue to Colour
   static Colour colourFromHue(
     double alpha,
     double hue,
@@ -57,7 +54,6 @@ sealed class Col {
     );
   }
 
-  // Shared helper function for converting from hue to Color
   static Color colorFromHue(
     double alpha,
     double hue,

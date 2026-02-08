@@ -112,14 +112,12 @@ class Colour extends Col implements Color {
   @override
   double get a => alpha / 255;
 
-  // HSVColor-like properties
   double get hue => hsv.hue;
 
   double get saturation => hsv.saturation;
 
   double get hsvValue => hsv.value;
 
-  // HSLColor-like property
   double get lightness => hsl.lightness;
 
   const Colour({
@@ -138,7 +136,6 @@ class Colour extends Col implements Color {
        assert(green >= 0, green <= 255),
        assert(blue >= 0, blue <= 255);
 
-  /// Alpha is clamped between 0 and 100 and is a percentage
   factory Colour.fromARGB({
     double opacity = 100,
     int red = 255,
@@ -322,7 +319,6 @@ class Colour extends Col implements Color {
     return Colour(alpha: alpha, red: red, green: green, blue: blue);
   }
 
-  // HSVColor-like methods
   Colour withHue(double hue) {
     return Colour.fromHSVColour(
       HSVColour.fromAHSV(a, hue, saturation, hsvValue),
@@ -339,14 +335,12 @@ class Colour extends Col implements Color {
     return Colour.fromHSVColour(HSVColour.fromAHSV(a, hue, saturation, value));
   }
 
-  // HSLColor-like methods
   Colour withLightness(double lightness) {
     return Colour.fromHSLColour(
       HSLColour.fromAHSL(a, hue, saturation, lightness),
     );
   }
 
-  // Implicit conversions to HSVColor and HSLColor
   HSVColor toHSVColor() => hsv;
 
   HSLColor toHSLColor() => hsl;
