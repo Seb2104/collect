@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../collect.dart';
-import 'common/color_picker_slider.dart';
-import 'common/painters.dart';
+import 'common/common.dart';
 
 class HueRingPicker extends StatefulWidget {
   const HueRingPicker({
@@ -93,7 +92,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
             SizedBox(
               height: 40.0,
               width: widget.colorPickerHeight,
-              child: ColorPickerSlider(
+              child: ColourPickerSlider(
                 TrackType.alpha,
                 currentHsvColor,
                 onColorChanging,
@@ -190,7 +189,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
                               (widget.colorPickerHeight -
                                   widget.hueRingStrokeWidth * 2) /
                               2,
-                          child: ColorPickerSlider(
+                          child: ColourPickerSlider(
                             TrackType.alpha,
                             currentHsvColor,
                             onColorChanging,

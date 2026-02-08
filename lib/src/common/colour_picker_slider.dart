@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../collect.dart';
 import 'constant.dart';
 
-class ColorPickerSlider extends StatelessWidget {
-  const ColorPickerSlider(
+class ColourPickerSlider extends StatelessWidget {
+  const ColourPickerSlider(
       this.trackType,
       this.hsvColor,
       this.onColorChanged, {

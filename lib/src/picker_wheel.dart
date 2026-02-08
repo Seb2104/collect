@@ -1,12 +1,10 @@
 import 'dart:math';
 
-import 'package:collect/src/common/colour_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../collect.dart';
-import 'common/color_picker_slider.dart';
-import 'common/painters.dart';
+import 'common/common.dart';
 
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
@@ -104,7 +102,7 @@ class _WheelPickerState extends State<WheelPicker> {
   }
 
   Widget colorPickerSlider(TrackType trackType) {
-    return ColorPickerSlider(trackType, currentHsvColor, (HSVColour color) {
+    return ColourPickerSlider(trackType, currentHsvColor, (HSVColour color) {
       widget.hexInputController?.text = colorToHex(
         color.toColor(),
         enableAlpha: widget.enableAlpha,

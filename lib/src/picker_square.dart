@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../collect.dart';
-import 'common/colour_label.dart';
-import 'common/constant.dart';
-import 'common/painters.dart';
-import 'common/color_picker_slider.dart';
+import 'common/common.dart';
+
 
 class SquarePicker extends StatefulWidget {
   const SquarePicker({
@@ -107,7 +105,7 @@ class _SquarePickerState extends State<SquarePicker> {
   }
 
   Widget colorPickerSlider(TrackType trackType) {
-    return ColorPickerSlider(trackType, currentHsvColor, (HSVColour color) {
+    return ColourPickerSlider(trackType, currentHsvColor, (HSVColour color) {
       widget.hexInputController?.text = colorToHex(
         color.toColor(),
         enableAlpha: widget.enableAlpha,

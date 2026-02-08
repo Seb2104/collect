@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../collect.dart';
-import 'common/color_picker_slider.dart';
-import 'common/colour_label.dart';
-import 'common/painters.dart';
+import 'common/common.dart';
+
 
 class SlidePicker extends StatefulWidget {
   const SlidePicker({
@@ -65,7 +64,7 @@ class _SlidePickerState extends State<SlidePicker> {
   }
 
   Widget colorPickerSlider(TrackType trackType) {
-    return ColorPickerSlider(
+    return ColourPickerSlider(
       trackType,
       currentHsvColor,
       (HSVColour color) {
