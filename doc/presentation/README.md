@@ -1,19 +1,20 @@
 # Presentation Widgets
 
-The Collect package provides a comprehensive set of presentation widgets designed for building beautiful, consistent UIs with Material 3 theming.
+The Collect package provides a comprehensive set of presentation widgets designed for building beautiful, consistent UIs
+with Material 3 theming.
 
 ## Overview
 
-| Widget | Purpose | Key Features |
-|--------|---------|--------------|
-| [AppTheme](app_theme.md) | Material 3 theme system | Light/dark themes, color schemes, comprehensive theming |
-| [Word](word.md) | Enhanced text widget | Theme-aware styling, custom fonts, multiple variants |
-| [ActionIcon](action_icon.md) | Interactive icon button | Tooltips, hover effects, active states |
-| [Menu](menu.md) | Advanced dropdown menu | Search, filter, keyboard navigation |
-| [TabView](tab_view.md) | Customizable tab navigation | All-side placement, animations, flexible layouts |
-| [HoverWidget](hover_widget.md) | Hover state detection | Web-friendly hover detection |
-| [RoundedCheckBox](rounded_checkbox.md) | Styled checkbox | Customizable appearance, animations |
-| [StyledBox](box.md) | Advanced decorations | Inset shadows, complex borders |
+| Widget                                 | Purpose                     | Key Features                                            |
+|----------------------------------------|-----------------------------|---------------------------------------------------------|
+| [AppTheme](app_theme.md)               | Material 3 theme system     | Light/dark themes, color schemes, comprehensive theming |
+| [Word](word.md)                        | Enhanced text widget        | Theme-aware styling, custom fonts, multiple variants    |
+| [ActionIcon](action_icon.md)           | Interactive icon button     | Tooltips, hover effects, active states                  |
+| [Menu](menu.md)                        | Advanced dropdown menu      | Search, filter, keyboard navigation                     |
+| [TabView](tab_view.md)                 | Customizable tab navigation | All-side placement, animations, flexible layouts        |
+| [HoverWidget](hover_widget.md)         | Hover state detection       | Web-friendly hover detection                            |
+| [RoundedCheckBox](rounded_checkbox.md) | Styled checkbox             | Customizable appearance, animations                     |
+| [StyledBox](box.md)                    | Advanced decorations        | Inset shadows, complex borders                          |
 
 ## Quick Start
 

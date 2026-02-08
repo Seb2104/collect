@@ -12,14 +12,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:unicode/unicode.dart' as unicode;
 
-part 'api/datatypes/col.dart';
-
 part 'api/constants/bases.dart';
 part 'api/constants/colour_pickers.dart';
 part 'api/constants/colours.dart';
 part 'api/constants/moment.dart';
 part 'api/constants/strings.dart';
 part 'api/constants/tab_view.dart';
+part 'api/datatypes/col.dart';
 part 'api/datatypes/colour.dart';
 part 'api/datatypes/hsl_colour.dart';
 part 'api/datatypes/hsv_colour.dart';

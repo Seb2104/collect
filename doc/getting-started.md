@@ -289,6 +289,7 @@ Text(moment.timeAgo(short: true)); // "5m ago"
 ### Issue: Extensions not available
 
 **Solution**: Make sure you've imported the package:
+
 ```dart
 import 'package:collect/collect.dart';
 ```
@@ -296,6 +297,7 @@ import 'package:collect/collect.dart';
 ### Issue: Fonts not displaying
 
 **Solution**: The package includes font assets. Make sure you're using the provided fonts through the `Fonts` enum:
+
 ```dart
 Word('Text', fontFamily: Fonts.montserrat)
 ```
@@ -303,6 +305,7 @@ Word('Text', fontFamily: Fonts.montserrat)
 ### Issue: Theme colors not updating
 
 **Solution**: Access theme colors through methods that take `BuildContext`:
+
 ```dart
 // Good
 AppTheme.textPrimary(context)

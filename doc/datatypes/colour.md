@@ -1,6 +1,7 @@
 # Colour
 
-The `Colour` class is an advanced color management system that implements Flutter's `Color` interface while providing extensive color manipulation, conversion, and formatting capabilities.
+The `Colour` class is an advanced color management system that implements Flutter's `Color` interface while providing
+extensive color manipulation, conversion, and formatting capabilities.
 
 ## Table of Contents
 
@@ -148,6 +149,7 @@ final colour = Colour.fromHSL(
 ```
 
 **HSL Characteristics:**
+
 - **Hue**: Color type (0° = red, 120° = green, 240° = blue)
 - **Saturation**: Color intensity (0 = gray, 1 = full color)
 - **Lightness**: Brightness (0 = black, 0.5 = pure color, 1 = white)
@@ -165,6 +167,7 @@ final colour = Colour.fromHSV(
 ```
 
 **HSV Characteristics:**
+
 - **Hue**: Color type (same as HSL)
 - **Saturation**: Color intensity (same as HSL)
 - **Value**: Brightness (0 = black, 1 = pure color)

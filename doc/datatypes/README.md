@@ -1,14 +1,15 @@
 # Data Types
 
-The Collect package provides three powerful custom data types that enhance Flutter's built-in types with additional functionality and convenience.
+The Collect package provides three powerful custom data types that enhance Flutter's built-in types with additional
+functionality and convenience.
 
 ## Overview
 
-| Data Type | Purpose | Key Features |
-|-----------|---------|--------------|
-| [Colour](colour.md) | Advanced color management | RGB, HSL, HSV, Hex conversion; Color manipulation |
+| Data Type           | Purpose                     | Key Features                                      |
+|---------------------|-----------------------------|---------------------------------------------------|
+| [Colour](colour.md) | Advanced color management   | RGB, HSL, HSV, Hex conversion; Color manipulation |
 | [Moment](moment.md) | Enhanced date/time handling | Formatting, time ago, date arithmetic, comparison |
-| [Period](period.md) | Time duration management | Years, months, days support; Duration arithmetic |
+| [Period](period.md) | Time duration management    | Years, months, days support; Duration arithmetic  |
 
 ## Quick Comparison
 
@@ -27,6 +28,7 @@ print(collectColour.rgb); // "156,175,136"
 ```
 
 **When to use Colour:**
+
 - Need to convert between color formats (RGB, HSL, HSV, Hex)
 - Want to get string representations of colors
 - Need advanced color manipulation
@@ -47,6 +49,7 @@ print(collectMoment.clock); // "2:30:45 PM"
 ```
 
 **When to use Moment:**
+
 - Need human-readable date formatting
 - Want "time ago" functionality
 - Need date arithmetic with readable syntax
@@ -66,6 +69,7 @@ final doubled = collectPeriod * 2;
 ```
 
 **When to use Period:**
+
 - Need to work with years and months
 - Want arithmetic operations on periods
 - Need to store durations separately from specific times
@@ -125,16 +129,19 @@ Moment result = Moment.now() + customPeriod; // Uses Duration internally
 ## Performance Considerations
 
 ### Colour
+
 - Lightweight, stores only 4 integers (ARGB)
 - Conversions are computed on-demand
 - Use `color` getter to convert to Flutter's `Color` for rendering
 
 ### Moment
+
 - Stores 6 nullable integers (year, month, date, hour, minute, second)
 - Format calculations are performed on-demand
 - Use `dateTime` getter for DateTime operations
 
 ### Period
+
 - Stores duration as microseconds internally
 - Arithmetic operations are fast
 - Conversion to/from years and months uses approximations (365 days/year, 30 days/month)
@@ -142,24 +149,24 @@ Moment result = Moment.now() + customPeriod; // Uses Duration internally
 ## Best Practices
 
 1. **Use the right type for the job**
-   - Display to users: `Moment`, `Colour`
-   - Internal calculations: `DateTime`, `Color`, `Duration`
-   - Storage: Consider conversion to primitives
+    - Display to users: `Moment`, `Colour`
+    - Internal calculations: `DateTime`, `Color`, `Duration`
+    - Storage: Consider conversion to primitives
 
 2. **Conversion costs**
-   - Convert once and reuse
-   - Don't convert in build methods repeatedly
-   - Cache formatted strings if used multiple times
+    - Convert once and reuse
+    - Don't convert in build methods repeatedly
+    - Cache formatted strings if used multiple times
 
 3. **Null safety**
-   - `Moment` fields can be null for partial dates
-   - Always provide defaults when converting to `DateTime`
-   - Use validation methods before operations
+    - `Moment` fields can be null for partial dates
+    - Always provide defaults when converting to `DateTime`
+    - Use validation methods before operations
 
 4. **Immutability**
-   - All types are immutable
-   - Operations return new instances
-   - Safe to pass around and cache
+    - All types are immutable
+    - Operations return new instances
+    - Safe to pass around and cache
 
 ## Next Steps
 

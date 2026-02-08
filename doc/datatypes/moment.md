@@ -1,6 +1,7 @@
 # Moment
 
-The `Moment` class is an enhanced date/time type that provides powerful formatting, manipulation, and display capabilities beyond Dart's `DateTime`.
+The `Moment` class is an enhanced date/time type that provides powerful formatting, manipulation, and display
+capabilities beyond Dart's `DateTime`.
 
 ## Table of Contents
 
@@ -146,32 +147,32 @@ final period = moment.period;  // Period with hours, minutes, seconds
 
 Moment provides a rich set of format tokens:
 
-| Token | Output | Example |
-|-------|--------|---------|
-| `yyyy` | Full year | 2026 |
-| `yy` | Two-digit year | 26 |
-| `mmmm` | Full month name | February |
-| `MMM` | Short month name | Feb |
-| `MM` | Two-digit month | 02 |
-| `M` | Month number | 2 |
-| `Mo` | Month with ordinal | 2nd |
-| `dddd` | Full day name | Tuesday |
-| `ddd` | Short day name | Tue |
-| `DD` | Two-digit date | 03 |
-| `D` | Date number | 3 |
-| `Do` | Date with ordinal | 3rd |
-| `HH` | Two-digit hour (24h) | 14 |
-| `H` | Hour (24h) | 14 |
-| `hh` | Two-digit hour (12h) | 02 |
-| `h` | Hour (12h) | 2 |
-| `mm` | Two-digit minute | 30 |
-| `m` | Minute | 30 |
-| `ss` | Two-digit second | 45 |
-| `s` | Second | 45 |
-| `A` | AM/PM uppercase | PM |
-| `a` | am/pm lowercase | pm |
-| `t` | Time (H:M:S) | 14:30:45 |
-| `dateNumeric` | Numeric date | 03/02/2026 |
+| Token         | Output               | Example    |
+|---------------|----------------------|------------|
+| `yyyy`        | Full year            | 2026       |
+| `yy`          | Two-digit year       | 26         |
+| `mmmm`        | Full month name      | February   |
+| `MMM`         | Short month name     | Feb        |
+| `MM`          | Two-digit month      | 02         |
+| `M`           | Month number         | 2          |
+| `Mo`          | Month with ordinal   | 2nd        |
+| `dddd`        | Full day name        | Tuesday    |
+| `ddd`         | Short day name       | Tue        |
+| `DD`          | Two-digit date       | 03         |
+| `D`           | Date number          | 3          |
+| `Do`          | Date with ordinal    | 3rd        |
+| `HH`          | Two-digit hour (24h) | 14         |
+| `H`           | Hour (24h)           | 14         |
+| `hh`          | Two-digit hour (12h) | 02         |
+| `h`           | Hour (12h)           | 2          |
+| `mm`          | Two-digit minute     | 30         |
+| `m`           | Minute               | 30         |
+| `ss`          | Two-digit second     | 45         |
+| `s`           | Second               | 45         |
+| `A`           | AM/PM uppercase      | PM         |
+| `a`           | am/pm lowercase      | pm         |
+| `t`           | Time (H:M:S)         | 14:30:45   |
+| `dateNumeric` | Numeric date         | 03/02/2026 |
 
 ### Formatting Constants
 
@@ -294,6 +295,7 @@ print(future.timeAgo(short: true));
 ### Time Units
 
 The `timeAgo` method shows:
+
 - Years
 - Months (approximate, 30 days)
 - Days

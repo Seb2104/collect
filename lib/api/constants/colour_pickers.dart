@@ -50,4 +50,3 @@ enum TrackType {
 enum ColorLabelType { hex, rgb, hsv, hsl }
 
 enum ColorModel { rgb, hsv, hsl }
-

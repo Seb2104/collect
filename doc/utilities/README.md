@@ -1,14 +1,15 @@
 # Utilities
 
-The Collect package provides utility classes for common operations like base conversion, notifications, and string manipulation.
+The Collect package provides utility classes for common operations like base conversion, notifications, and string
+manipulation.
 
 ## Overview
 
-| Utility | Purpose | Key Features |
-|---------|---------|--------------|
-| [Radix](radix.md) | Base conversion | Binary, octal, decimal, hexadecimal, and beyond (up to base-256) |
-| [Notifications](notifications.md) | Toast notifications | Auto-dismissing overlays, multiple types, animations |
-| [Strings](strings.md) | String manipulation | Formatting, validation, case conversion |
+| Utility                           | Purpose             | Key Features                                                     |
+|-----------------------------------|---------------------|------------------------------------------------------------------|
+| [Radix](radix.md)                 | Base conversion     | Binary, octal, decimal, hexadecimal, and beyond (up to base-256) |
+| [Notifications](notifications.md) | Toast notifications | Auto-dismissing overlays, multiple types, animations             |
+| [Strings](strings.md)             | String manipulation | Formatting, validation, case conversion                          |
 
 ## Quick Start
 
@@ -186,8 +187,8 @@ NotificationManager().show(
 - **Animations**: Smooth slide-in from right with fade
 - **Click to dismiss**: Tap notification to dismiss immediately
 - **Type-specific durations**:
-  - `error`: 5 seconds (longer to read)
-  - Other types: 3 seconds
+    - `error`: 5 seconds (longer to read)
+    - Other types: 3 seconds
 
 ### Custom Notification Manager
 

@@ -1,6 +1,7 @@
 # Period
 
-The `Period` class represents a duration of time with support for years, months, days, hours, minutes, seconds, milliseconds, and microseconds. It's designed to work seamlessly with the `Moment` class for date arithmetic.
+The `Period` class represents a duration of time with support for years, months, days, hours, minutes, seconds,
+milliseconds, and microseconds. It's designed to work seamlessly with the `Moment` class for date arithmetic.
 
 ## Table of Contents
 
@@ -163,7 +164,8 @@ print(moment.year);  // 1970 + (days/365)
 print(moment.date);  // Remaining days
 ```
 
-**Note**: This uses approximations (365 days/year, 30 days/month) and is mainly useful for debugging or display purposes.
+**Note**: This uses approximations (365 days/year, 30 days/month) and is mainly useful for debugging or display
+purposes.
 
 ### To String
 
@@ -633,6 +635,7 @@ Widget build(BuildContext context) {
 ### Month/Year Approximations
 
 Period uses approximations for months and years:
+
 - 1 month = 30 days
 - 1 year = 365 days
 

@@ -1,18 +1,19 @@
 # Extensions
 
-The Collect package provides powerful extensions for Dart's built-in types and Flutter widgets, making your code more readable and concise.
+The Collect package provides powerful extensions for Dart's built-in types and Flutter widgets, making your code more
+readable and concise.
 
 ## Overview
 
-| Extension | Purpose | Key Features |
-|-----------|---------|--------------|
-| [Int](int.md) | Enhanced integer operations | Durations, spacing widgets, range checks, date conversions |
-| [Double](double.md) | Enhanced double operations | Validation, range checks, size creation |
-| [Num](num.md) | Enhanced number operations | Type checks, formatting, percentage calculations |
-| [String](string.md) | Enhanced string operations | Case transformations, validation, formatting |
-| [Widget](widget.md) | Widget composition helpers | Padding, sizing, visibility, effects |
-| [List](list.md) | Collection operations | Validation, indexing, aggregations |
-| [BuildContext](build_context.md) | Context utilities | Notifications, theme access |
+| Extension                        | Purpose                     | Key Features                                               |
+|----------------------------------|-----------------------------|------------------------------------------------------------|
+| [Int](int.md)                    | Enhanced integer operations | Durations, spacing widgets, range checks, date conversions |
+| [Double](double.md)              | Enhanced double operations  | Validation, range checks, size creation                    |
+| [Num](num.md)                    | Enhanced number operations  | Type checks, formatting, percentage calculations           |
+| [String](string.md)              | Enhanced string operations  | Case transformations, validation, formatting               |
+| [Widget](widget.md)              | Widget composition helpers  | Padding, sizing, visibility, effects                       |
+| [List](list.md)                  | Collection operations       | Validation, indexing, aggregations                         |
+| [BuildContext](build_context.md) | Context utilities           | Notifications, theme access                                |
 
 ## Quick Examples
 

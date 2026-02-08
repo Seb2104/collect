@@ -45,58 +45,58 @@ Start here if you're new to Collect:
 #### Working with Colors
 
 - **[Colour Data Type](datatypes/colour.md)** - Complete color management
-  - RGB, HSL, HSV color spaces
-  - Hex, percentage, fraction conversions
-  - Color manipulation and properties
-  - 20+ construction methods
-  - Examples and best practices
+    - RGB, HSL, HSV color spaces
+    - Hex, percentage, fraction conversions
+    - Color manipulation and properties
+    - 20+ construction methods
+    - Examples and best practices
 
 #### Working with Dates & Times
 
 - **[Moment Data Type](datatypes/moment.md)** - Enhanced date/time handling
-  - Flexible construction (components, DateTime, strings)
-  - 25+ format tokens
-  - "Time ago" functionality
-  - Date arithmetic with Period
-  - Comparison and sorting
-  - Real-world examples
+    - Flexible construction (components, DateTime, strings)
+    - 25+ format tokens
+    - "Time ago" functionality
+    - Date arithmetic with Period
+    - Comparison and sorting
+    - Real-world examples
 
 - **[Period Data Type](datatypes/period.md)** - Duration management
-  - Years, months, days, hours, minutes, seconds
-  - Arithmetic operations (+, -, *, negation)
-  - Comparison operators
-  - Works seamlessly with Moment
-  - Countdown timers and recurring events
+    - Years, months, days, hours, minutes, seconds
+    - Arithmetic operations (+, -, *, negation)
+    - Comparison operators
+    - Works seamlessly with Moment
+    - Countdown timers and recurring events
 
 #### Extending Built-in Types
 
 - **[Extensions Overview](extensions/README.md)** - All extensions
-  - Int extensions (durations, spacing, date names)
-  - Double extensions (validation, ranges)
-  - Num extensions (formatting, calculations)
-  - String extensions (transformations, validation)
-  - Widget extensions (padding, layout, effects)
-  - List extensions (aggregations, indexing)
-  - BuildContext extensions (notifications)
+    - Int extensions (durations, spacing, date names)
+    - Double extensions (validation, ranges)
+    - Num extensions (formatting, calculations)
+    - String extensions (transformations, validation)
+    - Widget extensions (padding, layout, effects)
+    - List extensions (aggregations, indexing)
+    - BuildContext extensions (notifications)
 
 #### Building UI
 
 - **[Presentation Widgets](presentation/README.md)** - UI components
-  - AppTheme (Material 3 theming)
-  - Word (enhanced text)
-  - ActionIcon (interactive icons)
-  - Menu (advanced dropdown)
-  - TabView (flexible tabs)
-  - HoverWidget (hover detection)
-  - RoundedCheckBox (styled checkbox)
-  - StyledBox (advanced decorations)
+    - AppTheme (Material 3 theming)
+    - Word (enhanced text)
+    - ActionIcon (interactive icons)
+    - Menu (advanced dropdown)
+    - TabView (flexible tabs)
+    - HoverWidget (hover detection)
+    - RoundedCheckBox (styled checkbox)
+    - StyledBox (advanced decorations)
 
 #### Utilities
 
 - **[Utilities Overview](utilities/README.md)** - Helper classes
-  - Radix (base conversion up to base-256)
-  - Notifications (toast messages)
-  - Strings (text manipulation)
+    - Radix (base conversion up to base-256)
+    - Notifications (toast messages)
+    - Strings (text manipulation)
 
 ### By Use Case
 
@@ -160,6 +160,7 @@ Start here if you're new to Collect:
 ## Features by Documentation Page
 
 ### Colour (datatypes/colour.md)
+
 - 10+ construction methods
 - 3 color space conversions (RGB, HSL, HSV)
 - 5+ string format outputs
@@ -168,6 +169,7 @@ Start here if you're new to Collect:
 - Performance tips
 
 ### Moment (datatypes/moment.md)
+
 - 6+ construction methods
 - 25+ format tokens
 - Time ago with short/long formats
@@ -177,6 +179,7 @@ Start here if you're new to Collect:
 - Best practices
 
 ### Period (datatypes/period.md)
+
 - Multiple unit construction
 - 5+ arithmetic operations
 - Comparison operators
@@ -185,6 +188,7 @@ Start here if you're new to Collect:
 - Limitations documentation
 
 ### Extensions (extensions/README.md)
+
 - 50+ extension methods
 - Null-safe operations
 - Chainable methods
@@ -193,6 +197,7 @@ Start here if you're new to Collect:
 - Migration guides
 
 ### Presentation (presentation/README.md)
+
 - 8 widget types
 - Material 3 theming
 - Complete color palette
@@ -201,6 +206,7 @@ Start here if you're new to Collect:
 - Component composition
 
 ### Utilities (utilities/README.md)
+
 - Base conversion (2-256)
 - Toast notifications
 - String manipulation
@@ -208,6 +214,7 @@ Start here if you're new to Collect:
 - Best practices
 
 ### Examples (examples/README.md)
+
 - 2 complete apps
 - 5+ UI patterns
 - 3+ data management examples
@@ -228,15 +235,15 @@ Start here if you're new to Collect:
 
 1. Read [Datatypes Overview](datatypes/README.md)
 2. Explore [Colour](datatypes/colour.md)
-   - Try different construction methods
-   - Convert between formats
+    - Try different construction methods
+    - Convert between formats
 3. Explore [Moment](datatypes/moment.md)
-   - Create moments
-   - Format dates
-   - Use timeAgo
+    - Create moments
+    - Format dates
+    - Use timeAgo
 4. Explore [Period](datatypes/period.md)
-   - Create periods
-   - Do date arithmetic
+    - Create periods
+    - Do date arithmetic
 5. Build a birthday countdown widget
 
 ### Path 3: Complete App (4 hours)
@@ -245,11 +252,11 @@ Start here if you're new to Collect:
 2. Study the Todo App example
 3. Study the Theme Customizer example
 4. Build your own app combining:
-   - AppTheme for theming
-   - Word for text
-   - Moment for dates
-   - Notifications for feedback
-   - Extensions for clean code
+    - AppTheme for theming
+    - Word for text
+    - Moment for dates
+    - Notifications for feedback
+    - Extensions for clean code
 
 ### Path 4: Advanced Features (2 hours)
 
@@ -263,18 +270,21 @@ Start here if you're new to Collect:
 ## Best Practices Summary
 
 ### Performance
+
 - Cache formatted strings
 - Convert Colour/Moment once and reuse
 - Use const constructors when possible
 - Extract expensive widgets
 
 ### Code Quality
+
 - Use extensions for cleaner code
 - Chain operations for readability
 - Prefer semantic over hardcoded values
 - Use AppTheme for consistent theming
 
 ### Maintenance
+
 - Store colors as hex strings
 - Store moments as strings or milliseconds
 - Use validation extensions
@@ -283,6 +293,7 @@ Start here if you're new to Collect:
 ## Common Patterns
 
 ### Responsive Layout
+
 ```dart
 SizeConfig().init(context);
 Container(
@@ -292,6 +303,7 @@ Container(
 ```
 
 ### Theme-Aware UI
+
 ```dart
 Container(
   color: AppTheme.surface(context),
@@ -300,12 +312,14 @@ Container(
 ```
 
 ### Date Display
+
 ```dart
 final moment = Moment.now();
 Word(moment.format([mmmm, space, Do, comma, space, yyyy]))
 ```
 
 ### Clean Widget Trees
+
 ```dart
 Text('Hello')
   .paddingAll(16)
@@ -325,6 +339,7 @@ Text('Hello')
 ### Contributing
 
 When contributing examples or improvements:
+
 - Follow existing documentation style
 - Include code examples
 - Add best practices section
