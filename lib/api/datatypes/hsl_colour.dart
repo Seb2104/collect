@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class HSLColour implements HSLColor {
+class HSLColour extends Col implements HSLColor {
   const HSLColour.fromAHSL(
     this.alpha,
     this.hue,

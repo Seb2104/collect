@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class Colour implements Color {
+class Colour extends Col implements Color {
   @override
   final int alpha;
   @override
