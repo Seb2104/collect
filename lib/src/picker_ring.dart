@@ -16,6 +16,7 @@ class HueRingPicker extends StatefulWidget {
     this.enableAlpha = false,
     this.displayThumbColor = true,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
+    this.displayLabel = true,
   });
 
   final Color currentColour;
@@ -26,6 +27,7 @@ class HueRingPicker extends StatefulWidget {
   final bool enableAlpha;
   final bool displayThumbColor;
   final BorderRadius pickerAreaBorderRadius;
+  final bool displayLabel;
 
   @override
   State<HueRingPicker> createState() => _HueRingPickerState();
@@ -176,6 +178,13 @@ class _HueRingPickerState extends State<HueRingPicker> {
                   displayThumbColor: true,
                 ),
               ),
+              if (widget.displayLabel)
+                FittedBox(
+                  child: ColourLabel(
+                    currentHsvColor.toColour(),
+                    enableAlpha: widget.enableAlpha,
+                  ),
+                ),
             ],
           ),
         ],
