@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../collect.dart';
 import 'common/common.dart';
@@ -285,6 +286,14 @@ class HueRingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+
+  @override
+  bool hitTest(Offset position) {
+    final center = Offset(0, 0);
+    final radio = 1.0;
+    final dist = sqrt(pow(position.dx - 0.5, 2) + pow(position.dy - 0.5, 2)) * 2;
+    return dist > 0.7 && dist < 1.3;
+  }
 }
 
 class ColorPickerArea extends StatelessWidget {
@@ -330,29 +339,20 @@ class ColorPickerArea extends StatelessWidget {
         double width = constraints.maxWidth;
         double height = constraints.maxHeight;
 
-        return RawGestureDetector(
-          gestures: {
-            AlwaysWinPanGestureRecognizer:
-                GestureRecognizerFactoryWithHandlers<
-                  AlwaysWinPanGestureRecognizer
-                >(() => AlwaysWinPanGestureRecognizer(), (
-                  AlwaysWinPanGestureRecognizer instance,
-                ) {
-                  instance
-                    ..onDown = ((details) => _handleGesture(
-                      details.globalPosition,
-                      context,
-                      height,
-                      width,
-                    ))
-                    ..onUpdate = ((details) => _handleGesture(
-                      details.globalPosition,
-                      context,
-                      height,
-                      width,
-                    ));
-                }),
-          },
+        return Listener(
+          behavior: HitTestBehavior.opaque,
+          onPointerDown: (details) => _handleGesture(
+            details.position,
+            context,
+            height,
+            width,
+          ),
+          onPointerMove: (details) => _handleGesture(
+            details.position,
+            context,
+            height,
+            width,
+          ),
           child: CustomPaint(painter: HSVWithHueColorPainter(hsvColor)),
         );
       },
@@ -410,29 +410,20 @@ class ColorPickerHueRing extends StatelessWidget {
         double width = constraints.maxWidth;
         double height = constraints.maxHeight;
 
-        return RawGestureDetector(
-          gestures: {
-            AlwaysWinPanGestureRecognizer:
-                GestureRecognizerFactoryWithHandlers<
-                  AlwaysWinPanGestureRecognizer
-                >(() => AlwaysWinPanGestureRecognizer(), (
-                  AlwaysWinPanGestureRecognizer instance,
-                ) {
-                  instance
-                    ..onDown = ((details) => _handleGesture(
-                      details.globalPosition,
-                      context,
-                      height,
-                      width,
-                    ))
-                    ..onUpdate = ((details) => _handleGesture(
-                      details.globalPosition,
-                      context,
-                      height,
-                      width,
-                    ));
-                }),
-          },
+        return Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerDown: (details) => _handleGesture(
+            details.position,
+            context,
+            height,
+            width,
+          ),
+          onPointerMove: (details) => _handleGesture(
+            details.position,
+            context,
+            height,
+            width,
+          ),
           child: CustomPaint(
             painter: HueRingPainter(
               hsvColor,
