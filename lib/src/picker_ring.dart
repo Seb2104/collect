@@ -113,27 +113,40 @@ class _HueRingPickerState extends State<HueRingPicker> {
     } else {
       return Row(
         children: <Widget>[
-          Expanded(
-            child: SizedBox(
-              width: 300.0,
-              height: widget.colorPickerHeight,
-              child: ClipRRect(
-                borderRadius: widget.pickerAreaBorderRadius,
-                child: ColorPickerArea(
+          Column(
+            children: [
+              SizedBox(height: widget.colorPickerHeight / 8.5),
+              ColorIndicator(currentHsvColor),
+              if (widget.enableAlpha) const SizedBox(height: 5),
+              SizedBox(
+                height: 40.0,
+                width: 100.0,
+                child: ColourPickerSlider(
+                  TrackType.alpha,
                   currentHsvColor,
                   onColorChanging,
-                  PaletteType.hsv,
+                  displayThumbColor: true,
                 ),
               ),
-            ),
+            ],
           ),
+
           ClipRRect(
             borderRadius: widget.pickerAreaBorderRadius,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Stack(
-                alignment: AlignmentDirectional.topCenter,
+                alignment: AlignmentDirectional.center,
                 children: <Widget>[
+                  SizedBox(
+                    width: widget.colorPickerHeight * 0.5,
+                    height: widget.colorPickerHeight * 0.5,
+                    child: ColorPickerArea(
+                      currentHsvColor,
+                      onColorChanging,
+                      PaletteType.hsv,
+                    ),
+                  ),
                   SizedBox(
                     width:
                         widget.colorPickerHeight -
@@ -146,27 +159,6 @@ class _HueRingPickerState extends State<HueRingPicker> {
                       onColorChanging,
                       strokeWidth: widget.hueRingStrokeWidth,
                     ),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(height: widget.colorPickerHeight / 8.5),
-                      ColorIndicator(currentHsvColor),
-                      if (widget.enableAlpha) const SizedBox(height: 5),
-                      if (widget.enableAlpha)
-                        SizedBox(
-                          height: 40.0,
-                          width:
-                              (widget.colorPickerHeight -
-                                  widget.hueRingStrokeWidth * 2) /
-                              2,
-                          child: ColourPickerSlider(
-                            TrackType.alpha,
-                            currentHsvColor,
-                            onColorChanging,
-                            displayThumbColor: true,
-                          ),
-                        ),
-                    ],
                   ),
                 ],
               ),
