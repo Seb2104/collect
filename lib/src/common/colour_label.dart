@@ -35,12 +35,13 @@ class _ColourLabelState extends State<ColourLabel> {
   String argbView() => widget.colour.argb;
 
   String hslView() => widget.colour.hsl.toString();
-  MenuController menuController = MenuController();
+  MenuControl menuController = MenuControl();
   String selectedFormat = 'b256';
 
   @override
   void initState() {
     super.initState();
+    menuController.selectedValue = selectedFormat;
   }
 
   String getViewForFormat(String format) {
@@ -65,9 +66,29 @@ class _ColourLabelState extends State<ColourLabel> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+<<<<<<< HEAD
           Menu(
             textStyle: TextStyle(fontSize: 11),
             items: [MenuItemString(value: 'TITS', label: 'sexy')],
+=======
+          Flexible(
+            child: Menu(
+              width: 100,
+              onChanged: (value) {
+                selectedFormat = value!;
+                menuController.selectedValue = selectedFormat;
+                print(selectedFormat);
+                setState(() {});
+              },
+              textStyle: TextStyle(fontSize: 11),
+              items: [
+                MenuItemString(value: 'b256', label: 'b256'),
+                MenuItemString(value: 'hex', label: 'HEX'),
+                MenuItemString(value: 'argb', label: 'ARGB'),
+                MenuItemString(value: 'hsl', label: 'HSL'),
+              ],
+            ),
+>>>>>>> 6473853a6871166e9d390fe5d9c2c27cb14d951b
           ),
           Word(
             getViewForFormat(selectedFormat),
