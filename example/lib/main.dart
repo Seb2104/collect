@@ -1,7 +1,7 @@
 import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
-Colour colour = Colours.black;
+Colour colour = Colours.white;
 
 void main() {
   runApp(Main());
@@ -20,7 +20,16 @@ class Main extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 1,
           width: MediaQuery.of(context).size.width * 1,
           child: Center(
-            child: Container(child: ReCollectIcons.backgroundColour),
+            child: Container(
+              child: ColourPicker.wheel(
+                height: 250 ,
+                width: 800,
+                pickerColor: colour,
+                onColorChanged: (value) {
+                  print(value);
+                },
+              ),
+            ),
           ),
         ),
       ),
