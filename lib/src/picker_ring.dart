@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../collect.dart';
 import 'common/common.dart';
@@ -114,24 +113,6 @@ class _HueRingPickerState extends State<HueRingPicker> {
     } else {
       return Row(
         children: <Widget>[
-          Column(
-            children: [
-              SizedBox(height: widget.colorPickerHeight / 8.5),
-              ColorIndicator(currentHsvColor),
-              if (widget.enableAlpha) const SizedBox(height: 5),
-              SizedBox(
-                height: 40.0,
-                width: 100.0,
-                child: ColourPickerSlider(
-                  TrackType.alpha,
-                  currentHsvColor,
-                  onColorChanging,
-                  displayThumbColor: true,
-                ),
-              ),
-            ],
-          ),
-
           ClipRRect(
             borderRadius: widget.pickerAreaBorderRadius,
             child: Padding(
@@ -164,6 +145,38 @@ class _HueRingPickerState extends State<HueRingPicker> {
                 ],
               ),
             ),
+          ),
+          Column(
+            children: [
+              SizedBox(height: widget.colorPickerHeight / 6),
+              ColorIndicator(currentHsvColor),
+            ],
+          ),
+          Column(
+            children: [
+              SizedBox(height: widget.colorPickerHeight / 8.5),
+              SizedBox(
+                height: 40.0,
+                width: 200.0,
+                child: ColourPickerSlider(
+                  TrackType.value,
+                  currentHsvColor,
+                  onColorChanging,
+                  displayThumbColor: true,
+                ),
+              ),
+              if (widget.enableAlpha) const SizedBox(height: 5),
+              SizedBox(
+                height: 40.0,
+                width: 200.0,
+                child: ColourPickerSlider(
+                  TrackType.alpha,
+                  currentHsvColor,
+                  onColorChanging,
+                  displayThumbColor: true,
+                ),
+              ),
+            ],
           ),
         ],
       );
@@ -289,9 +302,8 @@ class HueRingPainter extends CustomPainter {
 
   @override
   bool hitTest(Offset position) {
-    final center = Offset(0, 0);
-    final radio = 1.0;
-    final dist = sqrt(pow(position.dx - 0.5, 2) + pow(position.dy - 0.5, 2)) * 2;
+    final dist =
+        sqrt(pow(position.dx - 0.5, 2) + pow(position.dy - 0.5, 2)) * 2;
     return dist > 0.7 && dist < 1.3;
   }
 }
@@ -341,18 +353,10 @@ class ColorPickerArea extends StatelessWidget {
 
         return Listener(
           behavior: HitTestBehavior.opaque,
-          onPointerDown: (details) => _handleGesture(
-            details.position,
-            context,
-            height,
-            width,
-          ),
-          onPointerMove: (details) => _handleGesture(
-            details.position,
-            context,
-            height,
-            width,
-          ),
+          onPointerDown: (details) =>
+              _handleGesture(details.position, context, height, width),
+          onPointerMove: (details) =>
+              _handleGesture(details.position, context, height, width),
           child: CustomPaint(painter: HSVWithHueColorPainter(hsvColor)),
         );
       },
@@ -412,18 +416,10 @@ class ColorPickerHueRing extends StatelessWidget {
 
         return Listener(
           behavior: HitTestBehavior.translucent,
-          onPointerDown: (details) => _handleGesture(
-            details.position,
-            context,
-            height,
-            width,
-          ),
-          onPointerMove: (details) => _handleGesture(
-            details.position,
-            context,
-            height,
-            width,
-          ),
+          onPointerDown: (details) =>
+              _handleGesture(details.position, context, height, width),
+          onPointerMove: (details) =>
+              _handleGesture(details.position, context, height, width),
           child: CustomPaint(
             painter: HueRingPainter(
               hsvColor,

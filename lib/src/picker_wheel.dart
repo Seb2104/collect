@@ -72,8 +72,9 @@ class _WheelPickerState extends State<WheelPicker> {
   }
 
   Widget colorPickerSlider(TrackType trackType) {
-    return ColourPickerSlider(trackType, currentHsvColor, (HSVColour color) {
-      setState(() => currentHsvColor = color);
+    return ColourPickerSlider(trackType, currentHsvColor,
+            (HSVColour color) {
+              setState(() => currentHsvColor = color);
       widget.onColorChanged(currentHsvColor.toColor());
       if (widget.onHsvColorChanged != null) {
         widget.onHsvColorChanged!(currentHsvColor);
