@@ -119,33 +119,24 @@ class _HueRingPickerState extends State<HueRingPicker> {
             borderRadius: widget.pickerAreaBorderRadius,
             child: Padding(
               padding: const EdgeInsets.all(15),
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: widget.colorPickerHeight * 0.5,
-                    height: widget.colorPickerHeight * 0.5,
-                    child: ColorPickerArea(
-                      currentHsvColor,
-                      onColorChanging,
-                      PaletteType.hsv,
-                    ),
-                  ),
-                  SizedBox(
-                    width:
-                        widget.colorPickerHeight -
-                        widget.hueRingStrokeWidth * 2,
-                    height:
-                        widget.colorPickerHeight -
-                        widget.hueRingStrokeWidth * 2,
-                    child: ColorPickerHueRing(
-                      currentHsvColor,
-                      onColorChanging,
-                      strokeWidth: widget.hueRingStrokeWidth,
-                    ),
-                  ),
-                ],
+              child: SizedBox(
+                width: widget.colorPickerHeight * 0.5,
+                height: widget.colorPickerHeight * 0.5,
+                child: ColorPickerArea(
+                  currentHsvColor,
+                  onColorChanging,
+                  PaletteType.hsv,
+                ),
               ),
+            ),
+          ),
+          SizedBox(
+            width: widget.colorPickerHeight - widget.hueRingStrokeWidth * 7,
+            height: widget.colorPickerHeight - widget.hueRingStrokeWidth * 7,
+            child: ColorPickerHueRing(
+              currentHsvColor,
+              onColorChanging,
+              strokeWidth: widget.hueRingStrokeWidth,
             ),
           ),
           Column(

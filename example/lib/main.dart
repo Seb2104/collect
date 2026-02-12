@@ -11,6 +11,8 @@ void main() {
   print(number);
   print(a);
   print(b);
+
+  runApp(Main());
 }
 
 class Main extends StatefulWidget {
