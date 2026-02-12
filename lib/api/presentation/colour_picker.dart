@@ -38,7 +38,7 @@ class ColourPicker {
       portraitOnly: portraitOnly,
       pickerRadius: pickerRadius,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
-      colorHistory: colourHistory,
+      colourHistory: colourHistory,
       onHistoryChanged: onHistoryChanged,
     );
   }
