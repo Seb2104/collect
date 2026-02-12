@@ -2,23 +2,23 @@ part of '../../collect.dart';
 
 extension Ba on int {
   String get oct {
-    return Radix.toRadix(this, Bases.b8);
+    return Radix.base(this, Bases.b8);
   }
 
   String get bin {
-    return Radix.toRadix(this, Bases.b2).toUpperCase();
+    return Radix.base(this, Bases.b2).toUpperCase();
   }
 
   String get hex {
-    return Radix.toRadix(this, Bases.b16).toUpperCase();
+    return Radix.base(this, Bases.b16).toUpperCase();
   }
 
   String get dec {
-    return Radix.toRadix(this, Bases.b10);
+    return Radix.base(this, Bases.b10);
   }
 
   String get b256 {
-    return Radix.toRadix(this, Bases.b256);
+    return Radix.base(this, Bases.b256);
   }
 }
 

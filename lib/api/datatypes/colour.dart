@@ -151,10 +151,10 @@ class Colour extends Col implements Color {
   }
 
   Colour.fromB256(String data)
-    : alpha = Radix.base(data[0], Bases.b256) as int,
-      red = Radix.base(data[1], Bases.b256) as int,
-      green = Radix.base(data[2], Bases.b256) as int,
-      blue = Radix.base(data[3], Bases.b256) as int;
+    : alpha = Radix.getDecimal(data[0], Bases.b256) as int,
+      red = Radix.getDecimal(data[1], Bases.b256) as int,
+      green = Radix.getDecimal(data[2], Bases.b256) as int,
+      blue = Radix.getDecimal(data[3], Bases.b256) as int;
 
   Colour.fromPercent({
     double a = 100,
@@ -176,7 +176,7 @@ class Colour extends Col implements Color {
        green = Radix.fractionToColourValue(green.clamp(0.0, 1.0)),
        blue = Radix.fractionToColourValue(blue.clamp(0.0, 1.0));
 
-  factory Colour.fromHex({required String hexString}) {
+    factory Colour.fromHex({required String hexString}) {
     String hex = hexString.replaceAll('#', '').toUpperCase();
 
     if (hex.length == 6) {
@@ -189,10 +189,10 @@ class Colour extends Col implements Color {
     }
 
     return Colour(
-      alpha: Radix.base(hex.substring(0, 2), Bases.b16),
-      red: Radix.base(hex.substring(2, 4), Bases.b16),
-      green: Radix.base(hex.substring(4, 6), Bases.b16),
-      blue: Radix.base(hex.substring(6, 8), Bases.b16),
+      alpha: int.parse(Radix.getDecimal(hex.substring(0, 2), Bases.b16)),
+      red: int.parse(Radix.getDecimal(hex.substring(2, 4), Bases.b16)),
+      green: int.parse(Radix.getDecimal(hex.substring(4, 6), Bases.b16)),
+      blue: int.parse(Radix.getDecimal(hex.substring(6, 8), Bases.b16)),
     );
   }
 

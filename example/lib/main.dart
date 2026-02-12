@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 Colour colour = Colours.white;
 
 void main() {
-  runApp(Main());
+  int number = 728;
+  final a = Radix.base(number, Bases.b64);
+  final b = Radix.getDecimal(a, Bases.b64);
+
+  print(number);
+  print(a);
+  print(b);
 }
 
 class Main extends StatefulWidget {

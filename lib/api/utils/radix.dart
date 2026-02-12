@@ -1,7 +1,8 @@
 part of '../../collect.dart';
 
 class Radix {
-  static dynamic base(dynamic data, Base radix) {
+  @Deprecated('Use base instead')
+  static dynamic change(dynamic data, Base radix) {
     return data is int
         ? _crypt(
             data: data.toString(),
@@ -17,11 +18,19 @@ class Radix {
           );
   }
 
-  static String toRadix(int data, Base toRadix) {
+  static String base(int data, Base radix) {
     return _crypt(
       data: data,
-      from: _base.substring(0, 10),
-      to: _base.substring(0, toRadix.value),
+      from: _base.substring(0, Bases.decimal.value),
+      to: _base.substring(0, radix.value),
+    );
+  }
+
+  static String getDecimal(String data, Base currentRadix) {
+    return _crypt(
+      data: data,
+      from: _base.substring(0, currentRadix.value),
+      to: _base.substring(0, Bases.decimal.value),
     );
   }
 
@@ -33,7 +42,7 @@ class Radix {
 
   static String dec(int data) => base(data, Bases.b10);
 
-  static String b256(int data) => toRadix(data, Bases.b256);
+  static String b256(int data) => base(data, Bases.b256);
 
   static String _crypt({
     dynamic data,
