@@ -292,9 +292,9 @@ class _WheelPickerState extends State<WheelPicker> {
 }
 
 class HUEColorWheelPainter extends CustomPainter {
-  const HUEColorWheelPainter(this.hsvColor, {this.pointerColor});
+  const HUEColorWheelPainter(this.hsvColour, {this.pointerColor});
 
-  final HSVColour hsvColor;
+  final HSVColour hsvColour;
   final Color? pointerColor;
 
   @override
@@ -329,21 +329,21 @@ class HUEColorWheelPainter extends CustomPainter {
     canvas.drawCircle(
       center,
       radio,
-      Paint()..color = Colors.black.withOpacity(1 - hsvColor.value),
+      Paint()..color = Colors.black.withOpacity(1 - hsvColour.value),
     );
 
     canvas.drawCircle(
       Offset(
         center.dx +
-            hsvColor.saturation * radio * cos((hsvColor.hue * pi / 180)),
+            hsvColour.saturation * radio * cos((hsvColour.hue * pi / 180)),
         center.dy -
-            hsvColor.saturation * radio * sin((hsvColor.hue * pi / 180)),
+            hsvColour.saturation * radio * sin((hsvColour.hue * pi / 180)),
       ),
       size.height * 0.04,
       Paint()
         ..color =
             pointerColor ??
-            (useWhiteForeground(hsvColor.toColor())
+            (useWhiteForeground(hsvColour.toColor())
                 ? Colors.white
                 : Colors.black)
         ..strokeWidth = 1.5

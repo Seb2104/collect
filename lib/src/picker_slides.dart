@@ -100,10 +100,8 @@ class _SlidePickerState extends State<SlidePicker> {
               ],
               begin: widget.indicatorAlignmentBegin,
               end: widget.indicatorAlignmentEnd,
-              stops: const [0.0, 0.5, 0.5, 1.0],
             ),
           ),
-          child: const CustomPaint(painter: CheckerPainter()),
         ),
       ),
     );
