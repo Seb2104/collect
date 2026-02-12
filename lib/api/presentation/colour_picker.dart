@@ -8,9 +8,9 @@ class ColourPicker {
     /// The size of the container surrounding the colour picker
     required double width,
 
-    required Color currentColour,
+    required Colour currentColour,
     double pickerRadius = 300,
-    required ValueChanged<Color> onColorChanged,
+    required ValueChanged<Colour> onColourChanged,
     HSVColor? pickerHsvColor,
     ValueChanged<HSVColor>? onHsvColorChanged,
     bool enableAlpha = true,
@@ -23,14 +23,14 @@ class ColourPicker {
     bool portraitOnly = false,
     double pickerAreaHeightPercent = 1.0,
     BorderRadius? pickerAreaBorderRadius,
-    List<Color>? colorHistory,
+    List<Colour>? colourHistory,
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return WheelPicker(
       height: height,
       width: width,
-      pickerColor: currentColour,
-      onColorChanged: onColorChanged,
+      pickerColour: currentColour,
+      onColourChanged: onColourChanged,
       enableAlpha: enableAlpha,
       showLabel: showLabel,
       labelTypes: labelTypes,
@@ -38,7 +38,7 @@ class ColourPicker {
       portraitOnly: portraitOnly,
       pickerRadius: pickerRadius,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
-      colorHistory: colorHistory,
+      colorHistory: colourHistory,
       onHistoryChanged: onHistoryChanged,
     );
   }

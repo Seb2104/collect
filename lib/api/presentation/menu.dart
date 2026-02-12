@@ -438,9 +438,13 @@ class _MenuState<T> extends State<Menu<T>> {
               child: Padding(
                 padding: _resolvedPadding,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(child: _buildSelectedDisplay()),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: _buildSelectedDisplay(),
+                    ),
                     _buildIcon(),
                   ],
                 ),

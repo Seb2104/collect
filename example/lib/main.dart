@@ -40,7 +40,7 @@ class _MainState extends State<Main> {
                   height: 200,
                   width: 800,
                   currentColour: colour,
-                  onColorChanged: (value) {
+                  onColourChanged: (value) {
                     colour = value.colour;
                     setState(() {});
                   },

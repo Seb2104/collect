@@ -10,9 +10,9 @@ class WheelPicker extends StatefulWidget {
     super.key,
     required this.height,
     required this.width,
-    required this.pickerColor,
-    required this.onColorChanged,
-    this.pickerHsvColor,
+    required this.pickerColour,
+    required this.onColourChanged,
+    this.pickerHsvColour,
     this.onHsvColorChanged,
     this.enableAlpha = true,
     this.showLabel = true,
@@ -30,9 +30,9 @@ class WheelPicker extends StatefulWidget {
   final double width;
   final double pickerRadius;
 
-  final Color pickerColor;
-  final ValueChanged<Color> onColorChanged;
-  final HSVColour? pickerHsvColor;
+  final Colour pickerColour;
+  final ValueChanged<Colour> onColourChanged;
+  final HSVColour? pickerHsvColour;
   final ValueChanged<HSVColour>? onHsvColorChanged;
   final bool enableAlpha;
   final bool showLabel;
@@ -41,7 +41,7 @@ class WheelPicker extends StatefulWidget {
   final bool portraitOnly;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
-  final List<Color>? colorHistory;
+  final List<Colour>? colorHistory;
   final ValueChanged<List<Color>>? onHistoryChanged;
 
   @override
@@ -54,9 +54,9 @@ class _WheelPickerState extends State<WheelPicker> {
 
   @override
   void initState() {
-    currentHsvColor = (widget.pickerHsvColor != null)
-        ? widget.pickerHsvColor as HSVColour
-        : HSVColour.fromColor(widget.pickerColor);
+    currentHsvColor = (widget.pickerHsvColour != null)
+        ? widget.pickerHsvColour as HSVColour
+        : HSVColour.fromColor(widget.pickerColour);
     if (widget.colorHistory != null && widget.onHistoryChanged != null) {
       colorHistory = widget.colorHistory ?? [];
     }
@@ -66,16 +66,16 @@ class _WheelPickerState extends State<WheelPicker> {
   @override
   void didUpdateWidget(WheelPicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    currentHsvColor = (widget.pickerHsvColor != null)
-        ? widget.pickerHsvColor as HSVColour
-        : HSVColour.fromColor(widget.pickerColor);
+    currentHsvColor = (widget.pickerHsvColour != null)
+        ? widget.pickerHsvColour as HSVColour
+        : HSVColour.fromColor(widget.pickerColour);
   }
 
   Widget colorPickerSlider(TrackType trackType) {
     return ColourPickerSlider(trackType, currentHsvColor,
             (HSVColour color) {
               setState(() => currentHsvColor = color);
-      widget.onColorChanged(currentHsvColor.toColor());
+      widget.onColourChanged(currentHsvColor.toColour());
       if (widget.onHsvColorChanged != null) {
         widget.onHsvColorChanged!(currentHsvColor);
       }
@@ -84,7 +84,7 @@ class _WheelPickerState extends State<WheelPicker> {
 
   void onColorChanging(HSVColour color) {
     setState(() => currentHsvColor = color);
-    widget.onColorChanged(currentHsvColor.toColor());
+    widget.onColourChanged(currentHsvColor.toColour());
     if (widget.onHsvColorChanged != null) {
       widget.onHsvColorChanged!(currentHsvColor);
     }
