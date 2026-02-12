@@ -79,7 +79,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
                   SizedBox(
                     width: widget.colorPickerHeight / 1.6,
                     height: widget.colorPickerHeight / 1.6,
-                    child: ColorPickerArea(
+                    child: ColourPickerArea(
                       currentHsvColor,
                       onColorChanging,
                       PaletteType.hsv,
@@ -114,15 +114,16 @@ class _HueRingPickerState extends State<HueRingPicker> {
       );
     } else {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           ClipRRect(
             borderRadius: widget.pickerAreaBorderRadius,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: SizedBox(
-                width: widget.colorPickerHeight * 0.5,
-                height: widget.colorPickerHeight * 0.5,
-                child: ColorPickerArea(
+                width: widget.colorPickerHeight * 0.4,
+                height: widget.colorPickerHeight * 0.4,
+                child: ColourPickerArea(
                   currentHsvColor,
                   onColorChanging,
                   PaletteType.hsv,
@@ -130,15 +131,7 @@ class _HueRingPickerState extends State<HueRingPicker> {
               ),
             ),
           ),
-          SizedBox(
-            width: widget.colorPickerHeight - widget.hueRingStrokeWidth * 7,
-            height: widget.colorPickerHeight - widget.hueRingStrokeWidth * 7,
-            child: ColorPickerHueRing(
-              currentHsvColor,
-              onColorChanging,
-              strokeWidth: widget.hueRingStrokeWidth,
-            ),
-          ),
+
           Column(
             children: [
               SizedBox(height: widget.colorPickerHeight / 6),
@@ -177,6 +170,15 @@ class _HueRingPickerState extends State<HueRingPicker> {
                   ),
                 ),
             ],
+          ),
+          SizedBox(
+            width: widget.colorPickerHeight - widget.hueRingStrokeWidth * 3,
+            height: widget.colorPickerHeight - widget.hueRingStrokeWidth * 3,
+            child: ColorPickerHueRing(
+              currentHsvColor,
+              onColorChanging,
+              strokeWidth: widget.hueRingStrokeWidth,
+            ),
           ),
         ],
       );
@@ -308,8 +310,8 @@ class HueRingPainter extends CustomPainter {
   }
 }
 
-class ColorPickerArea extends StatelessWidget {
-  const ColorPickerArea(
+class ColourPickerArea extends StatelessWidget {
+  const ColourPickerArea(
     this.hsvColor,
     this.onColorChanged,
     this.paletteType, {
