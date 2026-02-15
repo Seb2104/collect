@@ -72,6 +72,13 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
     }
   }
 
+  onColourChange(HSVColour colour) {
+    widget.onColourChanged(colour.toColour());
+    if (widget.onHsvColourChanged != null) {
+      widget.onHsvColourChanged!(colour);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.orientation == Orientation.portrait) {
@@ -200,45 +207,52 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: addToHistory,
-                      child: ColorIndicator(currentHsvColor),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: widget.pickerRadius * 0.3,
-                          width: widget.pickerRadius * 2,
-                          child: ColourPickerSlider(
-                            TrackType.value,
-                            currentHsvColor,
-                            (HSVColour colour) {
-                              setState(() => currentHsvColor = colour);
-                              notifyColorChanged(colour);
-                            },
-                            displayThumbColor: widget.displayThumbColor,
-                          ),
-                        ),
-                        if (widget.enableAlpha)
-                          SizedBox(
-                            height: widget.pickerRadius * 0.3,
-                            width: widget.pickerRadius * 2,
-                            child: ColourPickerSlider(
-                              TrackType.alpha,
-                              currentHsvColor,
-                              (HSVColour colour) {
-                                setState(() => currentHsvColor = colour);
-                                notifyColorChanged(colour);
-                              },
-                              displayThumbColor: widget.displayThumbColor,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
+                Indicator(
+                  colour: currentHsvColor,
+                  size: widget.pickerRadius,
+                  displayThumbColour: widget.displayThumbColor,
+                  alphaEnabled: widget.enableAlpha,
+                  onChanged: onColourChange,
                 ),
+                // Row(
+                //   children: <Widget>[
+                //     GestureDetector(
+                //       onTap: addToHistory,
+                //       child: ColorIndicator(currentHsvColor),
+                //     ),
+                //     Column(
+                //       children: <Widget>[
+                //         SizedBox(
+                //           height: widget.pickerRadius * 0.3,
+                //           width: widget.pickerRadius * 2,
+                //           child: ColourPickerSlider(
+                //             TrackType.value,
+                //             currentHsvColor,
+                //             (HSVColour colour) {
+                //               setState(() => currentHsvColor = colour);
+                //               notifyColorChanged(colour);
+                //             },
+                //             displayThumbColor: widget.displayThumbColor,
+                //           ),
+                //         ),
+                //         if (widget.enableAlpha)
+                //           SizedBox(
+                //             height: widget.pickerRadius * 0.3,
+                //             width: widget.pickerRadius * 2,
+                //             child: ColourPickerSlider(
+                //               TrackType.alpha,
+                //               currentHsvColor,
+                //               (HSVColour colour) {
+                //                 setState(() => currentHsvColor = colour);
+                //                 notifyColorChanged(colour);
+                //               },
+                //               displayThumbColor: widget.displayThumbColor,
+                //             ),
+                //           ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
                 if (widget.showLabel)
                   ColourLabel(
                     height:
@@ -263,5 +277,67 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
         ),
       );
     }
+  }
+}
+
+class Indicator extends StatefulWidget {
+  final double size;
+  final HSVColour colour;
+  final bool displayThumbColour;
+  final bool alphaEnabled;
+  final onChanged;
+
+  const Indicator({
+    super.key,
+    required this.colour,
+    required this.size,
+    required this.displayThumbColour,
+    required this.alphaEnabled,
+    required this.onChanged,
+  });
+
+  @override
+  State<Indicator> createState() => _IndicatorState();
+}
+
+class _IndicatorState extends State<Indicator> {
+
+  @override
+  Widget build(BuildContext context) {
+     HSVColour currentHSVColour = widget.colour.toHSVColour;
+    return Row(
+      children: <Widget>[
+        ColorIndicator(currentHSVColour),
+        Column(
+          children: <Widget>[
+            SizedBox(
+              height: widget.size * 0.3,
+              width: widget.size * 2,
+              child: ColourPickerSlider(
+                TrackType.value,
+                currentHSVColour,
+                (colour) {
+                  widget.onChanged(colour);
+                },
+                displayThumbColor: widget.displayThumbColour,
+              ),
+            ),
+            if (widget.alphaEnabled)
+              SizedBox(
+                height: widget.size * 0.3,
+                width: widget.size * 2,
+                child: ColourPickerSlider(
+                  TrackType.alpha,
+                  currentHSVColour,
+                      (colour) {
+                    widget.onChanged(colour);
+                  },
+                  displayThumbColor: widget.displayThumbColour,
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 }
