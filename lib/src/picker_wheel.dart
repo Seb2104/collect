@@ -196,11 +196,13 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                 ),
               ),
             ),
+            VerticalDivider(color: Colours.black.withOpacity(0.3)),
             Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    SizedBox(width: widget.pickerRadius * 0.067),
                     GestureDetector(
                       onTap: addToHistory,
                       child: ColorIndicator(currentHsvColor),
@@ -208,65 +210,41 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                     Column(
                       children: <Widget>[
                         SizedBox(
-                          height: widget.pickerRadius * 0.133,
-                          width: widget.pickerRadius * 0.867,
-                          child: buildColorPickerSlider(
+                          height: widget.pickerRadius * 0.3,
+                          width: widget.pickerRadius * 2,
+                          child: ColourPickerSlider(
                             TrackType.value,
+                            currentHsvColor,
+                                (HSVColour colour) {
+                              setState(() => currentHsvColor = colour);
+                              notifyColorChanged(colour);
+                            },
                             displayThumbColor: widget.displayThumbColor,
                           ),
+
                         ),
                         if (widget.enableAlpha)
                           SizedBox(
-                            height: widget.pickerRadius * 0.133,
-                            width: widget.pickerRadius * 0.867,
-                            child: buildColorPickerSlider(
+                            height: widget.pickerRadius * 0.3,
+                            width: widget.pickerRadius * 2,
+                            child: ColourPickerSlider(
                               TrackType.alpha,
+                              currentHsvColor,
+                              (HSVColour colour) {
+                                setState(() => currentHsvColor = colour);
+                                notifyColorChanged(colour);
+                              },
                               displayThumbColor: widget.displayThumbColor,
                             ),
                           ),
                       ],
                     ),
-                    SizedBox(width: widget.pickerRadius * 0.033),
                   ],
                 ),
-                if (colorHistory.isNotEmpty)
-                  SizedBox(
-                    width: widget.pickerRadius,
-                    height: widget.pickerRadius * 0.167,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        for (Color color in colorHistory)
-                          Padding(
-                            key: Key(color.hashCode.toString()),
-                            padding: EdgeInsets.fromLTRB(
-                              widget.pickerRadius * 0.05,
-                              widget.pickerRadius * 0.06,
-                              0,
-                              0,
-                            ),
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: () =>
-                                    onColorChanging(HSVColour.fromColor(color)),
-                                onLongPress: () => removeFromHistory(color),
-                                child: ColorIndicator(
-                                  HSVColour.fromColor(color),
-                                  width: widget.pickerRadius * 0.1,
-                                  height: widget.pickerRadius * 0.1,
-                                ),
-                              ),
-                            ),
-                          ),
-                        SizedBox(width: widget.pickerRadius * 0.05),
-                      ],
-                    ),
-                  ),
-                SizedBox(height: widget.pickerRadius * 0.067),
                 if (widget.showLabel)
                   FittedBox(
                     child: ColourLabel(
-                      height: 100,
+                      height: double.maxFinite,
                       currentHsvColor.toColour(),
                       enableAlpha: widget.enableAlpha,
                       colorLabelTypes: [

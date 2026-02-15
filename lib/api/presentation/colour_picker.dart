@@ -10,7 +10,10 @@ class ColourPicker {
     PickerStyle style = const PickerStyle(
       padding: EdgeInsets.all(20),
       margin: EdgeInsets.all(20),
-      decoration: BoxDecoration(color: AppTheme.lightBackground),
+      decoration: BoxDecoration(
+        color: AppTheme.lightBackground,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
     ),
     double pickerRadius = 125,
     bool enableAlpha = true,
@@ -24,20 +27,20 @@ class ColourPicker {
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return WheelPicker(
-        currentColour: currentColour,
-        onColourChanged: onColourChanged,
-        height: height,
-        width: width,
-        style: style,
-        pickerRadius: pickerRadius,
-        enableAlpha: enableAlpha,
-        showLabel: showLabel,
-        displayThumbColor: displayThumbColor,
-        orientation: orientation,
-        pickerHsvColour: pickerHsvColour,
-        onHsvColourChanged: onHsvColourChanged,
-        colourHistory: colourHistory,
-        onHistoryChanged: onHistoryChanged,
+      currentColour: currentColour,
+      onColourChanged: onColourChanged,
+      height: height,
+      width: width,
+      style: style,
+      pickerRadius: pickerRadius,
+      enableAlpha: enableAlpha,
+      showLabel: showLabel,
+      displayThumbColor: displayThumbColor,
+      orientation: orientation,
+      pickerHsvColour: pickerHsvColour,
+      onHsvColourChanged: onHsvColourChanged,
+      colourHistory: colourHistory,
+      onHistoryChanged: onHistoryChanged,
     );
   }
 

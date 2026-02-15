@@ -6,8 +6,11 @@ class PickerStyle {
   final BoxDecoration decoration;
 
   const PickerStyle({
-    this.padding = const EdgeInsets.all(0),
-    this.margin = const EdgeInsets.all(0),
-    this.decoration = const BoxDecoration(),
+    this.padding = const  EdgeInsets.all(20),
+    this.margin = const EdgeInsets.all(20),
+    this.decoration = const BoxDecoration(
+      color: AppTheme.lightBackground,
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+    ),
   });
 }
