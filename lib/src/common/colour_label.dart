@@ -20,7 +20,7 @@ class ColourLabel extends StatefulWidget {
     ],
     this.textStyle,
     this.height = 140,
-    this.width = 240,
+    this.width = 300,
   }) : assert(colorLabelTypes.length > 0);
 
   @override
@@ -63,11 +63,10 @@ class _ColourLabelState extends State<ColourLabel> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.width,
+      height: widget.height,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Flexible(
-            child: Menu(
+            Menu(
               width: 100,
               value: selectedFormat,
               onChanged: (val) {
@@ -84,10 +83,9 @@ class _ColourLabelState extends State<ColourLabel> {
                 MenuItemString(value: 'hsl', label: 'HSL'),
               ],
             ),
-          ),
+          Spacer(),
           Word(
             getViewForFormat(selectedFormat),
-            fontWeight: FontWeight.bold,
             fontSize: 14,
           ),
         ],

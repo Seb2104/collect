@@ -12,7 +12,38 @@ void main() {
   print(a);
   print(b);
 
-  runApp(Main());
+  runApp(App());
+}
+
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: AppTheme.light(),
+      home: Scaffold(
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1,
+          child: Center(
+            child: ColourPicker.wheel(
+              currentColour: colour,
+              onColourChanged: (value) {
+                colour = value.colour;
+                setState(() {});
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class Main extends StatefulWidget {

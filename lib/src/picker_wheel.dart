@@ -215,13 +215,12 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                           child: ColourPickerSlider(
                             TrackType.value,
                             currentHsvColor,
-                                (HSVColour colour) {
+                            (HSVColour colour) {
                               setState(() => currentHsvColor = colour);
                               notifyColorChanged(colour);
                             },
                             displayThumbColor: widget.displayThumbColor,
                           ),
-
                         ),
                         if (widget.enableAlpha)
                           SizedBox(
@@ -242,9 +241,12 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                   ],
                 ),
                 if (widget.showLabel)
-                  FittedBox(
+                  Expanded(
                     child: ColourLabel(
-                      height: double.maxFinite,
+                      height: widget.height,
+                      width:
+                          (widget.width / 2) -
+                          widget.style.padding.along(Axis.horizontal),
                       currentHsvColor.toColour(),
                       enableAlpha: widget.enableAlpha,
                       colorLabelTypes: [
