@@ -19,6 +19,7 @@ import 'package:path/path.dart' as p;
 import 'package:unicode/unicode.dart' as unicode;
 
 part 'api/constants/bases.dart';
+part 'api/constants/picker_style.dart';
 part 'api/constants/colour_pickers.dart';
 part 'api/constants/colours.dart';
 part 'api/constants/moment.dart';

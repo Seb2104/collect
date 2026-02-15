@@ -3,42 +3,37 @@ part of '../../collect.dart';
 //TODO change it so you can just specify the orientation
 class ColourPicker {
   static Widget wheel({
-    /// The size of the container surrounding the colour picker
-    required double height,
-
-    /// The size of the container surrounding the colour picker
-    required double width,
-
     required Colour currentColour,
-    double pickerRadius = 300,
     required ValueChanged<Colour> onColourChanged,
-    HSVColor? pickerHsvColor,
-    ValueChanged<HSVColor>? onHsvColorChanged,
+    double height = 300,
+    double width = 700,
+    double pickerRadius = 125,
+    PickerStyle style = const PickerStyle(
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.all(20),
+      decoration: BoxDecoration(color: AppTheme.lightBackground),
+    ),
     bool enableAlpha = true,
     bool showLabel = true,
-    List<ColorLabelType> labelTypes = const [
-      ColorLabelType.rgb,
-      ColorLabelType.hex,
-    ],
     bool displayThumbColor = true,
     Orientation orientation = Orientation.landscape,
-    double pickerAreaHeightPercent = 1.0,
     BorderRadius? pickerAreaBorderRadius,
+    HSVColor? pickerHsvColor,
+    ValueChanged<HSVColor>? onHsvColorChanged,
     List<Colour>? colourHistory,
     ValueChanged<List<Color>>? onHistoryChanged,
   }) {
     return WheelPicker(
-      height: height,
-      width: width,
       pickerColour: currentColour,
       onColourChanged: onColourChanged,
+      style: style,
+      height: height,
+      width: width,
       enableAlpha: enableAlpha,
       showLabel: showLabel,
-      labelTypes: labelTypes,
       displayThumbColor: displayThumbColor,
       orientation: orientation,
       pickerRadius: pickerRadius,
-      pickerAreaHeightPercent: pickerAreaHeightPercent,
       colourHistory: colourHistory,
       onHistoryChanged: onHistoryChanged,
     );

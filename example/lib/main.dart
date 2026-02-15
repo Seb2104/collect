@@ -28,68 +28,61 @@ class _MainState extends State<Main> {
     return MaterialApp(
       theme: AppTheme.light(),
       home: Scaffold(
-        backgroundColor: AppTheme.background(context),
         body: SizedBox(
           height: MediaQuery.of(context).size.height * 1,
           width: MediaQuery.of(context).size.width * 1,
-          child: GridView(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: 250,
-              crossAxisCount: 2,
-              crossAxisSpacing: 50,
-              mainAxisSpacing: 50,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                color: Colours.blueGrey,
-                height: 250,
-                width: 800,
-                child: ColourPicker.wheel(
-                  height: 200,
-                  width: 800,
-                  currentColour: colour,
-                  onColourChanged: (value) {
-                    colour = value.colour;
-                    setState(() {});
-                  },
+              SizedBox(
+                width: 1300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ColourPicker.wheel(
+                      currentColour: colour,
+                      onColourChanged: (value) {
+                        colour = value.colour;
+                        setState(() {});
+                      },
+                    ),
+                    // Container(
+                    //   color: Colours.blueGrey,
+                    //   height: 250,
+                    //   width: 800,
+                    //   child: ColourPicker.slides(
+                    //     currentColour: colour,
+                    //     onColorChanged: (value) {
+                    //       colour = value.colour;
+                    //       setState(() {});
+                    //     },
+                    //   ),
+                    // ),
+                  ],
                 ),
               ),
-              Container(
-                color: Colours.blueGrey,
-                height: 250,
-                width: 800,
-                child: ColourPicker.slides(
-                  currentColour: colour,
-                  onColorChanged: (value) {
-                    colour = value.colour;
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                color: Colours.blueGrey,
-                height: 250,
-                width: 800,
-                child: ColourPicker.ring(
-                  currentColour: colour,
-                  onColorChanged: (value) {
-                    colour = value.colour;
-                    setState(() {});
-                  },
-                ),
-              ),
-              Container(
-                color: Colours.blueGrey,
-                height: 100,
-                width: 800,
-                child: ColourPicker.square(
-                  currentColour: colour,
-                  onColorChanged: (value) {
-                    colour = value.colour;
-                    setState(() {});
-                  },
-                ),
-              ),
+              // SizedBox(
+              //   width: 2000,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //     children: [
+              //       ColourPicker.ring(
+              //         currentColour: colour,
+              //         onColorChanged: (value) {
+              //           colour = value.colour;
+              //           setState(() {});
+              //         },
+              //       ),
+              //       ColourPicker.square(
+              //         currentColour: colour,
+              //         onColorChanged: (value) {
+              //           colour = value.colour;
+              //           setState(() {});
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

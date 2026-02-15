@@ -9,15 +9,17 @@ import 'painters/wheel_painter.dart';
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
     super.key,
-    required this.height,
-    required this.width,
     required this.pickerColour,
     required this.onColourChanged,
+    required this.style,
+    required this.height,
+    required this.width,
+
+
     this.pickerHsvColour,
     this.onHsvColourChanged,
     this.enableAlpha = true,
     this.showLabel = true,
-    this.labelTypes = const [ColorLabelType.rgb, ColorLabelType.hex],
     this.displayThumbColor = false,
     this.orientation = Orientation.landscape,
     this.pickerRadius = 300.0,
@@ -37,13 +39,13 @@ class WheelPicker extends StatefulWidget {
   final ValueChanged<HSVColour>? onHsvColourChanged;
   final bool enableAlpha;
   final bool showLabel;
-  final List<ColorLabelType> labelTypes;
   final bool displayThumbColor;
   final Orientation orientation;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
   final List<Colour>? colourHistory;
   final ValueChanged<List<Colour>>? onHistoryChanged;
+  final PickerStyle style;
 
   @override
   State<WheelPicker> createState() => _WheelPickerState();
@@ -163,25 +165,34 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                 ],
               ),
             ),
-          if (widget.showLabel && widget.labelTypes.isNotEmpty)
+          if (widget.showLabel)
             FittedBox(
               child: ColourLabel(
                 currentHsvColor.toColour(),
                 enableAlpha: widget.enableAlpha,
-                colorLabelTypes: widget.labelTypes,
+                colorLabelTypes: [
+                  ColorLabelType.hex,
+                  ColorLabelType.rgb,
+                  ColorLabelType.hsl,
+                  ColorLabelType.hsv,
+                ],
               ),
             ),
         ],
       );
     } else {
-      return SizedBox(
+      return Container(
         height: widget.height,
         width: widget.width,
+        decoration: widget.style.decoration,
+        padding: widget.style.padding,
+        margin: widget.style.margin,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             SizedBox(
-              width: widget.pickerRadius,
-              height: widget.pickerRadius * widget.pickerAreaHeightPercent,
+              width: widget.pickerRadius * 2,
+              height: widget.pickerRadius * 2,
               child: WheelGestureDetector(
                 onColorChanged: onColorChanging,
                 hsvColor: currentHsvColor,
@@ -257,13 +268,18 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                     ),
                   ),
                 SizedBox(height: widget.pickerRadius * 0.067),
-                if (widget.showLabel && widget.labelTypes.isNotEmpty)
+                if (widget.showLabel)
                   FittedBox(
                     child: ColourLabel(
                       height: 100,
                       currentHsvColor.toColour(),
                       enableAlpha: widget.enableAlpha,
-                      colorLabelTypes: widget.labelTypes,
+                      colorLabelTypes: [
+                        ColorLabelType.hex,
+                        ColorLabelType.rgb,
+                        ColorLabelType.hsl,
+                        ColorLabelType.hsv,
+                      ],
                     ),
                   ),
               ],
