@@ -38,7 +38,7 @@ class _AppState extends State<App> {
                 margin: EdgeInsets.all(10),
               ),
               height: 300,
-              width: 900,
+              width: 800,
               currentColour: colour,
               onColourChanged: (value) {
                 colour = value.colour;

@@ -25,32 +25,36 @@ class _IndicatorState extends State<Indicator> {
   @override
   Widget build(BuildContext context) {
     HSVColour currentHSVColour = widget.colour.toHSVColour;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        ColorIndicator(
-          currentHSVColour,
-          height: widget.size * 0.5,
-          width: widget.size * 0.5,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: widget.size * 0.3,
-              width: widget.size * 2.4,
-              child: ColourPickerSlider(
-                TrackType.value,
-                currentHSVColour,
-                (colour) {
-                  widget.onChanged(colour);
-                },
-                displayThumbColor: widget.displayThumbColour,
-              ),
-            ),
+    return SizedBox(
+      width: widget.size,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ColorIndicator(
+            currentHSVColour,
+            height: (widget.size / 2) * 0.3,
+            width: (widget.size / 2) * 0.3,
+          ),
+          Spacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
               SizedBox(
-                height: widget.size * 0.3,
-                width: widget.size * 2.4,
+                height: (widget.size / 2) * 0.2,
+                width: widget.size * 0.8,
+                child: ColourPickerSlider(
+                  TrackType.value,
+                  currentHSVColour,
+                  (colour) {
+                    widget.onChanged(colour);
+                  },
+                  displayThumbColor: widget.displayThumbColour,
+                ),
+              ),
+              SizedBox(
+                height: (widget.size / 2) * 0.2,
+                width: widget.size * 0.8,
                 child: ColourPickerSlider(
                   TrackType.alpha,
                   currentHSVColour,
@@ -60,9 +64,10 @@ class _IndicatorState extends State<Indicator> {
                   displayThumbColor: widget.displayThumbColour,
                 ),
               ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

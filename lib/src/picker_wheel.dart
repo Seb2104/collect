@@ -103,7 +103,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             ),
             child: Indicator(
               colour: currentHsvColor,
-              size: widget.pickerRadius,
+              size: widget.height,
               displayThumbColour: widget.displayThumbColor,
               onChanged: onColourChange,
             ),
@@ -177,9 +177,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               children: <Widget>[
                 Indicator(
                   colour: currentHsvColor,
-                  size:
-                      (widget.height / 2) -
-                      widget.style.padding.along(Axis.vertical),
+                  size: (widget.width / 2) - (widget.style.padding.along(Axis.horizontal)),
                   displayThumbColour: widget.displayThumbColor,
                   onChanged: onColourChange,
                 ),
