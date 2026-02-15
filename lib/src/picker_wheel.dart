@@ -198,7 +198,6 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             ),
             VerticalDivider(color: Colours.black.withOpacity(0.3)),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
@@ -241,21 +240,22 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                   ],
                 ),
                 if (widget.showLabel)
-                  Expanded(
-                    child: ColourLabel(
-                      height: widget.height,
-                      width:
-                          (widget.width / 2) -
-                          widget.style.padding.along(Axis.horizontal),
-                      currentHsvColor.toColour(),
-                      enableAlpha: widget.enableAlpha,
-                      colorLabelTypes: [
-                        ColorLabelType.hex,
-                        ColorLabelType.rgb,
-                        ColorLabelType.hsl,
-                        ColorLabelType.hsv,
-                      ],
-                    ),
+                  ColourLabel(
+                    height:
+                        (widget.height / 2) -
+                        widget.style.padding.along(Axis.vertical) -
+                        widget.style.margin.along(Axis.vertical),
+                    width:
+                        (widget.width / 2) -
+                        widget.style.padding.along(Axis.horizontal),
+                    currentHsvColor.toColour(),
+                    enableAlpha: widget.enableAlpha,
+                    colorLabelTypes: [
+                      ColorLabelType.hex,
+                      ColorLabelType.rgb,
+                      ColorLabelType.hsl,
+                      ColorLabelType.hsv,
+                    ],
                   ),
               ],
             ),
