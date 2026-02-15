@@ -9,22 +9,19 @@ import 'painters/wheel_painter.dart';
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
     super.key,
-    required this.pickerColour,
+    required this.currentColour,
     required this.onColourChanged,
-    required this.style,
     required this.height,
     required this.width,
-
+    required this.style,
+    required this.pickerRadius,
+    required this.enableAlpha,
+    required this.showLabel,
+    required this.displayThumbColor,
+    required this.orientation,
 
     this.pickerHsvColour,
     this.onHsvColourChanged,
-    this.enableAlpha = true,
-    this.showLabel = true,
-    this.displayThumbColor = false,
-    this.orientation = Orientation.landscape,
-    this.pickerRadius = 300.0,
-    this.pickerAreaHeightPercent = 1.0,
-    this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
     this.colourHistory,
     this.onHistoryChanged,
   });
@@ -33,7 +30,7 @@ class WheelPicker extends StatefulWidget {
   final double width;
   final double pickerRadius;
 
-  final Colour pickerColour;
+  final Colour currentColour;
   final ValueChanged<Colour> onColourChanged;
   final HSVColour? pickerHsvColour;
   final ValueChanged<HSVColour>? onHsvColourChanged;
@@ -41,8 +38,6 @@ class WheelPicker extends StatefulWidget {
   final bool showLabel;
   final bool displayThumbColor;
   final Orientation orientation;
-  final double pickerAreaHeightPercent;
-  final BorderRadius pickerAreaBorderRadius;
   final List<Colour>? colourHistory;
   final ValueChanged<List<Colour>>? onHistoryChanged;
   final PickerStyle style;
@@ -53,7 +48,7 @@ class WheelPicker extends StatefulWidget {
 
 class _WheelPickerState extends BaseColourPicker<WheelPicker> {
   @override
-  Color getInitialColor() => widget.pickerColour;
+  Color getInitialColor() => widget.currentColour;
 
   @override
   HSVColour? getInitialHsvColor() => widget.pickerHsvColour;
@@ -83,8 +78,8 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
       return Column(
         children: <Widget>[
           SizedBox(
-            width: widget.pickerRadius,
-            height: widget.pickerRadius * widget.pickerAreaHeightPercent,
+            width: widget.pickerRadius * 2,
+            height: widget.pickerRadius * 2,
             child: WheelGestureDetector(
               onColorChanged: onColorChanging,
               hsvColor: currentHsvColor,
