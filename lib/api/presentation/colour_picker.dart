@@ -6,7 +6,7 @@ class ColourPicker {
     required Colour currentColour,
     required ValueChanged<Colour> onColourChanged,
     double height = 300,
-    double width = 700,
+    double size = 700,
     PickerStyle style = const PickerStyle(
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(10),
@@ -29,8 +29,7 @@ class ColourPicker {
     return WheelPicker(
       currentColour: currentColour,
       onColourChanged: onColourChanged,
-      height: height,
-      width: width,
+      size: size,
       style: style,
       pickerRadius: pickerRadius,
       showLabel: showLabel,

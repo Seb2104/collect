@@ -12,8 +12,7 @@ class WheelPicker extends StatefulWidget {
     super.key,
     required this.currentColour,
     required this.onColourChanged,
-    required this.height,
-    required this.width,
+    required this.size,
     required this.style,
     required this.pickerRadius,
     required this.showLabel,
@@ -26,8 +25,7 @@ class WheelPicker extends StatefulWidget {
     this.onHistoryChanged,
   });
 
-  final double height;
-  final double width;
+  final double size;
   final double pickerRadius;
 
   final Colour currentColour;
@@ -103,7 +101,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             ),
             child: Indicator(
               colour: currentHsvColor,
-              size: widget.height,
+              size: widget.size * 2,
               displayThumbColour: widget.displayThumbColor,
               onChanged: onColourChange,
             ),
@@ -150,18 +148,18 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
       );
     } else {
       return Container(
-        height: widget.height,
-        width: widget.width,
+        height: widget.size / 2,
+        width: widget.size,
         decoration: widget.style.decoration,
         padding: widget.style.padding,
         margin: widget.style.margin,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(
-              height: widget.height - widget.style.padding.along(Axis.vertical),
+              height: (widget.size / 2) - widget.style.padding.along(Axis.vertical),
               width:
-                  widget.width / 2 -
+                  (widget.size / 2) -
                   widget.style.padding.along(Axis.horizontal),
               child: WheelGestureDetector(
                 onColorChanged: onColorChanging,
@@ -171,24 +169,20 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                 ),
               ),
             ),
-            VerticalDivider(color: Colours.black.withOpacity(0.3)),
+            VerticalDivider(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Indicator(
                   colour: currentHsvColor,
-                  size: (widget.width / 2) - (widget.style.padding.along(Axis.horizontal)),
+                  size: (widget.size / 2) - (widget.style.padding.along(Axis.horizontal)).positive,
                   displayThumbColour: widget.displayThumbColor,
                   onChanged: onColourChange,
                 ),
                 if (widget.showLabel)
                   ColourLabel(
-                    height:
-                        ((widget.height / 2) -
-                                widget.style.padding.along(Axis.vertical))
-                            .positive,
                     width:
-                        ((widget.width / 2) -
+                        ((widget.size / 2) -
                                 widget.style.padding.along(Axis.horizontal))
                             .positive,
                     currentHsvColor.toColour(),

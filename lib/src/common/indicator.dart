@@ -36,13 +36,13 @@ class _IndicatorState extends State<Indicator> {
             height: (widget.size / 2) * 0.3,
             width: (widget.size / 2) * 0.3,
           ),
-          Spacer(),
+          // Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
                 height: (widget.size / 2) * 0.2,
-                width: widget.size * 0.8,
+                width: widget.size * 0.85,
                 child: ColourPickerSlider(
                   TrackType.value,
                   currentHSVColour,
@@ -54,7 +54,7 @@ class _IndicatorState extends State<Indicator> {
               ),
               SizedBox(
                 height: (widget.size / 2) * 0.2,
-                width: widget.size * 0.8,
+                width: widget.size * 0.85,
                 child: ColourPickerSlider(
                   TrackType.alpha,
                   currentHSVColour,

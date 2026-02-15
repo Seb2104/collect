@@ -34,11 +34,10 @@ class _AppState extends State<App> {
           child: Center(
             child: ColourPicker.wheel(
               style: PickerStyle(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(20),
                 margin: EdgeInsets.all(10),
               ),
-              height: 300,
-              width: 800,
+              size: 1200,
               currentColour: colour,
               onColourChanged: (value) {
                 colour = value.colour;
