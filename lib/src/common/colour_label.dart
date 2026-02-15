@@ -10,14 +10,12 @@ import 'package:flutter/material.dart';
 
 class ColourLabel extends StatefulWidget {
   final Colour colour;
-  final bool enableAlpha;
   final double height;
   final double width;
 
   const ColourLabel(
     this.colour, {
     super.key,
-    this.enableAlpha = true,
     this.height = 140,
     this.width = 300,
   });

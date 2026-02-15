@@ -8,8 +8,8 @@ class ColourPicker {
     double height = 300,
     double width = 700,
     PickerStyle style = const PickerStyle(
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppTheme.lightBackground,
         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -33,7 +33,6 @@ class ColourPicker {
       width: width,
       style: style,
       pickerRadius: pickerRadius,
-      enableAlpha: enableAlpha,
       showLabel: showLabel,
       displayThumbColor: displayThumbColor,
       orientation: orientation,

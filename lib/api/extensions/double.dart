@@ -15,4 +15,16 @@ extension Double on double? {
 
   /// Returns Size
   Size get size => Size(this!, this!);
+
+  double get positive {
+    if (this != null) {
+      if (isPositive) {
+        return this ?? 0.0;
+      } else {
+        return (this! * -1);
+      }
+    } else {
+      return 0.0;
+    }
+  }
 }

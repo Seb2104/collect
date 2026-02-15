@@ -16,7 +16,6 @@ class WheelPicker extends StatefulWidget {
     required this.width,
     required this.style,
     required this.pickerRadius,
-    required this.enableAlpha,
     required this.showLabel,
     required this.displayThumbColor,
     required this.orientation,
@@ -35,7 +34,6 @@ class WheelPicker extends StatefulWidget {
   final ValueChanged<Colour> onColourChanged;
   final HSVColour? pickerHsvColour;
   final ValueChanged<HSVColour>? onHsvColourChanged;
-  final bool enableAlpha;
   final bool showLabel;
   final bool displayThumbColor;
   final Orientation orientation;
@@ -107,7 +105,6 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               colour: currentHsvColor,
               size: widget.pickerRadius,
               displayThumbColour: widget.displayThumbColor,
-              alphaEnabled: widget.enableAlpha,
               onChanged: onColourChange,
             ),
           ),
@@ -147,7 +144,6 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             FittedBox(
               child: ColourLabel(
                 currentHsvColor.toColour(),
-                enableAlpha: widget.enableAlpha,
               ),
             ),
         ],
@@ -163,8 +159,10 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             SizedBox(
-              width: widget.pickerRadius * 2,
-              height: widget.pickerRadius * 2,
+              height: widget.height - widget.style.padding.along(Axis.vertical),
+              width:
+                  widget.width / 2 -
+                  widget.style.padding.along(Axis.horizontal),
               child: WheelGestureDetector(
                 onColorChanged: onColorChanging,
                 hsvColor: currentHsvColor,
@@ -179,23 +177,23 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               children: <Widget>[
                 Indicator(
                   colour: currentHsvColor,
-                  size: widget.pickerRadius,
+                  size:
+                      (widget.height / 2) -
+                      widget.style.padding.along(Axis.vertical),
                   displayThumbColour: widget.displayThumbColor,
-                  alphaEnabled: widget.enableAlpha,
                   onChanged: onColourChange,
                 ),
                 if (widget.showLabel)
                   ColourLabel(
                     height:
-                        (widget.height / 2) -
-                        widget.style.padding.along(Axis.vertical) -
-                        widget.style.margin.along(Axis.vertical),
+                        ((widget.height / 2) -
+                                widget.style.padding.along(Axis.vertical))
+                            .positive,
                     width:
-                        (widget.width / 2) -
-                        widget.style.padding.along(Axis.horizontal),
+                        ((widget.width / 2) -
+                                widget.style.padding.along(Axis.horizontal))
+                            .positive,
                     currentHsvColor.toColour(),
-                    enableAlpha: widget.enableAlpha,
-
                   ),
               ],
             ),

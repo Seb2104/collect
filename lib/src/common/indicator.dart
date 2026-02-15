@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../collect.dart';
@@ -8,7 +7,6 @@ class Indicator extends StatefulWidget {
   final double size;
   final HSVColour colour;
   final bool displayThumbColour;
-  final bool alphaEnabled;
   final ValueChanged<HSVColour> onChanged;
 
   const Indicator({
@@ -16,7 +14,6 @@ class Indicator extends StatefulWidget {
     required this.colour,
     required this.size,
     required this.displayThumbColour,
-    required this.alphaEnabled,
     required this.onChanged,
   });
 
@@ -25,35 +22,39 @@ class Indicator extends StatefulWidget {
 }
 
 class _IndicatorState extends State<Indicator> {
-
   @override
   Widget build(BuildContext context) {
     HSVColour currentHSVColour = widget.colour.toHSVColour;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        ColorIndicator(currentHSVColour),
+        ColorIndicator(
+          currentHSVColour,
+          height: widget.size * 0.5,
+          width: widget.size * 0.5,
+        ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
               height: widget.size * 0.3,
-              width: widget.size * 2,
+              width: widget.size * 2.4,
               child: ColourPickerSlider(
                 TrackType.value,
                 currentHSVColour,
-                    (colour) {
+                (colour) {
                   widget.onChanged(colour);
                 },
                 displayThumbColor: widget.displayThumbColour,
               ),
             ),
-            if (widget.alphaEnabled)
               SizedBox(
                 height: widget.size * 0.3,
-                width: widget.size * 2,
+                width: widget.size * 2.4,
                 child: ColourPickerSlider(
                   TrackType.alpha,
                   currentHSVColour,
-                      (colour) {
+                  (colour) {
                     widget.onChanged(colour);
                   },
                   displayThumbColor: widget.displayThumbColour,

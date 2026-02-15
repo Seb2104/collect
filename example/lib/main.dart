@@ -33,6 +33,12 @@ class _AppState extends State<App> {
           width: MediaQuery.of(context).size.width * 1,
           child: Center(
             child: ColourPicker.wheel(
+              style: PickerStyle(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+              ),
+              height: 300,
+              width: 900,
               currentColour: colour,
               onColourChanged: (value) {
                 colour = value.colour;

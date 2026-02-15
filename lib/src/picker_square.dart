@@ -223,7 +223,6 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
             FittedBox(
               child: ColourLabel(
                 currentHsvColor.toColour(),
-                enableAlpha: widget.enableAlpha,
               ),
             ),
         ],
@@ -299,7 +298,6 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
                 FittedBox(
                   child: ColourLabel(
                     currentHsvColor.toColour(),
-                    enableAlpha: widget.enableAlpha,
                   ),
                 ),
             ],
