@@ -4,14 +4,6 @@ import 'package:flutter/material.dart';
 Colour colour = Colours.white;
 
 void main() {
-  int number = 728;
-  final a = Radix.base(number, Bases.b64);
-  final b = Radix.getDecimal(a, Bases.b64);
-
-  print(number);
-  print(a);
-  print(b);
-
   runApp(App());
 }
 
@@ -37,7 +29,6 @@ class _AppState extends State<App> {
                 padding: EdgeInsets.all(20),
                 margin: EdgeInsets.all(10),
               ),
-              orientation: Orientation.portrait,
               size: 500,
               currentColour: colour,
               onColourChanged: (value) {
@@ -83,43 +74,43 @@ class _MainState extends State<Main> {
                         setState(() {});
                       },
                     ),
-                    // Container(
-                    //   color: Colours.blueGrey,
-                    //   height: 250,
-                    //   width: 800,
-                    //   child: ColourPicker.slides(
-                    //     currentColour: colour,
-                    //     onColorChanged: (value) {
-                    //       colour = value.colour;
-                    //       setState(() {});
-                    //     },
-                    //   ),
-                    // ),
+                    Container(
+                      color: Colours.blueGrey,
+                      height: 250,
+                      width: 800,
+                      child: ColourPicker.slides(
+                        currentColour: colour,
+                        onColorChanged: (value) {
+                          colour = value.colour;
+                          setState(() {});
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // SizedBox(
-              //   width: 2000,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //     children: [
-              //       ColourPicker.ring(
-              //         currentColour: colour,
-              //         onColorChanged: (value) {
-              //           colour = value.colour;
-              //           setState(() {});
-              //         },
-              //       ),
-              //       ColourPicker.square(
-              //         currentColour: colour,
-              //         onColorChanged: (value) {
-              //           colour = value.colour;
-              //           setState(() {});
-              //         },
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              SizedBox(
+                width: 2000,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ColourPicker.ring(
+                      currentColour: colour,
+                      onColorChanged: (value) {
+                        colour = value.colour;
+                        setState(() {});
+                      },
+                    ),
+                    ColourPicker.square(
+                      currentColour: colour,
+                      onColorChanged: (value) {
+                        colour = value.colour;
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
