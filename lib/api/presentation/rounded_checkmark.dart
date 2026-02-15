@@ -115,4 +115,3 @@ class _RoundedCheckBoxState extends State<RoundedCheckBox> {
     );
   }
 }
-

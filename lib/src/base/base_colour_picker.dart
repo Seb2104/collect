@@ -78,22 +78,18 @@ abstract class BaseColourPicker<T extends StatefulWidget> extends State<T> {
     TrackType trackType, {
     bool displayThumbColor = false,
   }) {
-    return ColourPickerSlider(
-      trackType,
-      currentHsvColor,
-      (HSVColour colour) {
-        setState(() => currentHsvColor = colour);
-        notifyColorChanged(colour);
-      },
-      displayThumbColor: displayThumbColor,
-    );
+    return ColourPickerSlider(trackType, currentHsvColor, (HSVColour colour) {
+      setState(() => currentHsvColor = colour);
+      notifyColorChanged(colour);
+    }, displayThumbColor: displayThumbColor);
   }
 
   /// Adds current colour to history
   @protected
   void addToHistory() {
     final historyCallback = getHistoryChangedCallback();
-    if (historyCallback != null && !colorHistory.contains(currentHsvColor.toColor())) {
+    if (historyCallback != null &&
+        !colorHistory.contains(currentHsvColor.toColor())) {
       setState(() {
         colorHistory.add(currentHsvColor.toColor());
       });
@@ -114,6 +110,7 @@ abstract class BaseColourPicker<T extends StatefulWidget> extends State<T> {
   /// Checks if device is in portrait mode or portrait is enforced
   @protected
   bool isPortrait(BuildContext context, bool portraitOnly) {
-    return MediaQuery.of(context).orientation == Orientation.portrait || portraitOnly;
+    return MediaQuery.of(context).orientation == Orientation.portrait ||
+        portraitOnly;
   }
 }

@@ -192,4 +192,3 @@ class _HueRingPickerState extends BaseColourPicker<HueRingPicker> {
     }
   }
 }
-

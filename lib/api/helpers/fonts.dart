@@ -23,8 +23,7 @@ class Fonts {
     if (Platform.isWindows) {
       return [
         '${Platform.environment['windir']}/fonts/',
-        '${Platform
-            .environment['USERPROFILE']}/AppData/Local/Microsoft/Windows/Fonts/',
+        '${Platform.environment['USERPROFILE']}/AppData/Local/Microsoft/Windows/Fonts/',
       ];
     }
     if (Platform.isMacOS) {
@@ -60,9 +59,9 @@ class Fonts {
         fontFilePaths
             .where(
               (element) =>
-          element.path.endsWith('.ttf') ||
-              element.path.endsWith('.otf'),
-        )
+                  element.path.endsWith('.ttf') ||
+                  element.path.endsWith('.otf'),
+            )
             .map((e) => e.path)
             .toList(),
       );

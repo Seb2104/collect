@@ -169,14 +169,18 @@ class _MenuState<T> extends State<Menu<T>> {
 
   BorderSide get _resolvedBorder =>
       widget.border ??
-          widget.theme?.border ??
-          BorderSide(color: _resolvedBorderColor);
+      widget.theme?.border ??
+      BorderSide(color: _resolvedBorderColor);
 
   BorderRadius get _resolvedBorderRadius =>
-      widget.borderRadius ?? widget.theme?.borderRadius ?? BorderRadius.circular(8);
+      widget.borderRadius ??
+      widget.theme?.borderRadius ??
+      BorderRadius.circular(8);
 
   EdgeInsetsGeometry get _resolvedPadding =>
-      widget.padding ?? widget.theme?.padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+      widget.padding ??
+      widget.theme?.padding ??
+      const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
   double get _resolvedElevation =>
       widget.elevation ?? widget.theme?.elevation ?? 0;
@@ -201,11 +205,13 @@ class _MenuState<T> extends State<Menu<T>> {
 
   BorderRadius get _resolvedDropdownBorderRadius =>
       widget.dropdownBorderRadius ??
-          widget.theme?.dropdownBorderRadius ??
-          BorderRadius.circular(8);
+      widget.theme?.dropdownBorderRadius ??
+      BorderRadius.circular(8);
 
   EdgeInsetsGeometry get _resolvedDropdownPadding =>
-      widget.dropdownPadding ?? widget.theme?.dropdownPadding ?? const EdgeInsets.symmetric(vertical: 8);
+      widget.dropdownPadding ??
+      widget.theme?.dropdownPadding ??
+      const EdgeInsets.symmetric(vertical: 8);
 
   ShapeBorder? get _resolvedDropdownBorder =>
       widget.dropdownBorder ?? widget.theme?.dropdownBorder;
@@ -214,17 +220,19 @@ class _MenuState<T> extends State<Menu<T>> {
       widget.itemHeight ?? widget.theme?.itemHeight ?? 48;
 
   EdgeInsetsGeometry get _resolvedItemPadding =>
-      widget.itemPadding ?? widget.theme?.itemPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+      widget.itemPadding ??
+      widget.theme?.itemPadding ??
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
 
   Color get _resolvedItemHighlightColor =>
       widget.itemHighlightColor ??
-          widget.theme?.itemHighlightColor ??
-          Colors.grey.shade200;
+      widget.theme?.itemHighlightColor ??
+      Colors.grey.shade200;
 
   Color get _resolvedSelectedItemColor =>
       widget.selectedItemColor ??
-          widget.theme?.selectedItemColor ??
-          Colors.blue.shade50;
+      widget.theme?.selectedItemColor ??
+      Colors.blue.shade50;
 
   TextStyle? get _resolvedItemTextStyle =>
       widget.itemTextStyle ?? widget.theme?.itemTextStyle;
@@ -233,7 +241,9 @@ class _MenuState<T> extends State<Menu<T>> {
       widget.textStyle ?? widget.theme?.textStyle;
 
   TextStyle? get _resolvedHintStyle =>
-      widget.hintStyle ?? widget.theme?.hintStyle ?? TextStyle(color: Colors.grey.shade600);
+      widget.hintStyle ??
+      widget.theme?.hintStyle ??
+      TextStyle(color: Colors.grey.shade600);
 
   bool get _resolvedEnableSearch =>
       widget.enableSearch ?? widget.config?.enableSearch ?? false;
@@ -242,10 +252,14 @@ class _MenuState<T> extends State<Menu<T>> {
       widget.searchHint ?? widget.config?.searchHint ?? 'Search...';
 
   FilterMatchFn<T> get _resolvedSearchMatchFn =>
-      widget.searchMatchFn ?? widget.config?.searchMatchFn ?? defaultFilterMatch;
+      widget.searchMatchFn ??
+      widget.config?.searchMatchFn ??
+      defaultFilterMatch;
 
   bool get _resolvedEnableKeyboardNavigation =>
-      widget.enableKeyboardNavigation ?? widget.config?.enableKeyboardNavigation ?? true;
+      widget.enableKeyboardNavigation ??
+      widget.config?.enableKeyboardNavigation ??
+      true;
 
   double? get _resolvedMaxHeight =>
       widget.maxHeight ?? widget.config?.maxHeight;
@@ -305,11 +319,15 @@ class _MenuState<T> extends State<Menu<T>> {
   }
 
   void _updateFilteredItems() {
-    if (!_resolvedEnableSearch || _searchController == null || _searchController!.text.isEmpty) {
+    if (!_resolvedEnableSearch ||
+        _searchController == null ||
+        _searchController!.text.isEmpty) {
       _filteredItems = widget.items;
     } else {
       _filteredItems = widget.items
-          .where((item) => _resolvedSearchMatchFn(item, _searchController!.text))
+          .where(
+            (item) => _resolvedSearchMatchFn(item, _searchController!.text),
+          )
           .toList();
     }
 
@@ -338,7 +356,8 @@ class _MenuState<T> extends State<Menu<T>> {
       return true;
     }
 
-    if (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.numpadEnter) {
+    if (key == LogicalKeyboardKey.enter ||
+        key == LogicalKeyboardKey.numpadEnter) {
       if (_highlightedIndex >= 0 && _highlightedIndex < _filteredItems.length) {
         _selectItem(_filteredItems[_highlightedIndex].value);
       }
@@ -387,7 +406,8 @@ class _MenuState<T> extends State<Menu<T>> {
         final viewportHeight = _scrollController.position.viewportDimension;
         final currentScroll = _scrollController.offset;
 
-        if (offset < currentScroll || offset + itemHeight > currentScroll + viewportHeight) {
+        if (offset < currentScroll ||
+            offset + itemHeight > currentScroll + viewportHeight) {
           _scrollController.animateTo(
             offset - (viewportHeight / 2) + (itemHeight / 2),
             duration: const Duration(milliseconds: 200),
@@ -460,11 +480,7 @@ class _MenuState<T> extends State<Menu<T>> {
     final selectedItem = _selectedItem;
 
     if (selectedItem == null) {
-      return widget.hint ??
-          Text(
-            'Select...',
-            style: _resolvedHintStyle,
-          );
+      return widget.hint ?? Text('Select...', style: _resolvedHintStyle);
     }
 
     return switch (selectedItem) {
@@ -510,7 +526,8 @@ class _MenuState<T> extends State<Menu<T>> {
                   width: widget.width ?? size.width,
                   child: Material(
                     elevation: _resolvedDropdownElevation,
-                    shape: _resolvedDropdownBorder ??
+                    shape:
+                        _resolvedDropdownBorder ??
                         RoundedRectangleBorder(
                           borderRadius: _resolvedDropdownBorderRadius,
                         ),
@@ -529,7 +546,8 @@ class _MenuState<T> extends State<Menu<T>> {
   Widget _buildMenuContent() {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: _resolvedMaxHeight ?? MediaQuery.of(context).size.height * 0.4,
+        maxHeight:
+            _resolvedMaxHeight ?? MediaQuery.of(context).size.height * 0.4,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -542,7 +560,8 @@ class _MenuState<T> extends State<Menu<T>> {
                 controller: _scrollController,
                 shrinkWrap: true,
                 itemCount: _filteredItems.length,
-                itemBuilder: (context, index) => _buildItem(_filteredItems[index], index),
+                itemBuilder: (context, index) =>
+                    _buildItem(_filteredItems[index], index),
               ),
             ),
           ),
@@ -559,10 +578,11 @@ class _MenuState<T> extends State<Menu<T>> {
         decoration: InputDecoration(
           hintText: _resolvedSearchHint,
           prefixIcon: const Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
         autofocus: false,
       ),
@@ -597,7 +617,6 @@ class _MenuState<T> extends State<Menu<T>> {
     );
   }
 }
-
 
 class MenuControl<T> extends ChangeNotifier {
   T? _selectedValue;
@@ -655,10 +674,7 @@ class MenuControl<T> extends ChangeNotifier {
   }
 }
 
-typedef FilterMatchFn<T> = bool Function(
-    MenuItem<T> item,
-    String searchValue,
-    );
+typedef FilterMatchFn<T> = bool Function(MenuItem<T> item, String searchValue);
 
 bool defaultFilterMatch<T>(MenuItem<T> item, String searchValue) {
   if (item is MenuItemString<T>) {
@@ -715,9 +731,9 @@ class MenuConfig {
       searchHint: searchHint ?? this.searchHint,
       searchMatchFn: searchMatchFn ?? this.searchMatchFn,
       enableKeyboardNavigation:
-      enableKeyboardNavigation ?? this.enableKeyboardNavigation,
+          enableKeyboardNavigation ?? this.enableKeyboardNavigation,
       autoScrollOnHighlight:
-      autoScrollOnHighlight ?? this.autoScrollOnHighlight,
+          autoScrollOnHighlight ?? this.autoScrollOnHighlight,
       maxHeight: maxHeight ?? this.maxHeight,
       closeOnSelect: closeOnSelect ?? this.closeOnSelect,
       offset: offset ?? this.offset,
@@ -727,13 +743,10 @@ class MenuConfig {
   }
 }
 
-enum MenuCloseBehavior {
-  all,
-  self,
-  none,
-}
+enum MenuCloseBehavior { all, self, none }
 
-typedef MenuFilterCallback<T> = List<T> Function(List<T> entries, String filter);
+typedef MenuFilterCallback<T> =
+    List<T> Function(List<T> entries, String filter);
 
 typedef MenuSearchCallback<T> = int? Function(List<T> entries, String query);
 
@@ -1009,7 +1022,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
   void _initializeSelection() {
     if (widget.initialSelection != null) {
-      final index = widget.entries.indexWhere((e) => e.value == widget.initialSelection);
+      final index = widget.entries.indexWhere(
+        (e) => e.value == widget.initialSelection,
+      );
       if (index != -1) {
         _updateTextController(widget.entries[index].label);
         _selectedEntryIndex = index;
@@ -1063,7 +1078,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       } else {
         final searchText = text.toLowerCase();
         final index = _filteredEntries.indexWhere(
-              (e) => e.label.toLowerCase().contains(searchText),
+          (e) => e.label.toLowerCase().contains(searchText),
         );
         _currentHighlight = index != -1 ? index : null;
       }
@@ -1090,7 +1105,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       return true;
     }
 
-    if (key == LogicalKeyboardKey.enter || key == LogicalKeyboardKey.numpadEnter) {
+    if (key == LogicalKeyboardKey.enter ||
+        key == LogicalKeyboardKey.numpadEnter) {
       _handleEnter();
       return true;
     }
@@ -1157,7 +1173,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   }
 
   void _handleEnter() {
-    if (_currentHighlight != null && _currentHighlight! < _filteredEntries.length) {
+    if (_currentHighlight != null &&
+        _currentHighlight! < _filteredEntries.length) {
       final entry = _filteredEntries[_currentHighlight!];
       if (entry.enabled) {
         _selectEntry(entry, _currentHighlight!);
@@ -1169,13 +1186,15 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     if (_currentHighlight == null) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients && _currentHighlight! < _filteredEntries.length) {
+      if (_scrollController.hasClients &&
+          _currentHighlight! < _filteredEntries.length) {
         final itemHeight = 48.0;
         final offset = _currentHighlight! * itemHeight;
         final viewportHeight = _scrollController.position.viewportDimension;
         final currentScroll = _scrollController.offset;
 
-        if (offset < currentScroll || offset + itemHeight > currentScroll + viewportHeight) {
+        if (offset < currentScroll ||
+            offset + itemHeight > currentScroll + viewportHeight) {
           _scrollController.animateTo(
             offset - (viewportHeight / 2) + (itemHeight / 2),
             duration: const Duration(milliseconds: 200),
@@ -1235,8 +1254,12 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   bool _canRequestFocus() {
     return widget.requestFocusOnTap ??
         switch (Theme.of(context).platform) {
-          TargetPlatform.iOS || TargetPlatform.android || TargetPlatform.fuchsia => false,
-          TargetPlatform.macOS || TargetPlatform.linux || TargetPlatform.windows => true,
+          TargetPlatform.iOS ||
+          TargetPlatform.android ||
+          TargetPlatform.fuchsia => false,
+          TargetPlatform.macOS ||
+          TargetPlatform.linux ||
+          TargetPlatform.windows => true,
         };
   }
 
@@ -1267,25 +1290,28 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
               _showOverlay();
             }
           },
-          decoration: (widget.inputDecoration ??
-              InputDecoration(
-                border: const OutlineInputBorder(),
-                label: widget.label,
-                hintText: widget.hintText,
-                helperText: widget.helperText,
-                errorText: widget.errorText,
-              ))
-              .copyWith(
-            prefixIcon: widget.leadingIcon,
-            suffixIcon: widget.showTrailingIcon
-                ? IconButton(
-              icon: _isOverlayVisible
-                  ? (widget.selectedTrailingIcon ?? const Icon(Icons.arrow_drop_up))
-                  : (widget.trailingIcon ?? const Icon(Icons.arrow_drop_down)),
-              onPressed: widget.enabled ? _toggleOverlay : null,
-            )
-                : null,
-          ),
+          decoration:
+              (widget.inputDecoration ??
+                      InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: widget.label,
+                        hintText: widget.hintText,
+                        helperText: widget.helperText,
+                        errorText: widget.errorText,
+                      ))
+                  .copyWith(
+                    prefixIcon: widget.leadingIcon,
+                    suffixIcon: widget.showTrailingIcon
+                        ? IconButton(
+                            icon: _isOverlayVisible
+                                ? (widget.selectedTrailingIcon ??
+                                      const Icon(Icons.arrow_drop_up))
+                                : (widget.trailingIcon ??
+                                      const Icon(Icons.arrow_drop_down)),
+                            onPressed: widget.enabled ? _toggleOverlay : null,
+                          )
+                        : null,
+                  ),
         ),
       ),
     );
@@ -1319,14 +1345,17 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
                     borderRadius: BorderRadius.circular(8),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: widget.menuHeight ?? MediaQuery.of(context).size.height * 0.4,
+                        maxHeight:
+                            widget.menuHeight ??
+                            MediaQuery.of(context).size.height * 0.4,
                       ),
                       child: ListView.builder(
                         controller: _scrollController,
                         shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         itemCount: _filteredEntries.length,
-                        itemBuilder: (context, index) => _buildItem(_filteredEntries[index], index),
+                        itemBuilder: (context, index) =>
+                            _buildItem(_filteredEntries[index], index),
                       ),
                     ),
                   ),
@@ -1364,7 +1393,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
                 const SizedBox(width: 12),
               ],
               Expanded(
-                child: entry.labelWidget ??
+                child:
+                    entry.labelWidget ??
                     Text(
                       entry.label,
                       style: widget.textStyle?.copyWith(
@@ -1393,39 +1423,33 @@ sealed class MenuItem<T> {
 }
 
 final class MenuItemString<T> extends MenuItem<T> {
-  const MenuItemString({
-    required super.value,
-    required this.label,
-  });
+  const MenuItemString({required super.value, required this.label});
 
   final String label;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MenuItemString<T> &&
-              runtimeType == other.runtimeType &&
-              value == other.value &&
-              label == other.label;
+      other is MenuItemString<T> &&
+          runtimeType == other.runtimeType &&
+          value == other.value &&
+          label == other.label;
 
   @override
   int get hashCode => Object.hash(value, label);
 }
 
 final class MenuItemWidget<T> extends MenuItem<T> {
-  const MenuItemWidget({
-    required super.value,
-    required this.widget,
-  });
+  const MenuItemWidget({required super.value, required this.widget});
 
   final Widget widget;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MenuItemWidget<T> &&
-              runtimeType == other.runtimeType &&
-              value == other.value;
+      other is MenuItemWidget<T> &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -1459,10 +1483,10 @@ class MenuEntry<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MenuEntry<T> &&
-              runtimeType == other.runtimeType &&
-              value == other.value &&
-              label == other.label;
+      other is MenuEntry<T> &&
+          runtimeType == other.runtimeType &&
+          value == other.value &&
+          label == other.label;
 
   @override
   int get hashCode => Object.hash(value, label);

@@ -176,7 +176,7 @@ class Colour extends Col implements Color {
        green = Radix.fractionToColourValue(green.clamp(0.0, 1.0)),
        blue = Radix.fractionToColourValue(blue.clamp(0.0, 1.0));
 
-    factory Colour.fromHex({required String hexString}) {
+  factory Colour.fromHex({required String hexString}) {
     String hex = hexString.replaceAll('#', '').toUpperCase();
 
     if (hex.length == 6) {
