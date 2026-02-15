@@ -19,7 +19,7 @@ class WheelPicker extends StatefulWidget {
     this.showLabel = true,
     this.labelTypes = const [ColorLabelType.rgb, ColorLabelType.hex],
     this.displayThumbColor = false,
-    this.portraitOnly = false,
+    this.orientation = Orientation.landscape,
     this.pickerRadius = 300.0,
     this.pickerAreaHeightPercent = 1.0,
     this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
@@ -39,7 +39,7 @@ class WheelPicker extends StatefulWidget {
   final bool showLabel;
   final List<ColorLabelType> labelTypes;
   final bool displayThumbColor;
-  final bool portraitOnly;
+  final Orientation orientation;
   final double pickerAreaHeightPercent;
   final BorderRadius pickerAreaBorderRadius;
   final List<Colour>? colourHistory;
@@ -77,7 +77,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
 
   @override
   Widget build(BuildContext context) {
-    if (isPortrait(context, widget.portraitOnly)) {
+    if (widget.orientation == Orientation.portrait) {
       return Column(
         children: <Widget>[
           SizedBox(
@@ -86,7 +86,9 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             child: WheelGestureDetector(
               onColorChanged: onColorChanging,
               hsvColor: currentHsvColor,
-              child: CustomPaint(painter: HUEColorWheelPainter(currentHsvColor)),
+              child: CustomPaint(
+                painter: HUEColorWheelPainter(currentHsvColor),
+              ),
             ),
           ),
           Padding(
@@ -183,7 +185,9 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               child: WheelGestureDetector(
                 onColorChanged: onColorChanging,
                 hsvColor: currentHsvColor,
-                child: CustomPaint(painter: HUEColorWheelPainter(currentHsvColor)),
+                child: CustomPaint(
+                  painter: HUEColorWheelPainter(currentHsvColor),
+                ),
               ),
             ),
             Column(
@@ -270,4 +274,3 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
     }
   }
 }
-

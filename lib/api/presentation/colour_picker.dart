@@ -1,5 +1,6 @@
 part of '../../collect.dart';
 
+//TODO change it so you can just specify the orientation
 class ColourPicker {
   static Widget wheel({
     /// The size of the container surrounding the colour picker
@@ -20,7 +21,7 @@ class ColourPicker {
       ColorLabelType.hex,
     ],
     bool displayThumbColor = true,
-    bool portraitOnly = false,
+    Orientation orientation = Orientation.landscape,
     double pickerAreaHeightPercent = 1.0,
     BorderRadius? pickerAreaBorderRadius,
     List<Colour>? colourHistory,
@@ -35,7 +36,7 @@ class ColourPicker {
       showLabel: showLabel,
       labelTypes: labelTypes,
       displayThumbColor: displayThumbColor,
-      portraitOnly: portraitOnly,
+      orientation: orientation,
       pickerRadius: pickerRadius,
       pickerAreaHeightPercent: pickerAreaHeightPercent,
       colourHistory: colourHistory,
