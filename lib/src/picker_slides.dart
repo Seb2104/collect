@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../collect.dart';
+import 'base/base_colour_picker.dart';
 import 'common/common.dart';
 
 class SlidePicker extends StatefulWidget {
@@ -47,31 +48,28 @@ class SlidePicker extends StatefulWidget {
   State<StatefulWidget> createState() => _SlidePickerState();
 }
 
-class _SlidePickerState extends State<SlidePicker> {
-  HSVColour currentHsvColor = const HSVColour.fromAHSV(0.0, 0.0, 0.0, 0.0);
+class _SlidePickerState extends BaseColourPicker<SlidePicker> {
+  @override
+  Color getInitialColor() => widget.currentColour;
 
   @override
-  void initState() {
-    super.initState();
-    currentHsvColor = HSVColour.fromColor(widget.currentColour);
-  }
+  HSVColour? getInitialHsvColor() => null;
 
   @override
-  void didUpdateWidget(SlidePicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    currentHsvColor = HSVColour.fromColor(widget.currentColour);
+  List<Color>? getColorHistory() => null;
+
+  @override
+  ValueChanged<List<Color>>? getHistoryChangedCallback() => null;
+
+  @override
+  void notifyColorChanged(HSVColour color) {
+    widget.onColorChanged(color.toColor());
   }
 
   Widget colorPickerSlider(TrackType trackType) {
-    return ColourPickerSlider(
+    return buildColorPickerSlider(
       trackType,
-      currentHsvColor,
-      (HSVColour color) {
-        setState(() => currentHsvColor = color);
-        widget.onColorChanged(currentHsvColor.toColor());
-      },
       displayThumbColor: widget.displayThumbColor,
-      fullThumbColor: true,
     );
   }
 

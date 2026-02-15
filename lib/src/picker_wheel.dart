@@ -1,9 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../collect.dart';
+import 'base/base_colour_picker.dart';
 import 'common/common.dart';
+import 'gestures/colour_picker_gesture_detector.dart';
+import 'painters/wheel_painter.dart';
 
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
@@ -48,60 +49,44 @@ class WheelPicker extends StatefulWidget {
   State<WheelPicker> createState() => _WheelPickerState();
 }
 
-class _WheelPickerState extends State<WheelPicker> {
-  HSVColour currentHsvColor = const HSVColour.fromAHSV(0.0, 0.0, 0.0, 0.0);
-  List<Colour> colorHistory = [];
+class _WheelPickerState extends BaseColourPicker<WheelPicker> {
+  @override
+  Color getInitialColor() => widget.pickerColour;
 
   @override
-  void initState() {
-    currentHsvColor = (widget.pickerHsvColour != null)
-        ? widget.pickerHsvColour as HSVColour
-        : HSVColour.fromColor(widget.pickerColour);
-    if (widget.colourHistory != null && widget.onHistoryChanged != null) {
-      colorHistory = widget.colourHistory ?? [];
-    }
-    super.initState();
+  HSVColour? getInitialHsvColor() => widget.pickerHsvColour;
+
+  @override
+  List<Color>? getColorHistory() => widget.colourHistory?.cast<Color>();
+
+  @override
+  ValueChanged<List<Color>>? getHistoryChangedCallback() {
+    if (widget.onHistoryChanged == null) return null;
+    return (List<Color> colors) {
+      widget.onHistoryChanged!(colors.cast<Colour>());
+    };
   }
 
   @override
-  void didUpdateWidget(WheelPicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    currentHsvColor = (widget.pickerHsvColour != null)
-        ? widget.pickerHsvColour as HSVColour
-        : HSVColour.fromColor(widget.pickerColour);
-  }
-
-  Widget colorPickerSlider(TrackType trackType) {
-    return ColourPickerSlider(trackType, currentHsvColor, (HSVColour colour) {
-      setState(() => currentHsvColor = colour);
-      widget.onColourChanged(currentHsvColor.toColour());
-      if (widget.onHsvColourChanged != null) {
-        widget.onHsvColourChanged!(currentHsvColor);
-      }
-    }, displayThumbColor: widget.displayThumbColor);
-  }
-
-  void onColorChanging(HSVColour colour) {
-    setState(() => currentHsvColor = colour);
-    widget.onColourChanged(currentHsvColor.toColour());
+  void notifyColorChanged(HSVColour color) {
+    widget.onColourChanged(color.toColour());
     if (widget.onHsvColourChanged != null) {
-      widget.onHsvColourChanged!(currentHsvColor);
+      widget.onHsvColourChanged!(color);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).orientation == Orientation.portrait ||
-        widget.portraitOnly) {
+    if (isPortrait(context, widget.portraitOnly)) {
       return Column(
         children: <Widget>[
           SizedBox(
             width: widget.pickerRadius,
             height: widget.pickerRadius * widget.pickerAreaHeightPercent,
-            child: ColorPickerArea(
-              currentHsvColor,
-              onColorChanging,
-              PaletteType.hueWheel,
+            child: WheelGestureDetector(
+              onColorChanged: onColorChanging,
+              hsvColor: currentHsvColor,
+              child: CustomPaint(painter: HUEColorWheelPainter(currentHsvColor)),
             ),
           ),
           Padding(
@@ -115,13 +100,7 @@ class _WheelPickerState extends State<WheelPicker> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => setState(() {
-                    if (widget.onHistoryChanged != null &&
-                        !colorHistory.contains(currentHsvColor.toColor())) {
-                      colorHistory.add(currentHsvColor.toColour());
-                      widget.onHistoryChanged!(colorHistory);
-                    }
-                  }),
+                  onTap: addToHistory,
                   child: ColorIndicator(currentHsvColor),
                 ),
                 Expanded(
@@ -130,13 +109,19 @@ class _WheelPickerState extends State<WheelPicker> {
                       SizedBox(
                         height: widget.pickerRadius * 0.133,
                         width: widget.pickerRadius * 0.75,
-                        child: colorPickerSlider(TrackType.value),
+                        child: buildColorPickerSlider(
+                          TrackType.value,
+                          displayThumbColor: widget.displayThumbColor,
+                        ),
                       ),
                       if (widget.enableAlpha)
                         SizedBox(
                           height: widget.pickerRadius * 0.133,
                           width: widget.pickerRadius * 0.75,
-                          child: colorPickerSlider(TrackType.alpha),
+                          child: buildColorPickerSlider(
+                            TrackType.alpha,
+                            displayThumbColor: widget.displayThumbColor,
+                          ),
                         ),
                     ],
                   ),
@@ -151,7 +136,7 @@ class _WheelPickerState extends State<WheelPicker> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  for (Colour colour in colorHistory)
+                  for (Color colour in colorHistory)
                     Padding(
                       key: Key(colour.hashCode.toString()),
                       padding: EdgeInsets.fromLTRB(
@@ -195,10 +180,10 @@ class _WheelPickerState extends State<WheelPicker> {
             SizedBox(
               width: widget.pickerRadius,
               height: widget.pickerRadius * widget.pickerAreaHeightPercent,
-              child: ColorPickerArea(
-                currentHsvColor,
-                onColorChanging,
-                PaletteType.hueWheel,
+              child: WheelGestureDetector(
+                onColorChanged: onColorChanging,
+                hsvColor: currentHsvColor,
+                child: CustomPaint(painter: HUEColorWheelPainter(currentHsvColor)),
               ),
             ),
             Column(
@@ -207,13 +192,7 @@ class _WheelPickerState extends State<WheelPicker> {
                   children: <Widget>[
                     SizedBox(width: widget.pickerRadius * 0.067),
                     GestureDetector(
-                      onTap: () => setState(() {
-                        if (widget.onHistoryChanged != null &&
-                            !colorHistory.contains(currentHsvColor.toColor())) {
-                          colorHistory.add(currentHsvColor.toColour());
-                          widget.onHistoryChanged!(colorHistory);
-                        }
-                      }),
+                      onTap: addToHistory,
                       child: ColorIndicator(currentHsvColor),
                     ),
                     Column(
@@ -221,13 +200,19 @@ class _WheelPickerState extends State<WheelPicker> {
                         SizedBox(
                           height: widget.pickerRadius * 0.133,
                           width: widget.pickerRadius * 0.867,
-                          child: colorPickerSlider(TrackType.value),
+                          child: buildColorPickerSlider(
+                            TrackType.value,
+                            displayThumbColor: widget.displayThumbColor,
+                          ),
                         ),
                         if (widget.enableAlpha)
                           SizedBox(
                             height: widget.pickerRadius * 0.133,
                             width: widget.pickerRadius * 0.867,
-                            child: colorPickerSlider(TrackType.alpha),
+                            child: buildColorPickerSlider(
+                              TrackType.alpha,
+                              displayThumbColor: widget.displayThumbColor,
+                            ),
                           ),
                       ],
                     ),
@@ -254,12 +239,7 @@ class _WheelPickerState extends State<WheelPicker> {
                               child: GestureDetector(
                                 onTap: () =>
                                     onColorChanging(HSVColour.fromColor(color)),
-                                onLongPress: () {
-                                  if (colorHistory.remove(color)) {
-                                    widget.onHistoryChanged!(colorHistory);
-                                    setState(() {});
-                                  }
-                                },
+                                onLongPress: () => removeFromHistory(color),
                                 child: ColorIndicator(
                                   HSVColour.fromColor(color),
                                   width: widget.pickerRadius * 0.1,
@@ -291,144 +271,3 @@ class _WheelPickerState extends State<WheelPicker> {
   }
 }
 
-class HUEColorWheelPainter extends CustomPainter {
-  const HUEColorWheelPainter(this.hsvColour, {this.pointerColor});
-
-  final HSVColour hsvColour;
-  final Color? pointerColor;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Rect rect = Offset.zero & size;
-    Offset center = Offset(size.width / 2, size.height / 2);
-    double radio = size.width <= size.height ? size.width / 2 : size.height / 2;
-
-    final List<Color> colors = [
-      const HSVColour.fromAHSV(1.0, 360.0, 1.0, 1.0).toColor(),
-      const HSVColour.fromAHSV(1.0, 300.0, 1.0, 1.0).toColor(),
-      const HSVColour.fromAHSV(1.0, 240.0, 1.0, 1.0).toColor(),
-      const HSVColour.fromAHSV(1.0, 180.0, 1.0, 1.0).toColor(),
-      const HSVColour.fromAHSV(1.0, 120.0, 1.0, 1.0).toColor(),
-      const HSVColour.fromAHSV(1.0, 60.0, 1.0, 1.0).toColor(),
-      const HSVColour.fromAHSV(1.0, 0.0, 1.0, 1.0).toColor(),
-    ];
-    final Gradient gradientS = SweepGradient(colors: colors);
-    const Gradient gradientR = RadialGradient(
-      colors: [Colors.white, Color(0x00FFFFFF)],
-    );
-    canvas.drawCircle(
-      center,
-      radio,
-      Paint()..shader = gradientS.createShader(rect),
-    );
-    canvas.drawCircle(
-      center,
-      radio,
-      Paint()..shader = gradientR.createShader(rect),
-    );
-    canvas.drawCircle(
-      center,
-      radio,
-      Paint()..color = Colors.black.withOpacity(1 - hsvColour.value),
-    );
-
-    canvas.drawCircle(
-      Offset(
-        center.dx +
-            hsvColour.saturation * radio * cos((hsvColour.hue * pi / 180)),
-        center.dy -
-            hsvColour.saturation * radio * sin((hsvColour.hue * pi / 180)),
-      ),
-      size.height * 0.04,
-      Paint()
-        ..color =
-            pointerColor ??
-            (useWhiteForeground(hsvColour.toColor())
-                ? Colors.white
-                : Colors.black)
-        ..strokeWidth = 1.5
-        ..style = PaintingStyle.stroke,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class ColorPickerArea extends StatelessWidget {
-  const ColorPickerArea(
-    this.hsvColor,
-    this.onColorChanged,
-    this.paletteType, {
-    super.key,
-  });
-
-  final HSVColour hsvColor;
-  final ValueChanged<HSVColour> onColorChanged;
-  final PaletteType paletteType;
-
-  void _handleColorWheelChange(double hue, double radio) {
-    onColorChanged(hsvColor.withHue(hue).withSaturation(radio));
-  }
-
-  void _handleGesture(
-    Offset position,
-    BuildContext context,
-    double height,
-    double width,
-  ) {
-    RenderBox? getBox = context.findRenderObject() as RenderBox?;
-    if (getBox == null) return;
-
-    Offset localOffset = getBox.globalToLocal(position);
-    double horizontal = localOffset.dx.clamp(0.0, width);
-    double vertical = localOffset.dy.clamp(0.0, height);
-
-    Offset center = Offset(width / 2, height / 2);
-    double radio = width <= height ? width / 2 : height / 2;
-    double dist =
-        sqrt(pow(horizontal - center.dx, 2) + pow(vertical - center.dy, 2)) /
-        radio;
-    double rad =
-        (atan2(horizontal - center.dx, vertical - center.dy) / pi + 1) /
-        2 *
-        360;
-    _handleColorWheelChange(((rad + 90) % 360).clamp(0, 360), dist.clamp(0, 1));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        double width = constraints.maxWidth;
-        double height = constraints.maxHeight;
-
-        return RawGestureDetector(
-          gestures: {
-            AlwaysWinPanGestureRecognizer:
-                GestureRecognizerFactoryWithHandlers<
-                  AlwaysWinPanGestureRecognizer
-                >(() => AlwaysWinPanGestureRecognizer(), (
-                  AlwaysWinPanGestureRecognizer instance,
-                ) {
-                  instance
-                    ..onDown = ((details) => _handleGesture(
-                      details.globalPosition,
-                      context,
-                      height,
-                      width,
-                    ))
-                    ..onUpdate = ((details) => _handleGesture(
-                      details.globalPosition,
-                      context,
-                      height,
-                      width,
-                    ));
-                }),
-          },
-          child: CustomPaint(painter: HUEColorWheelPainter(hsvColor)),
-        );
-      },
-    );
-  }
-}
