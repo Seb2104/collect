@@ -1,11 +1,16 @@
 import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
+// colorLabelTypes: [
+// ColorLabelType.hex,
+// ColorLabelType.rgb,
+// ColorLabelType.hsl,
+// ColorLabelType.hsv,
+// ],
+
 class ColourLabel extends StatefulWidget {
   final Colour colour;
   final bool enableAlpha;
-  final TextStyle? textStyle;
-  final List<ColorLabelType> colorLabelTypes;
   final double height;
   final double width;
 
@@ -13,15 +18,9 @@ class ColourLabel extends StatefulWidget {
     this.colour, {
     super.key,
     this.enableAlpha = true,
-    this.colorLabelTypes = const [
-      ColorLabelType.rgb,
-      ColorLabelType.hsv,
-      ColorLabelType.hsl,
-    ],
-    this.textStyle,
     this.height = 140,
     this.width = 300,
-  }) : assert(colorLabelTypes.length > 0);
+  });
 
   @override
   State<ColourLabel> createState() => _ColourLabelState();
@@ -35,6 +34,9 @@ class _ColourLabelState extends State<ColourLabel> {
   String argbView() => widget.colour.argb;
 
   String hslView() => widget.colour.hsl.toString();
+
+  String hsvView() => widget.colour.hsv.toString();
+
   MenuControl menuController = MenuControl();
   String selectedFormat = 'b256';
 
@@ -54,6 +56,8 @@ class _ColourLabelState extends State<ColourLabel> {
         return argbView();
       case 'hsl':
         return hslView();
+      case 'hsv':
+        return hsvView();
       default:
         return b256();
     }
@@ -66,28 +70,26 @@ class _ColourLabelState extends State<ColourLabel> {
       height: widget.height,
       child: Row(
         children: [
-            Menu(
-              width: 100,
-              value: selectedFormat,
-              onChanged: (val) {
-                selectedFormat = val!;
-                menuController.selectedValue = selectedFormat;
-                print(selectedFormat);
-                setState(() {});
-              },
-              textStyle: TextStyle(fontSize: 11),
-              items: [
-                MenuItemString(value: 'b256', label: 'b256'),
-                MenuItemString(value: 'hex', label: 'HEX'),
-                MenuItemString(value: 'argb', label: 'ARGB'),
-                MenuItemString(value: 'hsl', label: 'HSL'),
-              ],
-            ),
-          Spacer(),
-          Word(
-            getViewForFormat(selectedFormat),
-            fontSize: 14,
+          Menu(
+            width: 100,
+            value: selectedFormat,
+            onChanged: (val) {
+              selectedFormat = val!;
+              menuController.selectedValue = selectedFormat;
+              print(selectedFormat);
+              setState(() {});
+            },
+            textStyle: TextStyle(fontSize: 11),
+            items: [
+              MenuItemString(value: 'b256', label: 'b256'),
+              MenuItemString(value: 'hex', label: 'HEX'),
+              MenuItemString(value: 'argb', label: 'ARGB'),
+              MenuItemString(value: 'hsl', label: 'HSL'),
+              MenuItemString(value: 'hsv', label: 'HSV'),
+            ],
           ),
+          Spacer(),
+          Word(getViewForFormat(selectedFormat), fontSize: 14),
         ],
       ),
     );

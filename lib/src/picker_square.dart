@@ -224,7 +224,6 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
               child: ColourLabel(
                 currentHsvColor.toColour(),
                 enableAlpha: widget.enableAlpha,
-                colorLabelTypes: widget.labelTypes,
               ),
             ),
         ],
@@ -301,7 +300,6 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
                   child: ColourLabel(
                     currentHsvColor.toColour(),
                     enableAlpha: widget.enableAlpha,
-                    colorLabelTypes: widget.labelTypes,
                   ),
                 ),
             ],

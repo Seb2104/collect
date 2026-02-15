@@ -205,8 +205,6 @@ class _SlidePickerState extends BaseColourPicker<SlidePicker> {
             child: ColourLabel(
               currentHsvColor.toColour(),
               enableAlpha: widget.enableAlpha,
-              textStyle: widget.labelTextStyle,
-              colorLabelTypes: widget.labelTypes,
             ),
           ),
       ],

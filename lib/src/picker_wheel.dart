@@ -148,12 +148,6 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               child: ColourLabel(
                 currentHsvColor.toColour(),
                 enableAlpha: widget.enableAlpha,
-                colorLabelTypes: [
-                  ColorLabelType.hex,
-                  ColorLabelType.rgb,
-                  ColorLabelType.hsl,
-                  ColorLabelType.hsv,
-                ],
               ),
             ),
         ],
@@ -201,12 +195,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
                         widget.style.padding.along(Axis.horizontal),
                     currentHsvColor.toColour(),
                     enableAlpha: widget.enableAlpha,
-                    colorLabelTypes: [
-                      ColorLabelType.hex,
-                      ColorLabelType.rgb,
-                      ColorLabelType.hsl,
-                      ColorLabelType.hsv,
-                    ],
+
                   ),
               ],
             ),

@@ -158,6 +158,10 @@ class HSVColour extends Col implements HSVColor {
   HSVColour withValue(double value) {
     return HSVColour.fromAHSV(alpha, hue, saturation, value);
   }
+
+  @override
+  String toString() =>
+      '${alpha.roundToPrecision(2)},${hue.roundToPrecision(2)},${saturation.roundToPrecision(2)},${value.roundToPrecision(2)}';
 }
 
 extension Hsvcolour on HSVColor {
