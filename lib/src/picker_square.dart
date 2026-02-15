@@ -311,3 +311,4 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
     }
   }
 }
+

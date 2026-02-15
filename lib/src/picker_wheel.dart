@@ -86,9 +86,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             child: WheelGestureDetector(
               onColorChanged: onColorChanging,
               hsvColor: currentHsvColor,
-              child: CustomPaint(
-                painter: HUEColorWheelPainter(currentHsvColor),
-              ),
+              child: CustomPaint(painter: HUEColorWheelPainter(currentHsvColor)),
             ),
           ),
           Padding(
@@ -185,9 +183,7 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               child: WheelGestureDetector(
                 onColorChanged: onColorChanging,
                 hsvColor: currentHsvColor,
-                child: CustomPaint(
-                  painter: HUEColorWheelPainter(currentHsvColor),
-                ),
+                child: CustomPaint(painter: HUEColorWheelPainter(currentHsvColor)),
               ),
             ),
             Column(
@@ -274,3 +270,4 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
     }
   }
 }
+
