@@ -8,6 +8,7 @@ class Indicator extends StatefulWidget {
   final HSVColour colour;
   final bool displayThumbColour;
   final ValueChanged<HSVColour> onChanged;
+  final bool portrait;
 
   const Indicator({
     super.key,
@@ -15,6 +16,7 @@ class Indicator extends StatefulWidget {
     required this.size,
     required this.displayThumbColour,
     required this.onChanged,
+    required this.portrait,
   });
 
   @override
@@ -25,49 +27,93 @@ class _IndicatorState extends State<Indicator> {
   @override
   Widget build(BuildContext context) {
     HSVColour currentHSVColour = widget.colour.toHSVColour;
-    return SizedBox(
-      width: widget.size,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ColorIndicator(
-            currentHSVColour,
-            height: (widget.size / 2) * 0.3,
-            width: (widget.size / 2) * 0.3,
-          ),
-          // Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: (widget.size / 2) * 0.2,
-                width: widget.size * 0.85,
-                child: ColourPickerSlider(
-                  TrackType.value,
+    return widget.portrait
+        ? SizedBox(
+            width: widget.size,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ColorIndicator(
                   currentHSVColour,
-                  (colour) {
-                    widget.onChanged(colour);
-                  },
-                  displayThumbColor: widget.displayThumbColour,
+                  height: (widget.size / 2) * 0.3,
+                  width: (widget.size / 2) * 0.3,
                 ),
-              ),
-              SizedBox(
-                height: (widget.size / 2) * 0.2,
-                width: widget.size * 0.85,
-                child: ColourPickerSlider(
-                  TrackType.alpha,
+                // Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: (widget.size / 2) * 0.2,
+                      width: widget.size * 0.85,
+                      child: ColourPickerSlider(
+                        TrackType.value,
+                        currentHSVColour,
+                        (colour) {
+                          widget.onChanged(colour);
+                        },
+                        displayThumbColor: widget.displayThumbColour,
+                      ),
+                    ),
+                    SizedBox(
+                      height: (widget.size / 2) * 0.2,
+                      width: widget.size * 0.85,
+                      child: ColourPickerSlider(
+                        TrackType.alpha,
+                        currentHSVColour,
+                        (colour) {
+                          widget.onChanged(colour);
+                        },
+                        displayThumbColor: widget.displayThumbColour,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        : SizedBox(
+            width: widget.size,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ColorIndicator(
                   currentHSVColour,
-                  (colour) {
-                    widget.onChanged(colour);
-                  },
-                  displayThumbColor: widget.displayThumbColour,
+                  height: (widget.size / 2) * 0.3,
+                  width: (widget.size / 2) * 0.3,
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                // Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: (widget.size / 2) * 0.2,
+                      width: widget.size * 0.85,
+                      child: ColourPickerSlider(
+                        TrackType.value,
+                        currentHSVColour,
+                        (colour) {
+                          widget.onChanged(colour);
+                        },
+                        displayThumbColor: widget.displayThumbColour,
+                      ),
+                    ),
+                    SizedBox(
+                      height: (widget.size / 2) * 0.2,
+                      width: widget.size * 0.85,
+                      child: ColourPickerSlider(
+                        TrackType.alpha,
+                        currentHSVColour,
+                        (colour) {
+                          widget.onChanged(colour);
+                        },
+                        displayThumbColor: widget.displayThumbColour,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
   }
 }

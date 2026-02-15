@@ -5,7 +5,6 @@ class ColourPicker {
   static Widget wheel({
     required Colour currentColour,
     required ValueChanged<Colour> onColourChanged,
-    double height = 300,
     double size = 700,
     PickerStyle style = const PickerStyle(
       padding: EdgeInsets.all(10),
@@ -15,7 +14,6 @@ class ColourPicker {
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
     ),
-    double pickerRadius = 125,
     bool enableAlpha = true,
     bool showLabel = true,
     bool displayThumbColor = true,
@@ -31,7 +29,6 @@ class ColourPicker {
       onColourChanged: onColourChanged,
       size: size,
       style: style,
-      pickerRadius: pickerRadius,
       showLabel: showLabel,
       displayThumbColor: displayThumbColor,
       orientation: orientation,

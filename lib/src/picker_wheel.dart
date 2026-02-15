@@ -14,7 +14,6 @@ class WheelPicker extends StatefulWidget {
     required this.onColourChanged,
     required this.size,
     required this.style,
-    required this.pickerRadius,
     required this.showLabel,
     required this.displayThumbColor,
     required this.orientation,
@@ -26,8 +25,6 @@ class WheelPicker extends StatefulWidget {
   });
 
   final double size;
-  final double pickerRadius;
-
   final Colour currentColour;
   final ValueChanged<Colour> onColourChanged;
   final HSVColour? pickerHsvColour;
@@ -79,72 +76,36 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
   @override
   Widget build(BuildContext context) {
     if (widget.orientation == Orientation.portrait) {
-      return Column(
-        children: <Widget>[
-          SizedBox(
-            width: widget.pickerRadius * 2,
-            height: widget.pickerRadius * 2,
-            child: WheelGestureDetector(
-              onColorChanged: onColorChanging,
-              hsvColor: currentHsvColor,
-              child: CustomPaint(
-                painter: HUEColorWheelPainter(currentHsvColor),
+      return Container(
+        height: widget.size,
+        width: widget.size / 2,
+        decoration: widget.style.decoration,
+        padding: widget.style.padding,
+        margin: widget.style.margin,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: widget.size,
+              height: widget.size / 2,
+              child: WheelGestureDetector(
+                onColorChanged: onColorChanging,
+                hsvColor: currentHsvColor,
+                child: CustomPaint(
+                  painter: HUEColorWheelPainter(currentHsvColor),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              widget.pickerRadius * 0.05,
-              widget.pickerRadius * 0.017,
-              widget.pickerRadius * 0.033,
-              widget.pickerRadius * 0.017,
-            ),
-            child: Indicator(
+            Indicator(
               colour: currentHsvColor,
-              size: widget.size * 2,
+              size: (widget.size / 2) - widget.style.padding.along(Axis.horizontal),
               displayThumbColour: widget.displayThumbColor,
               onChanged: onColourChange,
+              portrait: true,
             ),
-          ),
-          if (colorHistory.isNotEmpty)
-            SizedBox(
-              width: widget.pickerRadius,
-              height: widget.pickerRadius * 0.167,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  for (Color colour in colorHistory)
-                    Padding(
-                      key: Key(colour.hashCode.toString()),
-                      padding: EdgeInsets.fromLTRB(
-                        widget.pickerRadius * 0.05,
-                        0,
-                        0,
-                        widget.pickerRadius * 0.033,
-                      ),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () =>
-                              onColorChanging(HSVColour.fromColor(colour)),
-                          child: ColorIndicator(
-                            HSVColour.fromColor(colour),
-                            width: widget.pickerRadius * 0.1,
-                            height: widget.pickerRadius * 0.1,
-                          ),
-                        ),
-                      ),
-                    ),
-                  SizedBox(width: widget.pickerRadius * 0.05),
-                ],
-              ),
-            ),
-          if (widget.showLabel)
-            FittedBox(
-              child: ColourLabel(
-                currentHsvColor.toColour(),
-              ),
-            ),
-        ],
+            if (widget.showLabel) ColourLabel(currentHsvColor.toColour()),
+          ],
+        ),
       );
     } else {
       return Container(
@@ -157,7 +118,8 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(
-              height: (widget.size / 2) - widget.style.padding.along(Axis.vertical),
+              height:
+                  (widget.size / 2) - widget.style.padding.along(Axis.vertical),
               width:
                   (widget.size / 2) -
                   widget.style.padding.along(Axis.horizontal),
@@ -175,9 +137,12 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
               children: <Widget>[
                 Indicator(
                   colour: currentHsvColor,
-                  size: (widget.size / 2) - (widget.style.padding.along(Axis.horizontal)).positive,
+                  size:
+                      (widget.size / 2) -
+                      (widget.style.padding.along(Axis.horizontal)).positive,
                   displayThumbColour: widget.displayThumbColor,
                   onChanged: onColourChange,
+                  portrait: false,
                 ),
                 if (widget.showLabel)
                   ColourLabel(
