@@ -17,6 +17,7 @@ class MenuDemo extends StatefulWidget {
 
 class _MenuDemoState extends State<MenuDemo> {
   String selected = menuItems[0];
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +28,21 @@ class _MenuDemoState extends State<MenuDemo> {
           height: MediaQuery.of(context).size.height * 1,
           width: MediaQuery.of(context).size.width * 1,
           child: Center(
-            child: Menu(
-              items: menuItems,
-              value: selected,
+            child: MenuTextField(
+              controller: controller,
+              enableFilter: true,
+              items: Menu.stringsToItems(menuItems),
+              selected: selected,
+              initialSelection: Menu.stringsToItems(menuItems).first,
               width: 500,
-              onChanged: (newValue) {
-                selected = newValue;
-                setState(() {});
+              onSelected: (newValue) {
+                setState(() {
+                  controller.text = newValue;
+                  selected = newValue;
+                  print('newValue: $newValue');
+                  print('controller: ${controller.text}');
+                  print('selected: $selected');
+                });
               },
             ),
           ),

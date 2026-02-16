@@ -3,7 +3,7 @@ part of 'menu.dart';
 class MenuTextField<T> extends StatefulWidget {
   const MenuTextField({
     super.key,
-    required this.entries,
+    required this.items,
     required this.selected,
     this.initialSelection,
     this.onSelected,
@@ -38,9 +38,9 @@ class MenuTextField<T> extends StatefulWidget {
     this.label,
   });
 
-  final List<MenuItem> entries;
+  final List<MenuItem> items;
 
-  final T? initialSelection;
+  final MenuItem? initialSelection;
 
   final String selected;
 
@@ -108,7 +108,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     _textController = widget.controller ?? TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
     _enableSearch = widget.enableSearch;
-    _filteredEntries = widget.entries;
+    _filteredEntries = widget.items;
 
     _textController.addListener(_onTextChanged);
     _focusNode.addListener(_onFocusChanged);
@@ -122,8 +122,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   void didUpdateWidget(MenuTextField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.entries != widget.entries) {
-      _filteredEntries = widget.entries;
+    if (oldWidget.items != widget.items) {
+      _filteredEntries = widget.items;
       _currentHighlight = null;
     }
 
@@ -153,11 +153,11 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
   void _initializeSelection() {
     if (widget.initialSelection != null) {
-      final index = widget.entries.indexWhere(
+      final index = widget.items.indexWhere(
         (e) => e.value == widget.initialSelection,
       );
       if (index != -1) {
-        _updateTextController(widget.entries[index].value);
+        _updateTextController(widget.items[index].value);
         _selectedEntryIndex = index;
       }
     }
@@ -193,14 +193,14 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
     if (_enableFilter && text.isNotEmpty) {
       if (widget.filterCallback != null) {
-        _filteredEntries = widget.filterCallback!(widget.entries, text);
+        _filteredEntries = widget.filterCallback!(widget.items, text);
       } else {
-        _filteredEntries = widget.entries
+        _filteredEntries = widget.items
             .where((e) => e.value.toLowerCase().contains(text.toLowerCase()))
             .toList();
       }
     } else {
-      _filteredEntries = widget.entries;
+      _filteredEntries = widget.items;
     }
 
     if (_enableSearch && text.isNotEmpty) {
@@ -348,7 +348,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     if (_isOverlayVisible || !widget.enabled) return;
 
     setState(() {
-      _filteredEntries = widget.entries;
+      _filteredEntries = widget.items;
       _enableFilter = false;
       _isOverlayVisible = true;
     });

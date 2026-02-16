@@ -87,6 +87,14 @@ class Menu extends StatefulWidget {
 
   final FocusNode? focusNode;
 
+  static List<MenuItem> stringsToItems(List<String> strings) {
+    List<MenuItem> items = [];
+    for (String string in strings) {
+      items.add(MenuItem(value: string));
+    }
+    return items;
+  }
+
   @override
   State<Menu> createState() => _MenuState();
 }
