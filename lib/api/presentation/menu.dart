@@ -1,6 +1,6 @@
 part of '../../collect.dart';
 
-class Menu<T> extends StatefulWidget {
+class Menu extends StatefulWidget {
   const Menu({
     super.key,
     required this.items,
@@ -43,9 +43,10 @@ class Menu<T> extends StatefulWidget {
     this.controller,
     this.focusNode,
   });
-  final List<MenuItem<T>> items;
-  final T? value;
-  final ValueChanged<T?>? onChanged;
+
+  final List<String> items;
+  final String value;
+  final ValueChanged<String>? onChanged;
   final Widget? hint;
   final double? width;
   final double? height;
@@ -76,28 +77,28 @@ class Menu<T> extends StatefulWidget {
   final MenuConfig? config;
   final bool? enableSearch;
   final String? searchHint;
-  final FilterMatchFn<T>? searchMatchFn;
+  final FilterMatchFn? searchMatchFn;
   final bool? enableKeyboardNavigation;
   final double? maxHeight;
   final Offset? offset;
   final bool? closeOnSelect;
 
-  final MenuControl<T>? controller;
+  final MenuControl? controller;
 
   final FocusNode? focusNode;
 
   @override
-  State<Menu<T>> createState() => _MenuState<T>();
+  State<Menu> createState() => _MenuState();
 }
 
-class _MenuState<T> extends State<Menu<T>> {
+class _MenuState<T> extends State<Menu> {
   late final FocusNode _focusNode;
   late final LayerLink _layerLink;
   final ScrollController _scrollController = ScrollController();
 
   OverlayEntry? _overlayEntry;
   TextEditingController? _searchController;
-  List<MenuItem<T>> _filteredItems = [];
+  List<String> _filteredItems = [];
   int _highlightedIndex = -1;
   double _iconTurns = 0;
 
@@ -127,7 +128,7 @@ class _MenuState<T> extends State<Menu<T>> {
   }
 
   @override
-  void didUpdateWidget(Menu<T> oldWidget) {
+  void didUpdateWidget(Menu oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.items != widget.items) {
@@ -226,17 +227,6 @@ class _MenuState<T> extends State<Menu<T>> {
       widget.selectedItemColor ??
       widget.theme?.selectedItemColor ??
       Colors.blue.shade50;
-
-  TextStyle? get _resolvedItemTextStyle =>
-      widget.itemTextStyle ?? widget.theme?.itemTextStyle;
-
-  TextStyle? get _resolvedTextStyle =>
-      widget.textStyle ?? widget.theme?.textStyle;
-
-  TextStyle? get _resolvedHintStyle =>
-      widget.hintStyle ??
-      widget.theme?.hintStyle ??
-      TextStyle(color: Colors.grey.shade600);
 
   bool get _resolvedEnableSearch =>
       widget.enableSearch ?? widget.config?.enableSearch ?? false;
@@ -352,7 +342,7 @@ class _MenuState<T> extends State<Menu<T>> {
     if (key == LogicalKeyboardKey.enter ||
         key == LogicalKeyboardKey.numpadEnter) {
       if (_highlightedIndex >= 0 && _highlightedIndex < _filteredItems.length) {
-        _selectItem(_filteredItems[_highlightedIndex].value);
+        _selectItem(_filteredItems[_highlightedIndex]);
       }
       return true;
     }
@@ -411,8 +401,8 @@ class _MenuState<T> extends State<Menu<T>> {
     });
   }
 
-  void _selectItem(T? value) {
-    widget.onChanged?.call(value);
+  void _selectItem(String? value) {
+    widget.onChanged?.call(value!);
     widget.controller?.selectedValue = value;
 
     if (_resolvedCloseOnSelect) {
@@ -420,10 +410,9 @@ class _MenuState<T> extends State<Menu<T>> {
     }
   }
 
-  MenuItem<T>? get _selectedItem {
-    if (widget.value == null) return null;
+  String? get _selectedItem {
     try {
-      return widget.items.firstWhere((item) => item.value == widget.value);
+      return widget.items.firstWhere((item) => item == widget.value);
     } catch (e) {
       return null;
     }
@@ -471,19 +460,7 @@ class _MenuState<T> extends State<Menu<T>> {
 
   Widget _buildSelectedDisplay() {
     final selectedItem = _selectedItem;
-
-    if (selectedItem == null) {
-      return widget.hint ?? Text('Select...', style: _resolvedHintStyle);
-    }
-
-    return switch (selectedItem) {
-      MenuItemString<T> item => Text(
-        item.label,
-        style: _resolvedTextStyle,
-        overflow: TextOverflow.ellipsis,
-      ),
-      MenuItemWidget<T> item => item.widget,
-    };
+    return Word(selectedItem ?? "");
   }
 
   Widget _buildIcon() {
@@ -582,9 +559,9 @@ class _MenuState<T> extends State<Menu<T>> {
     );
   }
 
-  Widget _buildItem(MenuItem<T> item, int index) {
+  Widget _buildItem(String item, int index) {
     final isHighlighted = index == _highlightedIndex;
-    final isSelected = item.value == widget.value;
+    final isSelected = item == widget.value;
 
     return Material(
       color: isHighlighted
@@ -593,18 +570,12 @@ class _MenuState<T> extends State<Menu<T>> {
           ? _resolvedSelectedItemColor
           : Colors.transparent,
       child: InkWell(
-        onTap: () => _selectItem(item.value),
+        onTap: () => _selectItem(item),
         child: Container(
           height: _resolvedItemHeight,
           padding: _resolvedItemPadding,
           alignment: Alignment.centerLeft,
-          child: switch (item) {
-            MenuItemString<T> stringItem => Text(
-              stringItem.label,
-              style: _resolvedItemTextStyle,
-            ),
-            MenuItemWidget<T> widgetItem => widgetItem.widget,
-          },
+          child: Word(item),
         ),
       ),
     );
@@ -667,13 +638,10 @@ class MenuControl<T> extends ChangeNotifier {
   }
 }
 
-typedef FilterMatchFn<T> = bool Function(MenuItem<T> item, String searchValue);
+typedef FilterMatchFn<T> = bool Function(String item, String searchValue);
 
-bool defaultFilterMatch<T>(MenuItem<T> item, String searchValue) {
-  if (item is MenuItemString<T>) {
-    return item.label.toLowerCase().contains(searchValue.toLowerCase());
-  }
-  return false;
+bool defaultFilterMatch(String item, String searchValue) {
+  return item.toLowerCase().contains(searchValue.toLowerCase());
 }
 
 class MenuConfig {
@@ -1407,45 +1375,6 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       ),
     );
   }
-}
-
-sealed class MenuItem<T> {
-  const MenuItem({required this.value});
-
-  final T value;
-}
-
-final class MenuItemString<T> extends MenuItem<T> {
-  const MenuItemString({required super.value, required this.label});
-
-  final String label;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MenuItemString<T> &&
-          runtimeType == other.runtimeType &&
-          value == other.value &&
-          label == other.label;
-
-  @override
-  int get hashCode => Object.hash(value, label);
-}
-
-final class MenuItemWidget<T> extends MenuItem<T> {
-  const MenuItemWidget({required super.value, required this.widget});
-
-  final Widget widget;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MenuItemWidget<T> &&
-          runtimeType == other.runtimeType &&
-          value == other.value;
-
-  @override
-  int get hashCode => value.hashCode;
 }
 
 class MenuEntry<T> {

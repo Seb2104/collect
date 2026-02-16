@@ -72,19 +72,13 @@ class _ColourLabelState extends State<ColourLabel> {
             width: 100,
             value: selectedFormat,
             onChanged: (val) {
-              selectedFormat = val!;
+              selectedFormat = val;
               menuController.selectedValue = selectedFormat;
               print(selectedFormat);
               setState(() {});
             },
             textStyle: TextStyle(fontSize: 11),
-            items: [
-              MenuItemString(value: 'b256', label: 'b256'),
-              MenuItemString(value: 'hex', label: 'HEX'),
-              MenuItemString(value: 'argb', label: 'ARGB'),
-              MenuItemString(value: 'hsl', label: 'HSL'),
-              MenuItemString(value: 'hsv', label: 'HSV'),
-            ],
+            items: const ['b256', 'hex', 'argb', 'hsl', 'hsv'],
           ),
           Spacer(),
           Word(getViewForFormat(selectedFormat), fontSize: 14),
