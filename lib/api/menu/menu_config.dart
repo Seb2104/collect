@@ -2,7 +2,7 @@ part of 'menu.dart';
 
 /// Behavioral configuration for a [Menu] widget.
 ///
-/// This is separate from [MenuTheme] (which handles visuals). MenuConfig
+/// This is separate from [MenuDecoration] (which handles visuals). MenuConfig
 /// is all about how the menu *behaves* — search, keyboard nav, auto-scroll,
 /// sizing, etc. Think of it as the "settings" for your dropdown.
 class MenuConfig {
@@ -78,9 +78,9 @@ class MenuConfig {
       searchHint: searchHint ?? this.searchHint,
       searchMatchFn: searchMatchFn ?? this.searchMatchFn,
       enableKeyboardNavigation:
-      enableKeyboardNavigation ?? this.enableKeyboardNavigation,
+          enableKeyboardNavigation ?? this.enableKeyboardNavigation,
       autoScrollOnHighlight:
-      autoScrollOnHighlight ?? this.autoScrollOnHighlight,
+          autoScrollOnHighlight ?? this.autoScrollOnHighlight,
       maxHeight: maxHeight ?? this.maxHeight,
       closeOnSelect: closeOnSelect ?? this.closeOnSelect,
       offset: offset ?? this.offset,

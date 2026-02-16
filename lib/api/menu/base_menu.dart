@@ -23,25 +23,9 @@ class Menu extends StatefulWidget {
     required this.items,
     required this.value,
     this.onChanged,
-    this.hint,
     this.width,
     this.height,
-    this.theme,
-    this.backgroundColor,
-    this.borderColor,
-    this.border,
-    this.borderRadius,
-    this.padding,
-    this.elevation,
-    this.iconColor,
-    this.icon,
-    this.iconSize,
-    this.disableIconRotation,
-    this.dropdownColor,
-    this.dropdownElevation,
-    this.dropdownBorderRadius,
-    this.dropdownPadding,
-    this.dropdownBorder,
+    this.decoration,
     this.itemHeight,
     this.itemPadding,
     this.itemHighlightColor,
@@ -71,10 +55,6 @@ class Menu extends StatefulWidget {
   /// call setState in here to update [value].
   final ValueChanged<String>? onChanged;
 
-  /// A widget to show when nothing is selected (or the selected value
-  /// isn't in the items list). Like a placeholder.
-  final Widget? hint;
-
   /// Width of the trigger button. If null, it sizes to fit its content.
   final double? width;
 
@@ -83,52 +63,7 @@ class Menu extends StatefulWidget {
 
   /// A theme object for customizing the visual appearance.
   /// Individual style props (like [backgroundColor]) override theme values.
-  final MenuTheme? theme;
-
-  /// Background color of the trigger button. Overrides [theme.backgroundColor].
-  final Color? backgroundColor;
-
-  /// Border color of the trigger button. Overrides [theme.borderColor].
-  final Color? borderColor;
-
-  /// Full border side for the trigger button. Overrides [theme.border].
-  final BorderSide? border;
-
-  /// Corner radius of the trigger button. Overrides [theme.borderRadius].
-  final BorderRadius? borderRadius;
-
-  /// Padding inside the trigger button. Overrides [theme.padding].
-  final EdgeInsetsGeometry? padding;
-
-  /// Shadow elevation of the trigger button. Overrides [theme.elevation].
-  final double? elevation;
-
-  /// Color of the dropdown arrow icon. Overrides [theme.iconColor].
-  final Color? iconColor;
-
-  /// The icon to use for the dropdown arrow. Overrides [theme.icon].
-  final IconData? icon;
-
-  /// Size of the dropdown arrow icon. Overrides [theme.iconSize].
-  final double? iconSize;
-
-  /// If true, the arrow icon won't rotate when the dropdown opens/closes.
-  final bool? disableIconRotation;
-
-  /// Background color of the dropdown panel. Overrides [theme.dropdownColor].
-  final Color? dropdownColor;
-
-  /// Shadow elevation of the dropdown panel. Overrides [theme.dropdownElevation].
-  final double? dropdownElevation;
-
-  /// Corner radius of the dropdown panel. Overrides [theme.dropdownBorderRadius].
-  final BorderRadius? dropdownBorderRadius;
-
-  /// Padding around the item list inside the dropdown panel.
-  final EdgeInsetsGeometry? dropdownPadding;
-
-  /// Custom shape/border for the dropdown panel. For fancy borders.
-  final ShapeBorder? dropdownBorder;
+  final MenuDecoration? decoration;
 
   /// Height of each individual item row in the dropdown.
   final double? itemHeight;
@@ -297,94 +232,108 @@ class _MenuState<T> extends State<Menu> {
 
   /// Resolved background color for the trigger button.
   Color get _resolvedBackgroundColor =>
-      widget.backgroundColor ?? widget.theme?.backgroundColor ?? Colors.white;
+      widget.decoration?.backgroundColor ??
+      widget.decoration?.backgroundColor ??
+      Colors.white;
 
   /// Resolved border color for the trigger button.
   Color get _resolvedBorderColor =>
-      widget.borderColor ?? widget.theme?.borderColor ?? Colors.grey.shade300;
+      widget.decoration?.borderColor ??
+      widget.decoration?.borderColor ??
+      Colors.grey.shade300;
 
   /// Resolved border side for the trigger button.
   BorderSide get _resolvedBorder =>
-      widget.border ??
-      widget.theme?.border ??
+      widget.decoration?.border ??
+      widget.decoration?.border ??
       BorderSide(color: _resolvedBorderColor);
 
   /// Resolved corner radius for the trigger button.
   BorderRadius get _resolvedBorderRadius =>
-      widget.borderRadius ??
-      widget.theme?.borderRadius ??
+      widget.decoration?.borderRadius ??
+      widget.decoration?.borderRadius ??
       BorderRadius.circular(8);
 
   /// Resolved padding for the trigger button.
   EdgeInsetsGeometry get _resolvedPadding =>
-      widget.padding ??
-      widget.theme?.padding ??
+      widget.decoration?.padding ??
+      widget.decoration?.padding ??
       const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
   /// Resolved elevation for the trigger button.
   double get _resolvedElevation =>
-      widget.elevation ?? widget.theme?.elevation ?? 0;
+      widget.decoration?.elevation ?? widget.decoration?.elevation ?? 0;
 
   /// Resolved icon color for the dropdown arrow.
   Color get _resolvedIconColor =>
-      widget.iconColor ?? widget.theme?.iconColor ?? Colors.grey.shade700;
+      widget.decoration?.iconColor ??
+      widget.decoration?.iconColor ??
+      Colors.grey.shade700;
 
   /// Resolved icon for the dropdown arrow.
   IconData get _resolvedIcon =>
-      widget.icon ?? widget.theme?.icon ?? Icons.arrow_drop_down;
+      widget.decoration?.icon ??
+      widget.decoration?.icon ??
+      Icons.arrow_drop_down;
 
   /// Resolved icon size for the dropdown arrow.
   double get _resolvedIconSize =>
-      widget.iconSize ?? widget.theme?.iconSize ?? 24;
+      widget.decoration?.iconSize ?? widget.decoration?.iconSize ?? 24;
 
   /// Whether the icon rotation animation is disabled.
   bool get _resolvedDisableIconRotation =>
-      widget.disableIconRotation ?? widget.theme?.disableIconRotation ?? false;
+      widget.decoration?.disableIconRotation ??
+      widget.decoration?.disableIconRotation ??
+      false;
 
   /// Resolved background color for the dropdown panel.
   Color get _resolvedDropdownColor =>
-      widget.dropdownColor ?? widget.theme?.dropdownColor ?? Colors.white;
+      widget.decoration?.dropdownColor ??
+      widget.decoration?.dropdownColor ??
+      Colors.white;
 
   /// Resolved elevation for the dropdown panel.
   double get _resolvedDropdownElevation =>
-      widget.dropdownElevation ?? widget.theme?.dropdownElevation ?? 8;
+      widget.decoration?.dropdownElevation ??
+      widget.decoration?.dropdownElevation ??
+      8;
 
   /// Resolved corner radius for the dropdown panel.
   BorderRadius get _resolvedDropdownBorderRadius =>
-      widget.dropdownBorderRadius ??
-      widget.theme?.dropdownBorderRadius ??
+      widget.decoration?.dropdownBorderRadius ??
+      widget.decoration?.dropdownBorderRadius ??
       BorderRadius.circular(8);
 
   /// Resolved padding for the dropdown panel.
   EdgeInsetsGeometry get _resolvedDropdownPadding =>
-      widget.dropdownPadding ??
-      widget.theme?.dropdownPadding ??
+      widget.decoration?.dropdownPadding ??
+      widget.decoration?.dropdownPadding ??
       const EdgeInsets.symmetric(vertical: 8);
 
   /// Resolved border/shape for the dropdown panel.
   ShapeBorder? get _resolvedDropdownBorder =>
-      widget.dropdownBorder ?? widget.theme?.dropdownBorder;
+      widget.decoration?.dropdownBorder ?? widget.decoration?.dropdownBorder;
 
   /// Resolved height for each item row.
   double get _resolvedItemHeight =>
-      widget.itemHeight ?? widget.theme?.itemHeight ?? 48;
+      widget.itemHeight ?? widget.decoration?.itemHeight ?? 48;
 
   /// Resolved padding for each item row.
   EdgeInsetsGeometry get _resolvedItemPadding =>
       widget.itemPadding ??
-      widget.theme?.itemPadding ??
+      widget.decoration?.itemPadding ??
       const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
 
   /// Resolved highlight color for keyboard-navigated items.
   Color get _resolvedItemHighlightColor =>
       widget.itemHighlightColor ??
-      widget.theme?.itemHighlightColor ??
+      widget.decoration?.itemHighlightColor ??
       Colors.grey.shade200;
 
   /// Resolved background color for the selected item.
   Color get _resolvedSelectedItemColor =>
       widget.selectedItemColor ??
-      widget.theme?.selectedItemColor ??
+      widget.decoration?.selectedItemColor ??
       Colors.blue.shade50;
 
   /// Whether search is enabled (resolved from widget prop or config).

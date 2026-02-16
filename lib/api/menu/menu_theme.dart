@@ -8,8 +8,8 @@ part of 'menu.dart';
 /// Every property is nullable so you can just set the ones you care about
 /// and let the defaults handle the rest. The Menu widget resolves these
 /// with a priority chain: direct widget prop > theme > hardcoded default.
-class MenuTheme {
-  const MenuTheme({
+class MenuDecoration {
+  const MenuDecoration({
     this.backgroundColor,
     this.borderColor,
     this.border,
@@ -35,9 +35,12 @@ class MenuTheme {
     this.searchFieldHeight,
     this.textStyle,
     this.hintStyle,
+    this.hint,
   });
 
-  // -- Trigger button styling --
+  /// A widget to show when nothing is selected (or the selected value
+  /// isn't in the items list). Like a placeholder.
+  final Widget? hint;
 
   /// Background color of the menu trigger button (the thing you click to open it).
   final Color? backgroundColor;
@@ -129,7 +132,7 @@ class MenuTheme {
 
   /// Returns a copy of this theme with only the specified fields changed.
   /// Handy for making small tweaks without rebuilding the whole thing.
-  MenuTheme copyWith({
+  MenuDecoration copyWith({
     Color? backgroundColor,
     Color? borderColor,
     BorderSide? border,
@@ -156,7 +159,7 @@ class MenuTheme {
     TextStyle? textStyle,
     TextStyle? hintStyle,
   }) {
-    return MenuTheme(
+    return MenuDecoration(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       borderColor: borderColor ?? this.borderColor,
       border: border ?? this.border,

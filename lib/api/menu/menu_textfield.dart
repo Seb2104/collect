@@ -168,7 +168,7 @@ class MenuTextField<T> extends StatefulWidget {
 
   /// Optional theme for styling the dropdown. Separate from the text field's
   /// own [inputDecoration].
-  final MenuTheme? theme;
+  final MenuDecoration? theme;
 
   /// Full input decoration for the text field. If null, uses a basic
   /// OutlineInputBorder with the hint/helper/error texts.

@@ -46,10 +46,7 @@ class MenuItem {
   /// Defaults to a plain enabled item with no icons.
   final MenuItemConfig config;
 
-  const MenuItem({
-    required this.value,
-    this.config = const MenuItemConfig(),
-  });
+  const MenuItem({required this.value, this.config = const MenuItemConfig()});
 
   /// Two MenuItems are equal if they have the same value string.
   /// We don't compare configs here — just the text content.
