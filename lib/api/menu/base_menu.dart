@@ -26,13 +26,6 @@ class Menu extends StatefulWidget {
     this.width,
     this.height,
     this.decoration,
-    this.itemHeight,
-    this.itemPadding,
-    this.itemHighlightColor,
-    this.selectedItemColor,
-    this.itemTextStyle,
-    this.textStyle,
-    this.hintStyle,
     this.config,
     this.enableSearch,
     this.searchHint,
@@ -64,27 +57,6 @@ class Menu extends StatefulWidget {
   /// A theme object for customizing the visual appearance.
   /// Individual style props (like [backgroundColor]) override theme values.
   final MenuDecoration? decoration;
-
-  /// Height of each individual item row in the dropdown.
-  final double? itemHeight;
-
-  /// Padding inside each item row.
-  final EdgeInsetsGeometry? itemPadding;
-
-  /// Background color for the keyboard-highlighted item.
-  final Color? itemHighlightColor;
-
-  /// Background color for the currently selected item.
-  final Color? selectedItemColor;
-
-  /// Text style for item labels in the dropdown list.
-  final TextStyle? itemTextStyle;
-
-  /// Text style for the selected value displayed on the trigger button.
-  final TextStyle? textStyle;
-
-  /// Text style for the hint widget when nothing is selected.
-  final TextStyle? hintStyle;
 
   /// Behavioral configuration (search, keyboard nav, etc).
   /// See [MenuConfig] for all the options.
@@ -315,26 +287,20 @@ class _MenuState<T> extends State<Menu> {
       widget.decoration?.dropdownBorder ?? widget.decoration?.dropdownBorder;
 
   /// Resolved height for each item row.
-  double get _resolvedItemHeight =>
-      widget.itemHeight ?? widget.decoration?.itemHeight ?? 48;
+  double get _resolvedItemHeight => widget.decoration?.itemHeight ?? 48;
 
   /// Resolved padding for each item row.
   EdgeInsetsGeometry get _resolvedItemPadding =>
-      widget.itemPadding ??
       widget.decoration?.itemPadding ??
       const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
 
   /// Resolved highlight color for keyboard-navigated items.
   Color get _resolvedItemHighlightColor =>
-      widget.itemHighlightColor ??
-      widget.decoration?.itemHighlightColor ??
-      Colors.grey.shade200;
+      widget.decoration?.itemHighlightColor ?? Colors.grey.shade200;
 
   /// Resolved background color for the selected item.
   Color get _resolvedSelectedItemColor =>
-      widget.selectedItemColor ??
-      widget.decoration?.selectedItemColor ??
-      Colors.blue.shade50;
+      widget.decoration?.selectedItemColor ?? Colors.blue.shade50;
 
   /// Whether search is enabled (resolved from widget prop or config).
   bool get _resolvedEnableSearch =>
