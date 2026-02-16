@@ -317,6 +317,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     if (_currentHighlight == null) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_currentHighlight == null) return;
       if (_scrollController.hasClients &&
           _currentHighlight! < _filteredEntries.length) {
         final itemHeight = 48.0;

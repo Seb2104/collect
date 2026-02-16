@@ -18,11 +18,21 @@ class MenuDemo extends StatefulWidget {
 class _MenuDemoState extends State<MenuDemo> {
   String selected = menuItems[0];
   TextEditingController controller = TextEditingController();
-  //TODO we are working HERE
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    controller.addListener(() => setState(() {}));
-
     return MaterialApp(
       theme: AppTheme.light(),
       home: Scaffold(
@@ -40,7 +50,7 @@ class _MenuDemoState extends State<MenuDemo> {
               filterCallback: (entries, filter) {
                 List<MenuItem> furtherFiltered = [];
                 for (MenuItem item in entries) {
-                  if (item.value == filter) {
+                  if (item.value.toLowerCase().contains(filter.toLowerCase())) {
                     furtherFiltered.add(item);
                   }
                 }
@@ -48,7 +58,6 @@ class _MenuDemoState extends State<MenuDemo> {
               },
               onSelected: (newValue) {
                 setState(() {
-                  controller.text = newValue;
                   selected = newValue;
                   print('newValue: $newValue');
                   print('controller: ${controller.text}');
