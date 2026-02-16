@@ -1,6 +1,6 @@
 part of 'menu.dart';
 
-/// A controller that lets you programmatically control a [Menu] widget.
+/// A controller that lets you programmatically control a [MenuDropDown] widget.
 ///
 /// This is for when you need to open/close/toggle the dropdown from
 /// outside the widget itself — like from a button somewhere else on the page,

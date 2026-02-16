@@ -1,6 +1,6 @@
 part of 'menu.dart';
 
-/// Visual theming for the [Menu] widget.
+/// Visual theming for the [MenuDropDown] widget.
 ///
 /// This is purely about how stuff looks — colors, borders, spacing, etc.
 /// For behavioral stuff (search, keyboard nav, animations), see [MenuConfig].

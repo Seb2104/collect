@@ -68,7 +68,7 @@ class _ColourLabelState extends State<ColourLabel> {
       height: widget.height,
       child: Row(
         children: [
-          Menu(
+          MenuDropDown(
             width: 100,
             value: selectedFormat,
             onChanged: (val) {

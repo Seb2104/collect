@@ -17,8 +17,8 @@ part of 'menu.dart';
 ///   onChanged: (newValue) => setState(() => selectedValue = newValue),
 /// )
 /// ```
-class Menu extends StatefulWidget {
-  const Menu({
+class MenuDropDown extends StatefulWidget {
+  const MenuDropDown({
     super.key,
     required this.items,
     required this.value,
@@ -27,13 +27,6 @@ class Menu extends StatefulWidget {
     this.height,
     this.decoration,
     this.config,
-    this.enableSearch,
-    this.searchHint,
-    this.searchMatchFn,
-    this.enableKeyboardNavigation,
-    this.maxHeight,
-    this.offset,
-    this.closeOnSelect,
     this.controller,
     this.focusNode,
   });
@@ -62,30 +55,6 @@ class Menu extends StatefulWidget {
   /// See [MenuConfig] for all the options.
   final MenuConfig? config;
 
-  /// Whether to show a search field at the top of the dropdown.
-  /// Overrides [config.enableSearch].
-  final bool? enableSearch;
-
-  /// Placeholder text in the search field. Overrides [config.searchHint].
-  final String? searchHint;
-
-  /// Custom matching logic for the search field.
-  /// Overrides [config.searchMatchFn].
-  final FilterMatchFn? searchMatchFn;
-
-  /// Whether arrow keys + enter work for navigating.
-  /// Overrides [config.enableKeyboardNavigation].
-  final bool? enableKeyboardNavigation;
-
-  /// Max height of the dropdown panel. If null, defaults to 40% of screen height.
-  final double? maxHeight;
-
-  /// Position offset of the dropdown relative to the trigger.
-  final Offset? offset;
-
-  /// Whether selecting an item closes the dropdown.
-  final bool? closeOnSelect;
-
   /// An optional controller for programmatic open/close/toggle.
   /// See [MenuControl] for details.
   final MenuControl? controller;
@@ -106,14 +75,14 @@ class Menu extends StatefulWidget {
   }
 
   @override
-  State<Menu> createState() => _MenuState();
+  State<MenuDropDown> createState() => _MenuDropDownState();
 }
 
-/// The internal state for [Menu].
+/// The internal state for [MenuDropDown].
 ///
 /// Manages the overlay (the dropdown that appears/disappears), keyboard
 /// navigation, search filtering, and all the animation bits.
-class _MenuState<T> extends State<Menu> {
+class _MenuDropDownState<T> extends State<MenuDropDown> {
   /// Focus node for the trigger button — tracks whether the menu has focus.
   late final FocusNode _focusNode;
 
@@ -168,7 +137,7 @@ class _MenuState<T> extends State<Menu> {
   }
 
   @override
-  void didUpdateWidget(Menu oldWidget) {
+  void didUpdateWidget(MenuDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.items != widget.items) {
@@ -303,36 +272,25 @@ class _MenuState<T> extends State<Menu> {
       widget.decoration?.selectedItemColor ?? Colors.blue.shade50;
 
   /// Whether search is enabled (resolved from widget prop or config).
-  bool get _resolvedEnableSearch =>
-      widget.enableSearch ?? widget.config?.enableSearch ?? false;
+  bool get _resolvedEnableSearch => widget.config?.enableSearch ?? false;
 
   /// Resolved search hint text.
-  String get _resolvedSearchHint =>
-      widget.searchHint ?? widget.config?.searchHint ?? 'Search...';
+  String get _resolvedSearchHint => widget.config?.searchHint ?? 'Search...';
 
   /// Resolved search match function.
   FilterMatchFn<T> get _resolvedSearchMatchFn =>
-      widget.searchMatchFn ??
-      widget.config?.searchMatchFn ??
-      defaultFilterMatch;
+      widget.config?.searchMatchFn ?? defaultFilterMatch;
 
   /// Whether keyboard navigation is enabled.
   bool get _resolvedEnableKeyboardNavigation =>
-      widget.enableKeyboardNavigation ??
-      widget.config?.enableKeyboardNavigation ??
-      true;
+      widget.config?.enableKeyboardNavigation ?? true;
 
   /// Resolved max height for the dropdown panel.
-  double? get _resolvedMaxHeight =>
-      widget.maxHeight ?? widget.config?.maxHeight;
+  double? get _resolvedMaxHeight => widget.config?.maxHeight;
 
   /// Resolved offset for the dropdown position.
-  Offset get _resolvedOffset =>
-      widget.offset ?? widget.config?.offset ?? const Offset(0, 5);
+  Offset get _resolvedOffset => widget.config?.offset ?? const Offset(0, 5);
 
-  /// Whether selecting an item closes the dropdown.
-  bool get _resolvedCloseOnSelect =>
-      widget.closeOnSelect ?? widget.config?.closeOnSelect ?? true;
 
   /// When the trigger button gains focus, open the dropdown.
   /// When it loses focus, close it.
@@ -503,7 +461,7 @@ class _MenuState<T> extends State<Menu> {
     widget.onChanged?.call(value!);
     widget.controller?.selectedValue = value;
 
-    if (_resolvedCloseOnSelect) {
+    if (widget.config!.closeOnSelect) {
       _hideOverlay();
     }
   }

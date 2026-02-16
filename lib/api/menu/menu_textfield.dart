@@ -2,7 +2,7 @@ part of 'menu.dart';
 
 /// A text field with a dropdown menu attached — basically an autocomplete.
 ///
-/// Unlike the regular [Menu] which is a button you click, this one is a
+/// Unlike the regular [MenuDropDown] which is a button you click, this one is a
 /// full text field where the user can type to filter results. The dropdown
 /// appears below the text field and updates as they type.
 ///
@@ -57,7 +57,7 @@ class MenuTextField<T> extends StatefulWidget {
   });
 
   /// The list of menu items to display in the dropdown.
-  /// Use [Menu.stringsToItems] if you just have a plain list of strings.
+  /// Use [MenuDropDown.stringsToItems] if you just have a plain list of strings.
   final List<MenuItem> items;
 
   /// The item that should be pre-selected when the widget first loads.

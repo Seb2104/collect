@@ -1,6 +1,6 @@
 part of 'menu.dart';
 
-/// Behavioral configuration for a [Menu] widget.
+/// Behavioral configuration for a [MenuDropDown] widget.
 ///
 /// This is separate from [MenuDecoration] (which handles visuals). MenuConfig
 /// is all about how the menu *behaves* — search, keyboard nav, auto-scroll,
@@ -57,35 +57,4 @@ class MenuConfig {
 
   /// The easing curve for open/close animations.
   final Curve animationCurve;
-
-  /// Returns a copy of this config with only the specified fields changed.
-  /// Everything else stays the same. Super handy for tweaking one or two
-  /// things without having to rewrite the whole config.
-  MenuConfig copyWith({
-    bool? enableSearch,
-    String? searchHint,
-    FilterMatchFn? searchMatchFn,
-    bool? enableKeyboardNavigation,
-    bool? autoScrollOnHighlight,
-    double? maxHeight,
-    bool? closeOnSelect,
-    Offset? offset,
-    Duration? animationDuration,
-    Curve? animationCurve,
-  }) {
-    return MenuConfig(
-      enableSearch: enableSearch ?? this.enableSearch,
-      searchHint: searchHint ?? this.searchHint,
-      searchMatchFn: searchMatchFn ?? this.searchMatchFn,
-      enableKeyboardNavigation:
-          enableKeyboardNavigation ?? this.enableKeyboardNavigation,
-      autoScrollOnHighlight:
-          autoScrollOnHighlight ?? this.autoScrollOnHighlight,
-      maxHeight: maxHeight ?? this.maxHeight,
-      closeOnSelect: closeOnSelect ?? this.closeOnSelect,
-      offset: offset ?? this.offset,
-      animationDuration: animationDuration ?? this.animationDuration,
-      animationCurve: animationCurve ?? this.animationCurve,
-    );
-  }
 }
