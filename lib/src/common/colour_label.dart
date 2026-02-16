@@ -78,7 +78,7 @@ class _ColourLabelState extends State<ColourLabel> {
               setState(() {});
             },
             textStyle: TextStyle(fontSize: 11),
-            items: const ['b256', 'hex', 'argb', 'hsl', 'hsv'],
+            items: ['b256', 'hex', 'argb', 'hsl', 'hsv'],
           ),
           Spacer(),
           Word(getViewForFormat(selectedFormat), fontSize: 14),

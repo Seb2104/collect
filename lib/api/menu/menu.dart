@@ -11,9 +11,9 @@ import 'package:flutter/services.dart';
 
 part 'base_menu.dart';
 part 'menu_config.dart';
+part 'menu_textfield.dart';
 part 'menu_control.dart';
 part 'menu_entry.dart';
-part 'menu_textfield.dart';
 part 'menu_theme.dart';
 
 /// A function that decides whether a single item matches the search text.

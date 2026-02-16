@@ -284,7 +284,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   void _initializeSelection() {
     if (widget.initialSelection != null) {
       final index = widget.items.indexWhere(
-        (e) => e.value == widget.initialSelection,
+        (e) => e.value == widget.initialSelection?.value,
       );
       if (index != -1) {
         _updateTextController(widget.items[index].value);
