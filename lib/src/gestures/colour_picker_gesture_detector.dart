@@ -43,11 +43,11 @@ class ColourPickerGestureUtils {
 
     double dist =
         sqrt(pow(horizontal - center.dx, 2) + pow(vertical - center.dy, 2)) /
-            radio;
+        radio;
     double rad =
         (atan2(horizontal - center.dx, vertical - center.dy) / pi + 1) /
-            2 *
-            360;
+        2 *
+        360;
 
     double hue = ((rad + 90) % 360).clamp(0, 360);
     double distance = dist.clamp(0, 1);
@@ -91,27 +91,27 @@ class RectanglePaletteGestureDetector extends StatelessWidget {
       case PaletteType.hslWithHue:
         onColorChanged(
           hslToHsv(
-            hsvToHsl(hsvColor)
-                .withSaturation(horizontal)
-                .withLightness(vertical),
+            hsvToHsl(
+              hsvColor,
+            ).withSaturation(horizontal).withLightness(vertical),
           ),
         );
         break;
       case PaletteType.hslWithSaturation:
         onColorChanged(
           hslToHsv(
-            hsvToHsl(hsvColor)
-                .withHue(horizontal * 360)
-                .withLightness(vertical),
+            hsvToHsl(
+              hsvColor,
+            ).withHue(horizontal * 360).withLightness(vertical),
           ),
         );
         break;
       case PaletteType.hslWithLightness:
         onColorChanged(
           hslToHsv(
-            hsvToHsl(hsvColor)
-                .withHue(horizontal * 360)
-                .withSaturation(vertical),
+            hsvToHsl(
+              hsvColor,
+            ).withHue(horizontal * 360).withSaturation(vertical),
           ),
         );
         break;
@@ -178,24 +178,24 @@ class RectanglePaletteGestureDetector extends StatelessWidget {
           gestures: {
             AlwaysWinPanGestureRecognizer:
                 GestureRecognizerFactoryWithHandlers<
-                    AlwaysWinPanGestureRecognizer>(
-              () => AlwaysWinPanGestureRecognizer(),
-              (AlwaysWinPanGestureRecognizer instance) {
-                instance
-                  ..onDown = ((details) => _handleGesture(
-                        details.globalPosition,
-                        context,
-                        height,
-                        width,
-                      ))
-                  ..onUpdate = ((details) => _handleGesture(
-                        details.globalPosition,
-                        context,
-                        height,
-                        width,
-                      ));
-              },
-            ),
+                  AlwaysWinPanGestureRecognizer
+                >(() => AlwaysWinPanGestureRecognizer(), (
+                  AlwaysWinPanGestureRecognizer instance,
+                ) {
+                  instance
+                    ..onDown = ((details) => _handleGesture(
+                      details.globalPosition,
+                      context,
+                      height,
+                      width,
+                    ))
+                    ..onUpdate = ((details) => _handleGesture(
+                      details.globalPosition,
+                      context,
+                      height,
+                      width,
+                    ));
+                }),
           },
           child: child,
         );
@@ -237,7 +237,9 @@ class WheelGestureDetector extends StatelessWidget {
         width,
         height,
       );
-      onColorChanged(hsvColor.withHue(polar.hue).withSaturation(polar.distance));
+      onColorChanged(
+        hsvColor.withHue(polar.hue).withSaturation(polar.distance),
+      );
     }
   }
 
@@ -252,24 +254,24 @@ class WheelGestureDetector extends StatelessWidget {
           gestures: {
             AlwaysWinPanGestureRecognizer:
                 GestureRecognizerFactoryWithHandlers<
-                    AlwaysWinPanGestureRecognizer>(
-              () => AlwaysWinPanGestureRecognizer(),
-              (AlwaysWinPanGestureRecognizer instance) {
-                instance
-                  ..onDown = ((details) => _handleGesture(
-                        details.globalPosition,
-                        context,
-                        height,
-                        width,
-                      ))
-                  ..onUpdate = ((details) => _handleGesture(
-                        details.globalPosition,
-                        context,
-                        height,
-                        width,
-                      ));
-              },
-            ),
+                  AlwaysWinPanGestureRecognizer
+                >(() => AlwaysWinPanGestureRecognizer(), (
+                  AlwaysWinPanGestureRecognizer instance,
+                ) {
+                  instance
+                    ..onDown = ((details) => _handleGesture(
+                      details.globalPosition,
+                      context,
+                      height,
+                      width,
+                    ))
+                    ..onUpdate = ((details) => _handleGesture(
+                      details.globalPosition,
+                      context,
+                      height,
+                      width,
+                    ));
+                }),
           },
           child: child,
         );

@@ -202,9 +202,7 @@ class _SlidePickerState extends BaseColourPicker<SlidePicker> {
         if (widget.showLabel && widget.labelTypes.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
-            child: ColourLabel(
-              currentHsvColor.toColour(),
-            ),
+            child: ColourLabel(currentHsvColor.toColour()),
           ),
       ],
     );

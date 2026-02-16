@@ -38,7 +38,6 @@ class _IndicatorState extends State<Indicator> {
                   height: (widget.size / 2) * 0.3,
                   width: (widget.size / 2) * 0.3,
                 ),
-                // Spacer(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[

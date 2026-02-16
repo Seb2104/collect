@@ -6,7 +6,7 @@ class PickerStyle {
   final BoxDecoration decoration;
 
   const PickerStyle({
-    this.padding = const  EdgeInsets.all(20),
+    this.padding = const EdgeInsets.all(20),
     this.margin = const EdgeInsets.all(20),
     this.decoration = const BoxDecoration(
       color: AppTheme.lightBackground,

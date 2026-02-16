@@ -165,11 +165,7 @@ class _HueRingPickerState extends BaseColourPicker<HueRingPicker> {
                   ),
                 ),
               if (widget.displayLabel)
-                FittedBox(
-                  child: ColourLabel(
-                    currentHsvColor.toColour(),
-                  ),
-                ),
+                FittedBox(child: ColourLabel(currentHsvColor.toColour())),
             ],
           ),
           SizedBox(

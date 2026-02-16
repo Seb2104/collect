@@ -220,11 +220,7 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
               ),
             ),
           if (widget.showLabel && widget.labelTypes.isNotEmpty)
-            FittedBox(
-              child: ColourLabel(
-                currentHsvColor.toColour(),
-              ),
-            ),
+            FittedBox(child: ColourLabel(currentHsvColor.toColour())),
         ],
       );
     } else {
@@ -295,11 +291,7 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
                 ),
               const SizedBox(height: 20.0),
               if (widget.showLabel && widget.labelTypes.isNotEmpty)
-                FittedBox(
-                  child: ColourLabel(
-                    currentHsvColor.toColour(),
-                  ),
-                ),
+                FittedBox(child: ColourLabel(currentHsvColor.toColour())),
             ],
           ),
         ],
@@ -307,4 +299,3 @@ class _SquarePickerState extends BaseColourPicker<SquarePicker> {
     }
   }
 }
-

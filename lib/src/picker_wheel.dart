@@ -98,7 +98,9 @@ class _WheelPickerState extends BaseColourPicker<WheelPicker> {
             ),
             Indicator(
               colour: currentHsvColor,
-              size: (widget.size / 2) - widget.style.padding.along(Axis.horizontal),
+              size:
+                  (widget.size / 2) -
+                  widget.style.padding.along(Axis.horizontal),
               displayThumbColour: widget.displayThumbColor,
               onChanged: onColourChange,
               portrait: true,
