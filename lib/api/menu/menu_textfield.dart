@@ -1,5 +1,23 @@
 part of 'menu.dart';
 
+/// A text field with a dropdown menu attached — basically an autocomplete.
+///
+/// Unlike the regular [Menu] which is a button you click, this one is a
+/// full text field where the user can type to filter results. The dropdown
+/// appears below the text field and updates as they type.
+///
+/// Supports filtering, search highlighting, keyboard navigation (arrow keys
+/// + enter), custom callbacks, and all the usual text field stuff like
+/// input formatters and keyboard types.
+///
+/// Basic usage:
+/// ```dart
+/// MenuTextField(
+///   items: Menu.stringsToItems(['Apple', 'Banana', 'Cherry']),
+///   selected: selectedFruit,
+///   onSelected: (value) => setState(() => selectedFruit = value),
+/// )
+/// ```
 class MenuTextField<T> extends StatefulWidget {
   const MenuTextField({
     super.key,
@@ -38,68 +56,175 @@ class MenuTextField<T> extends StatefulWidget {
     this.label,
   });
 
+  /// The list of menu items to display in the dropdown.
+  /// Use [Menu.stringsToItems] if you just have a plain list of strings.
   final List<MenuItem> items;
 
+  /// The item that should be pre-selected when the widget first loads.
+  /// This sets the initial text in the field and highlights the matching
+  /// item in the dropdown.
   final MenuItem? initialSelection;
 
+  /// The currently selected value as a string.
+  /// This is tracked externally by the parent widget.
   final String selected;
 
+  /// Called when the user picks an item from the dropdown.
+  /// The string passed is the item's value.
   final ValueChanged<String>? onSelected;
 
+  /// An optional text editing controller. If you provide one, you can
+  /// read/write the text field value from outside. If you don't,
+  /// one is created internally and disposed automatically.
   final TextEditingController? controller;
 
+  /// An optional focus node. Same deal as the controller — provide your
+  /// own if you need external focus control, otherwise we make one.
   final FocusNode? focusNode;
 
+  /// Whether the text field is interactive. When false, it's greyed out
+  /// and the dropdown won't open.
   final bool enabled;
+
+  /// Width of the text field (and the dropdown below it).
   final double? width;
+
+  /// Maximum height of the dropdown panel. Defaults to 40% of screen height.
   final double? menuHeight;
+
+  /// A label widget displayed above/inside the text field (depends on decoration).
   final Widget? label;
+
+  /// Hint text shown when the text field is empty.
   final String? hintText;
+
+  /// Helper text shown below the text field.
   final String? helperText;
+
+  /// Error text shown below the text field (usually in red).
   final String? errorText;
+
+  /// An icon/widget shown at the start (left side) of the text field.
   final Widget? leadingIcon;
+
+  /// The icon shown at the end of the text field when the dropdown is closed.
+  /// Defaults to a down arrow.
   final Widget? trailingIcon;
+
+  /// Whether to show the trailing dropdown arrow icon at all.
   final bool showTrailingIcon;
+
+  /// The icon shown at the end when the dropdown is open.
+  /// Defaults to an up arrow.
   final Widget? selectedTrailingIcon;
 
+  /// Whether typing in the field filters the dropdown items.
+  /// When true, only items matching the text are shown.
   final bool enableFilter;
+
+  /// Whether typing in the field highlights the best matching item.
+  /// This is separate from filtering — search highlights without hiding
+  /// non-matching items (unless filtering is also on).
   final bool enableSearch;
+
+  /// Custom filter logic. Gets the full item list and the current text,
+  /// returns whichever items should be visible. If null, uses a simple
+  /// case-insensitive "contains" check.
   final MenuFilterCallback<MenuItem>? filterCallback;
+
+  /// Custom search logic. Gets the filtered list and the current text,
+  /// returns the index of the item to highlight. If null, highlights
+  /// the first item that contains the search text.
   final MenuSearchCallback<MenuItem>? searchCallback;
 
+  /// Text alignment inside the text field.
   final TextAlign textAlign;
+
+  /// Style for the text inside the text field.
   final TextStyle? textStyle;
+
+  /// The type of keyboard to show (number pad, email, etc).
   final TextInputType? keyboardType;
+
+  /// What the "done" button on the keyboard does (next field, submit, etc).
   final TextInputAction? textInputAction;
+
+  /// Input formatters that restrict/transform what can be typed.
   final List<TextInputFormatter>? inputFormatters;
+
+  /// Max number of lines for the text field. Usually 1 for a dropdown.
   final int maxLines;
+
+  /// Custom cursor height, if you're picky about that sort of thing.
   final double? cursorHeight;
 
+  /// Controls when the dropdown closes. See [MenuCloseBehavior].
   final MenuCloseBehavior closeBehavior;
+
+  /// Whether tapping the text field focuses it (shows the keyboard).
+  /// On mobile this defaults to false (since the dropdown handles taps),
+  /// on desktop it defaults to true.
   final bool? requestFocusOnTap;
 
+  /// Optional theme for styling the dropdown. Separate from the text field's
+  /// own [inputDecoration].
   final MenuTheme? theme;
+
+  /// Full input decoration for the text field. If null, uses a basic
+  /// OutlineInputBorder with the hint/helper/error texts.
   final InputDecoration? inputDecoration;
 
+  /// Positional offset of the dropdown relative to the text field.
+  /// Defaults to (0, 5) — slightly below.
   final Offset? offset;
 
   @override
   State<MenuTextField<T>> createState() => _MenuTextFieldState<T>();
 }
 
+/// The internal state for [MenuTextField].
+///
+/// Handles the overlay (dropdown panel), text change listeners, keyboard
+/// events, filtering/searching, and scrolling to highlighted items.
 class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
+  /// The text editing controller — either the one the user passed in,
+  /// or one we created ourselves.
   late final TextEditingController _textController;
+
+  /// The focus node — same deal, either external or internally created.
   late final FocusNode _focusNode;
+
+  /// A separate internal focus node used by the overlay.
   final FocusNode _internalFocusNode = FocusNode();
+
+  /// Links the text field to the overlay so the dropdown positions
+  /// itself correctly below.
   final LayerLink _layerLink = LayerLink();
+
+  /// Controls scrolling inside the dropdown list.
   final ScrollController _scrollController = ScrollController();
 
+  /// The overlay entry for the dropdown panel. Null when closed.
   OverlayEntry? _overlayEntry;
+
+  /// The currently visible/filtered list of items in the dropdown.
   List<MenuItem> _filteredEntries = [];
+
+  /// Index of the currently highlighted item (keyboard navigation or search).
+  /// Null means nothing is highlighted.
   int? _currentHighlight;
+
+  /// Index of the currently selected item (the one the user picked).
   int? _selectedEntryIndex;
+
+  /// Whether the dropdown overlay is currently showing.
   bool _isOverlayVisible = false;
+
+  /// Whether filtering is currently active. Gets toggled on/off depending
+  /// on whether the user is typing vs using arrow keys.
   bool _enableFilter = false;
+
+  /// Whether search highlighting is currently active. Same toggling as filter.
   bool _enableSearch = false;
 
   @override
@@ -132,6 +257,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Tears down all the listeners and disposes controllers we own.
+  /// Only disposes the text controller and focus node if we created them
+  /// (not if the user passed them in — that's their job).
   @override
   void dispose() {
     HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
@@ -151,6 +279,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     super.dispose();
   }
 
+  /// Sets up the initial selection — finds the matching item in the list,
+  /// sets the text field value, and marks that item as selected.
   void _initializeSelection() {
     if (widget.initialSelection != null) {
       final index = widget.items.indexWhere(
@@ -163,6 +293,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Updates the text controller's value and moves the cursor to the end.
+  /// Using TextEditingValue directly instead of just setting .text so we
+  /// can control the cursor position.
   void _updateTextController(String text) {
     _textController.value = TextEditingValue(
       text: text,
@@ -170,6 +303,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     );
   }
 
+  /// Called whenever the text in the field changes.
+  /// Only does anything if the dropdown is actually showing — otherwise
+  /// we don't need to filter or search.
   void _onTextChanged() {
     if (_isOverlayVisible) {
       setState(() {
@@ -180,6 +316,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Called when focus changes on the text field.
+  /// If focus is lost and close behavior is "all", we close the dropdown.
   void _onFocusChanged() {
     if (!_focusNode.hasFocus && _isOverlayVisible) {
       if (widget.closeBehavior == MenuCloseBehavior.all) {
@@ -188,6 +326,14 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// The main filtering/searching logic.
+  ///
+  /// First, if filtering is enabled, it narrows down the items list based
+  /// on the current text (using either the custom filterCallback or a
+  /// default case-insensitive contains check).
+  ///
+  /// Then, if search is enabled, it finds the best matching item in the
+  /// (possibly filtered) list and highlights it.
   void _updateFilteredEntries() {
     final text = _textController.text;
 
@@ -220,6 +366,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Global keyboard event handler for arrow keys, enter, and escape.
+  /// Only active when the dropdown is showing. Returns true if the
+  /// event was consumed (so nothing else processes it).
   bool _handleKeyEvent(KeyEvent event) {
     if (!_isOverlayVisible) return false;
     if (event is! KeyDownEvent) return false;
@@ -250,6 +399,10 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     return false;
   }
 
+  /// Moves the highlight down one item, skipping disabled items.
+  /// Also turns off filter/search so the full list stays visible
+  /// while navigating with keys. Updates the text field to show
+  /// the highlighted item's value.
   void _highlightNext() {
     setState(() {
       _enableFilter = false;
@@ -275,6 +428,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     _scrollToHighlight();
   }
 
+  /// Moves the highlight up one item, skipping disabled items.
+  /// Same idea as [_highlightNext] but going backwards.
   void _highlightPrevious() {
     setState(() {
       _enableFilter = false;
@@ -303,6 +458,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     _scrollToHighlight();
   }
 
+  /// Handles the enter key — selects whatever item is currently highlighted.
+  /// Does nothing if nothing is highlighted or the highlighted item is disabled.
   void _handleEnter() {
     if (_currentHighlight != null &&
         _currentHighlight! < _filteredEntries.length) {
@@ -313,6 +470,12 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Scrolls the dropdown list to make sure the highlighted item is visible.
+  ///
+  /// Uses a post-frame callback because we need the layout to be complete
+  /// before we can calculate scroll positions. The null check inside the
+  /// callback is important — by the time it runs, the highlight might
+  /// have been cleared (e.g. if the overlay was closed in the meantime).
   void _scrollToHighlight() {
     if (_currentHighlight == null) return;
 
@@ -337,6 +500,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     });
   }
 
+  /// Toggles the dropdown — opens it if closed, closes it if open.
   void _toggleOverlay() {
     if (_isOverlayVisible) {
       _hideOverlay();
@@ -345,6 +509,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Opens the dropdown overlay.
+  /// Resets the filtered list to all items and clears any previous filtering.
   void _showOverlay() {
     if (_isOverlayVisible || !widget.enabled) return;
 
@@ -359,6 +525,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     _internalFocusNode.requestFocus();
   }
 
+  /// Closes the dropdown overlay and resets the highlight.
   void _hideOverlay() {
     if (!_isOverlayVisible) return;
 
@@ -371,6 +538,10 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     _overlayEntry = null;
   }
 
+  /// Handles when the user selects an item (either by tapping or pressing enter).
+  ///
+  /// Updates the text field, marks the item as selected, fires the callback,
+  /// and closes the dropdown if the close behavior says to.
   void _selectEntry(MenuItem entry, int index) {
     _updateTextController(entry.value);
     _selectedEntryIndex = index;
@@ -383,6 +554,9 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     }
   }
 
+  /// Figures out whether the text field should be focusable on tap.
+  /// On mobile platforms, defaults to false (since the dropdown handles input).
+  /// On desktop, defaults to true (since you'd expect to be able to type).
   bool _canRequestFocus() {
     return widget.requestFocusOnTap ??
         switch (Theme.of(context).platform) {
@@ -449,6 +623,11 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     );
   }
 
+  /// Creates the overlay entry — the floating dropdown panel.
+  ///
+  /// Uses CompositedTransformFollower to anchor itself to the text field,
+  /// wraps everything in a GestureDetector so tapping outside closes it,
+  /// and contains a scrollable list of filtered items.
   OverlayEntry _createOverlayEntry() {
     final renderBox = context.findRenderObject()! as RenderBox;
     final size = renderBox.size;
@@ -500,6 +679,11 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     );
   }
 
+  /// Builds a single item row in the dropdown.
+  ///
+  /// Handles the highlight color (keyboard nav), selected color (currently
+  /// picked item), leading/trailing icons from the item config, and
+  /// greyed-out text for disabled items.
   Widget _buildItem(MenuItem entry, int index) {
     final isHighlighted = index == _currentHighlight;
     final isSelected = index == _selectedEntryIndex;
