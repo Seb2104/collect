@@ -45,8 +45,6 @@ part 'api/presentation/action_icon.dart';
 part 'api/presentation/app_theme.dart';
 part 'api/presentation/box.dart';
 part 'api/presentation/colour_picker.dart';
-part 'api/presentation/hex_editor.dart';
-part 'api/presentation/hex_viewer.dart';
 part 'api/presentation/hover_detector.dart';
 part 'api/presentation/menu.dart';
 part 'api/presentation/rounded_checkmark.dart';

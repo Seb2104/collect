@@ -43,19 +43,12 @@ class Menu<T> extends StatefulWidget {
     this.controller,
     this.focusNode,
   });
-
   final List<MenuItem<T>> items;
-
   final T? value;
-
   final ValueChanged<T?>? onChanged;
-
   final Widget? hint;
-
   final double? width;
-
   final double? height;
-
   final MenuTheme? theme;
   final Color? backgroundColor;
   final Color? borderColor;
