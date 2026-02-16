@@ -29,7 +29,6 @@ class _MenuDemoState extends State<MenuDemo> {
   @override
   void initState() {
     super.initState();
-    controller.text = menuItems.first.value;
     controller.addListener(() {
       print(controller.text);
       setState(() {});
@@ -54,16 +53,15 @@ class _MenuDemoState extends State<MenuDemo> {
             child: MenuTextField(
               items: menuItems,
               controller: controller,
-              initialSelection: MenuItem(value: selected),
               enableSearch: true,
               enableFilter: true,
               selected: selected,
+              width: 500,
               onSelected: (newValue) {
                 controller.text = newValue;
                 selected = newValue;
                 setState(() {});
               },
-              width: 500,
             ),
           ),
         ),
