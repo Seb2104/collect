@@ -1,10 +1,10 @@
 part of 'menu.dart';
 
-
 class MenuTextField<T> extends StatefulWidget {
   const MenuTextField({
     super.key,
     required this.entries,
+    required this.selected,
     this.initialSelection,
     this.onSelected,
     this.controller,
@@ -12,7 +12,6 @@ class MenuTextField<T> extends StatefulWidget {
     this.enabled = true,
     this.width,
     this.menuHeight,
-    this.label,
     this.hintText,
     this.helperText,
     this.errorText,
@@ -36,13 +35,16 @@ class MenuTextField<T> extends StatefulWidget {
     this.theme,
     this.inputDecoration,
     this.offset,
+    this.label,
   });
 
-  final List<MenuEntry<T>> entries;
+  final List<MenuItem> entries;
 
   final T? initialSelection;
 
-  final ValueChanged<T?>? onSelected;
+  final String selected;
+
+  final ValueChanged<String>? onSelected;
 
   final TextEditingController? controller;
 
@@ -62,8 +64,8 @@ class MenuTextField<T> extends StatefulWidget {
 
   final bool enableFilter;
   final bool enableSearch;
-  final MenuFilterCallback<MenuEntry<T>>? filterCallback;
-  final MenuSearchCallback<MenuEntry<T>>? searchCallback;
+  final MenuFilterCallback<MenuItem>? filterCallback;
+  final MenuSearchCallback<MenuItem>? searchCallback;
 
   final TextAlign textAlign;
   final TextStyle? textStyle;
@@ -93,7 +95,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   final ScrollController _scrollController = ScrollController();
 
   OverlayEntry? _overlayEntry;
-  List<MenuEntry<T>> _filteredEntries = [];
+  List<MenuItem> _filteredEntries = [];
   int? _currentHighlight;
   int? _selectedEntryIndex;
   bool _isOverlayVisible = false;
@@ -155,7 +157,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
         (e) => e.value == widget.initialSelection,
       );
       if (index != -1) {
-        _updateTextController(widget.entries[index].label);
+        _updateTextController(widget.entries[index].value);
         _selectedEntryIndex = index;
       }
     }
@@ -194,7 +196,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
         _filteredEntries = widget.filterCallback!(widget.entries, text);
       } else {
         _filteredEntries = widget.entries
-            .where((e) => e.label.toLowerCase().contains(text.toLowerCase()))
+            .where((e) => e.value.toLowerCase().contains(text.toLowerCase()))
             .toList();
       }
     } else {
@@ -207,7 +209,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       } else {
         final searchText = text.toLowerCase();
         final index = _filteredEntries.indexWhere(
-          (e) => e.label.toLowerCase().contains(searchText),
+          (e) => e.value.toLowerCase().contains(searchText),
         );
         _currentHighlight = index != -1 ? index : null;
       }
@@ -219,7 +221,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
   }
 
   bool _handleKeyEvent(KeyEvent event) {
-    if (!_isOverlayVisible || !widget.enabled) return false;
+    if (!_isOverlayVisible) return false;
     if (event is! KeyDownEvent) return false;
 
     final key = event.logicalKey;
@@ -260,14 +262,14 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
 
       int next = ((_currentHighlight ?? -1) + 1) % _filteredEntries.length;
 
-      while (!_filteredEntries[next].enabled) {
+      while (!_filteredEntries[next].config.enabled) {
         next = (next + 1) % _filteredEntries.length;
         if (next == _currentHighlight) break;
       }
 
       _currentHighlight = next;
-      if (_filteredEntries[next].enabled) {
-        _updateTextController(_filteredEntries[next].label);
+      if (_filteredEntries[next].config.enabled) {
+        _updateTextController(_filteredEntries[next].value);
       }
     });
     _scrollToHighlight();
@@ -287,15 +289,15 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
       prev = (prev - 1) % _filteredEntries.length;
       if (prev < 0) prev = _filteredEntries.length - 1;
 
-      while (!_filteredEntries[prev].enabled) {
+      while (!_filteredEntries[prev].config.enabled) {
         prev = prev - 1;
         if (prev < 0) prev = _filteredEntries.length - 1;
         if (prev == _currentHighlight) break;
       }
 
       _currentHighlight = prev;
-      if (_filteredEntries[prev].enabled) {
-        _updateTextController(_filteredEntries[prev].label);
+      if (_filteredEntries[prev].config.enabled) {
+        _updateTextController(_filteredEntries[prev].value);
       }
     });
     _scrollToHighlight();
@@ -305,7 +307,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     if (_currentHighlight != null &&
         _currentHighlight! < _filteredEntries.length) {
       final entry = _filteredEntries[_currentHighlight!];
-      if (entry.enabled) {
+      if (entry.config.enabled) {
         _selectEntry(entry, _currentHighlight!);
       }
     }
@@ -368,8 +370,8 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     _overlayEntry = null;
   }
 
-  void _selectEntry(MenuEntry<T> entry, int index) {
-    _updateTextController(entry.label);
+  void _selectEntry(MenuItem entry, int index) {
+    _updateTextController(entry.value);
     _selectedEntryIndex = index;
     _currentHighlight = widget.enableSearch ? index : null;
     widget.onSelected?.call(entry.value);
@@ -497,7 +499,7 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     );
   }
 
-  Widget _buildItem(MenuEntry<T> entry, int index) {
+  Widget _buildItem(MenuItem entry, int index) {
     final isHighlighted = index == _currentHighlight;
     final isSelected = index == _selectedEntryIndex;
 
@@ -511,31 +513,29 @@ class _MenuTextFieldState<T> extends State<MenuTextField<T>> {
     return Material(
       color: backgroundColor,
       child: InkWell(
-        onTap: entry.enabled ? () => _selectEntry(entry, index) : null,
+        onTap: entry.config.enabled ? () => _selectEntry(entry, index) : null,
         child: Container(
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              if (entry.leadingIcon != null) ...[
-                entry.leadingIcon!,
+              if (entry.config.leadingIcon != null) ...[
+                entry.config.leadingIcon!,
                 const SizedBox(width: 12),
               ],
               Expanded(
-                child:
-                    entry.labelWidget ??
-                    Text(
-                      entry.label,
-                      style: widget.textStyle?.copyWith(
-                        color: entry.enabled
-                            ? null
-                            : Theme.of(context).disabledColor,
-                      ),
-                    ),
+                child: Text(
+                  entry.value,
+                  style: widget.textStyle?.copyWith(
+                    color: entry.config.enabled
+                        ? null
+                        : Theme.of(context).disabledColor,
+                  ),
+                ),
               ),
-              if (entry.trailingIcon != null) ...[
+              if (entry.config.trailingIcon != null) ...[
                 const SizedBox(width: 12),
-                entry.trailingIcon!,
+                entry.config.trailingIcon!,
               ],
             ],
           ),

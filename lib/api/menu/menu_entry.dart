@@ -1,39 +1,38 @@
 part of 'menu.dart';
 
-
-class MenuEntry<T> {
-  const MenuEntry({
-    required this.value,
-    required this.label,
-    this.labelWidget,
-    this.leadingIcon,
-    this.trailingIcon,
-    this.enabled = true,
-    this.style,
-  });
-
-  final T value;
-
-  final String label;
-
-  final Widget? labelWidget;
-
+class MenuItemConfig {
   final Widget? leadingIcon;
 
   final Widget? trailingIcon;
 
   final bool enabled;
 
-  final ButtonStyle? style;
+  final ButtonStyle style;
+
+  const MenuItemConfig({
+    this.leadingIcon,
+    this.trailingIcon,
+    this.enabled = true,
+    this.style = const ButtonStyle(),
+  });
+}
+
+class MenuItem {
+  final String value;
+  final MenuItemConfig config;
+
+  const MenuItem({
+    required this.value,
+    this.config = const MenuItemConfig(),
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MenuEntry<T> &&
-              runtimeType == other.runtimeType &&
-              value == other.value &&
-              label == other.label;
+      other is MenuItem &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
 
   @override
-  int get hashCode => Object.hash(value, label);
+  int get hashCode => Object.hash(value, config);
 }
