@@ -9,6 +9,7 @@ List<MenuItem> menuItems = [
   MenuItem(value: 'fourth'),
   MenuItem(value: 'fifth'),
 ];
+List<String> menuValues = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 void main() {
   runApp(MenuDemo());
