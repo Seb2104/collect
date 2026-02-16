@@ -2,7 +2,13 @@ import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
 Colour colour = Colours.white;
-List<String> menuItems = ['first', 'second', 'third', 'fourth', 'fifth'];
+List<MenuItem> menuItems = [
+  MenuItem(value: 'first'),
+  MenuItem(value: 'second'),
+  MenuItem(value: 'third'),
+  MenuItem(value: 'fourth'),
+  MenuItem(value: 'fifth'),
+];
 
 void main() {
   runApp(MenuDemo());
@@ -16,13 +22,17 @@ class MenuDemo extends StatefulWidget {
 }
 
 class _MenuDemoState extends State<MenuDemo> {
-  String selected = menuItems[0];
   TextEditingController controller = TextEditingController();
+  String selected = menuItems[0].value;
 
   @override
   void initState() {
     super.initState();
-    controller.addListener(() => setState(() {}));
+    controller.text = menuItems.first.value;
+    controller.addListener(() {
+      print(controller.text);
+      setState(() {});
+    });
   }
 
   @override
@@ -41,29 +51,18 @@ class _MenuDemoState extends State<MenuDemo> {
           width: MediaQuery.of(context).size.width * 1,
           child: Center(
             child: MenuTextField(
+              items: menuItems,
               controller: controller,
+              initialSelection: MenuItem(value: selected),
+              enableSearch: true,
               enableFilter: true,
-              items: Menu.stringsToItems(menuItems),
               selected: selected,
-              initialSelection: Menu.stringsToItems(menuItems).first,
-              width: 500,
-              filterCallback: (entries, filter) {
-                List<MenuItem> furtherFiltered = [];
-                for (MenuItem item in entries) {
-                  if (item.value.toLowerCase().contains(filter.toLowerCase())) {
-                    furtherFiltered.add(item);
-                  }
-                }
-                return furtherFiltered;
-              },
               onSelected: (newValue) {
-                setState(() {
-                  selected = newValue;
-                  print('newValue: $newValue');
-                  print('controller: ${controller.text}');
-                  print('selected: $selected');
-                });
+                controller.text = newValue;
+                selected = newValue;
+                setState(() {});
               },
+              width: 500,
             ),
           ),
         ),
