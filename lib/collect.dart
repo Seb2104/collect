@@ -18,6 +18,8 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:unicode/unicode.dart' as unicode;
 
+export 'api/menu/menu.dart';
+
 part 'api/constants/bases.dart';
 part 'api/constants/colour_pickers.dart';
 part 'api/constants/colours.dart';
@@ -46,7 +48,6 @@ part 'api/presentation/app_theme.dart';
 part 'api/presentation/box.dart';
 part 'api/presentation/colour_picker.dart';
 part 'api/presentation/hover_detector.dart';
-part 'api/presentation/menu.dart';
 part 'api/presentation/rounded_checkmark.dart';
 part 'api/presentation/tab_view.dart';
 part 'api/presentation/word.dart';

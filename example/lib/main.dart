@@ -2,9 +2,45 @@ import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
 Colour colour = Colours.white;
+List<String> menuItems = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 void main() {
-  runApp(App());
+  runApp(MenuDemo());
+}
+
+class MenuDemo extends StatefulWidget {
+  const MenuDemo({super.key});
+
+  @override
+  State<MenuDemo> createState() => _MenuDemoState();
+}
+
+class _MenuDemoState extends State<MenuDemo> {
+  String selected = menuItems[0];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: AppTheme.light(),
+      home: Scaffold(
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1,
+          child: Center(
+            child: Menu(
+              items: menuItems,
+              value: selected,
+              width: 500,
+              onChanged: (newValue) {
+                selected = newValue;
+                setState(() {});
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class App extends StatefulWidget {
