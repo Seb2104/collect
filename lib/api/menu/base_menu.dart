@@ -291,7 +291,6 @@ class _MenuDropDownState<T> extends State<MenuDropDown> {
   /// Resolved offset for the dropdown position.
   Offset get _resolvedOffset => widget.config?.offset ?? const Offset(0, 5);
 
-
   /// When the trigger button gains focus, open the dropdown.
   /// When it loses focus, close it.
   void _onFocusChanged() {

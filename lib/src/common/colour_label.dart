@@ -77,7 +77,6 @@ class _ColourLabelState extends State<ColourLabel> {
               print(selectedFormat);
               setState(() {});
             },
-            textStyle: TextStyle(fontSize: 11),
             items: ['b256', 'hex', 'argb', 'hsl', 'hsv'],
           ),
           Spacer(),
