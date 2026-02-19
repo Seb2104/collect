@@ -7,8 +7,8 @@ typedef MenuEntryFilterCallback<T> =
 typedef MenuEntrySearchCallback<T> =
     int? Function(List<T> entries, String query);
 
-class MenuDropDown<T> extends StatefulWidget {
-  const MenuDropDown({
+class FilteredMenu<T> extends StatefulWidget {
+  const FilteredMenu({
     super.key,
     required this.entries,
     this.initialSelection,
@@ -88,10 +88,10 @@ class MenuDropDown<T> extends StatefulWidget {
   final Offset? offset;
 
   @override
-  State<MenuDropDown<T>> createState() => _MenuDropDownState<T>();
+  State<FilteredMenu<T>> createState() => _FilteredMenuState<T>();
 }
 
-class _MenuDropDownState<T> extends State<MenuDropDown<T>> {
+class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   late final TextEditingController _textController;
   late final FocusNode _focusNode;
   final FocusNode _internalFocusNode = FocusNode();
@@ -123,7 +123,7 @@ class _MenuDropDownState<T> extends State<MenuDropDown<T>> {
   }
 
   @override
-  void didUpdateWidget(MenuDropDown<T> oldWidget) {
+  void didUpdateWidget(FilteredMenu<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.entries != widget.entries) {

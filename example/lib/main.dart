@@ -1,18 +1,32 @@
 import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
-List<String> menuValues = ['first', 'second', 'third', 'fourth', 'fifth'];
-Colour colour = Colours.white;
-List<MenuItem> menuItems = [
-  MenuItem(label: 'First', value: '1'),
-  MenuItem(label: 'Second', value: '2'),
-  MenuItem(label: 'Third', value: '3'),
-  MenuItem(label: 'Fourth', value: '4'),
-  MenuItem(label: 'Fifth', value: '5'),
-];
-
 void main() {
-  runApp(MenuDemo());
+  runApp(TextMenuDemo());
+}
+
+class TextMenuDemo extends StatefulWidget {
+  const TextMenuDemo({super.key});
+
+  @override
+  State<TextMenuDemo> createState() => _TextMenuDemoState();
+}
+
+class _TextMenuDemoState extends State<TextMenuDemo> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: AppTheme.light(),
+      home: Scaffold(
+        body: Container(
+          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1,
+          color: AppTheme.background(context),
+          child: Center(child: FilteredMenu(entries: menuEntries)),
+        ),
+      ),
+    );
+  }
 }
 
 class MenuDemo extends StatefulWidget {
@@ -38,9 +52,9 @@ class _MenuDemoState extends State<MenuDemo> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MenuDropDown(entries: [
-                  MenuEntry(value: 'value', label: 'label')
-                ]),
+                FilteredMenu(
+                  entries: [MenuEntry(value: 'value', label: 'label')],
+                ),
                 SizedBox(height: 20),
                 Word('Selected value: $selected'),
               ],
@@ -163,3 +177,20 @@ class _MainState extends State<Main> {
     );
   }
 }
+
+List<String> menuValues = ['first', 'second', 'third', 'fourth', 'fifth'];
+Colour colour = Colours.white;
+List<MenuItem> menuItems = [
+  MenuItem(label: 'First', value: '1'),
+  MenuItem(label: 'Second', value: '2'),
+  MenuItem(label: 'Third', value: '3'),
+  MenuItem(label: 'Fourth', value: '4'),
+  MenuItem(label: 'Fifth', value: '5'),
+];
+List<MenuEntry> menuEntries = [
+  MenuEntry(label: 'First', value: '1'),
+  MenuEntry(label: 'Second', value: '2'),
+  MenuEntry(label: 'Third', value: '3'),
+  MenuEntry(label: 'Fourth', value: '4'),
+  MenuEntry(label: 'Fifth', value: '5'),
+];
