@@ -38,18 +38,9 @@ class _MenuDemoState extends State<MenuDemo> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Menu(
-                  items: menuItems,
-                  width: 500,
-                  height: 40,
-                  menuConfig: MenuConfig(searchable: true),
-                  onSelected: (item) {
-                    setState(() {
-                      selected = item.value;
-                    });
-                    print('Selected: ${item.label} (${item.value})');
-                  },
-                ),
+                MenuDropDown(entries: [
+                  MenuEntry(value: 'value', label: 'label')
+                ]),
                 SizedBox(height: 20),
                 Word('Selected value: $selected'),
               ],

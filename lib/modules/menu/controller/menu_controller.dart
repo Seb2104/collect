@@ -65,9 +65,9 @@ class MenuController extends ValueNotifier<MenuState> {
     required MenuState initialState,
     FocusNode? focusNode,
     OnMenuItemSelected? onSelected,
-  })  : _focusNode = focusNode,
-        _onSelected = onSelected,
-        super(initialState);
+  }) : _focusNode = focusNode,
+       _onSelected = onSelected,
+       super(initialState);
 
   void attachFocusNode(FocusNode node) {
     _focusNode = node;

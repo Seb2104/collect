@@ -41,6 +41,7 @@ part 'presentation/menu_item.dart';
 part 'presentation/menu_scope.dart';
 part 'structs/item_config.dart';
 part 'structs/menu_config.dart';
+part 'types/menu_text_field.dart';
 
 /// Callback for custom item filtering logic.
 ///
@@ -104,6 +105,8 @@ class _MenuState extends State<Menu> {
   bool _controllerCreatedInternally = false;
   bool _isClosing = false;
   bool _wasOverlayVisible = false;
+  bool _enableFilter = false;
+  bool _enableSearch = false;
 
   bool get _searchable => widget.menuConfig.searchable;
 
@@ -164,25 +167,63 @@ class _MenuState extends State<Menu> {
 
   void _onSearchChanged() {
     if (!mounted || _isClosing) return;
-    final config = widget.menuConfig;
-    final query = _searchController.text;
+    if (!_menuController.isOverlayVisible) return;
 
-    if (config.enableFilter) {
-      _menuController.filterItems(
-        widget.items,
-        query,
-        filterCallback: config.filterCallback,
-      );
+    setState(() {
+      _enableFilter = widget.menuConfig.enableFilter;
+      _enableSearch = widget.menuConfig.enableSearch;
+      _updateFilteredEntries();
+    });
+  }
+
+  void _updateFilteredEntries() {
+    final text = _searchController.text;
+    final config = widget.menuConfig;
+
+    // Filter items based on _enableFilter flag
+    List<MenuItem> filtered;
+    if (_enableFilter && text.isNotEmpty) {
+      if (config.filterCallback != null) {
+        filtered = config.filterCallback!(widget.items, text);
+      } else {
+        final query = text.toLowerCase();
+        filtered = widget.items
+            .where((item) => item.label.toLowerCase().contains(query))
+            .toList();
+      }
     } else {
-      _menuController.updateFilteredItems(widget.items);
+      filtered = widget.items;
     }
 
-    if (config.enableSearch) {
-      _menuController.searchHighlight(
-        query,
-        searchCallback: config.searchCallback,
+    _menuController.updateFilteredItems(filtered);
+
+    // Search and highlight based on _enableSearch flag
+    if (_enableSearch && text.isNotEmpty) {
+      int? highlightIndex;
+      if (config.searchCallback != null) {
+        highlightIndex = config.searchCallback!(filtered, text);
+      } else {
+        final searchText = text.toLowerCase();
+        final index = filtered.indexWhere(
+          (item) => item.label.toLowerCase().contains(searchText),
+        );
+        highlightIndex = index != -1 ? index : null;
+      }
+
+      if (highlightIndex != null) {
+        _menuController.value = _menuController.value.copyWith(
+          highlightedIndex: highlightIndex,
+        );
+        _scrollToHighlight();
+      } else {
+        _menuController.value = _menuController.value.copyWith(
+          clearHighlight: true,
+        );
+      }
+    } else {
+      _menuController.value = _menuController.value.copyWith(
+        clearHighlight: true,
       );
-      _scrollToHighlight();
     }
   }
 
@@ -208,14 +249,10 @@ class _MenuState extends State<Menu> {
     if (event is! KeyDownEvent && event is! KeyRepeatEvent) return false;
 
     if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      _menuController.highlightNext();
-      _updateTextFieldFromHighlight();
-      _scrollToHighlight();
+      _highlightNext();
       return true;
     } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-      _menuController.highlightPrevious();
-      _updateTextFieldFromHighlight();
-      _scrollToHighlight();
+      _highlightPrevious();
       return true;
     } else if (event.logicalKey == LogicalKeyboardKey.enter) {
       _menuController.selectHighlighted();
@@ -230,18 +267,69 @@ class _MenuState extends State<Menu> {
     return false;
   }
 
-  void _updateTextFieldFromHighlight() {
-    final idx = _menuController.value.highlightedIndex;
-    if (idx == null || idx >= _menuController.value.filteredItems.length) {
-      return;
-    }
+  void _updateTextController(String text) {
+    _searchController.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
 
-    final highlightedItem = _menuController.value.filteredItems[idx];
+  void _highlightNext() {
+    setState(() {
+      _enableFilter = false;
+      _enableSearch = false;
 
-    // Temporarily disable the search listener to avoid triggering filtering
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.text = highlightedItem.label;
-    _searchController.addListener(_onSearchChanged);
+      final filteredItems = _menuController.value.filteredItems;
+      if (filteredItems.isEmpty) {
+        _menuController.value = _menuController.value.copyWith(
+          clearHighlight: true,
+        );
+        return;
+      }
+
+      final current = _menuController.value.highlightedIndex;
+      final next = (current == null) ? 0 : (current + 1) % filteredItems.length;
+
+      _menuController.value = _menuController.value.copyWith(
+        highlightedIndex: next,
+      );
+
+      // Update text field with highlighted item's label
+      _searchController.removeListener(_onSearchChanged);
+      _updateTextController(filteredItems[next].label);
+      _searchController.addListener(_onSearchChanged);
+    });
+    _scrollToHighlight();
+  }
+
+  void _highlightPrevious() {
+    setState(() {
+      _enableFilter = false;
+      _enableSearch = false;
+
+      final filteredItems = _menuController.value.filteredItems;
+      if (filteredItems.isEmpty) {
+        _menuController.value = _menuController.value.copyWith(
+          clearHighlight: true,
+        );
+        return;
+      }
+
+      final current = _menuController.value.highlightedIndex;
+      final prev = (current == null || current == 0)
+          ? filteredItems.length - 1
+          : current - 1;
+
+      _menuController.value = _menuController.value.copyWith(
+        highlightedIndex: prev,
+      );
+
+      // Update text field with highlighted item's label
+      _searchController.removeListener(_onSearchChanged);
+      _updateTextController(filteredItems[prev].label);
+      _searchController.addListener(_onSearchChanged);
+    });
+    _scrollToHighlight();
   }
 
   void _scrollToHighlight() {
