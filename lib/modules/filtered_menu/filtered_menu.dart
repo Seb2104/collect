@@ -14,24 +14,14 @@ class FilteredMenu<T> extends StatefulWidget {
     this.onSelected,
     this.focusNode,
     this.width,
-    this.label,
-    this.hintText,
-    this.helperText,
-    this.errorText,
     this.leadingIcon,
     this.trailingIcon,
     this.showTrailingIcon = true,
     this.selectedTrailingIcon,
     this.searchCallback,
-    this.textAlign = TextAlign.start,
-    this.textStyle,
-    this.keyboardType,
     this.textInputAction,
     this.inputFormatters,
-    this.maxLines = 1,
-    this.cursorHeight,
     this.closeBehavior = MenuCloseBehavior.all,
-    this.requestFocusOnTap,
     this.theme,
     this.inputDecoration,
     this.offset,
@@ -42,24 +32,14 @@ class FilteredMenu<T> extends StatefulWidget {
   final ValueChanged<T?>? onSelected;
   final FocusNode? focusNode;
   final double? width;
-  final Widget? label;
-  final String? hintText;
-  final String? helperText;
-  final String? errorText;
   final Widget? leadingIcon;
   final Widget? trailingIcon;
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
   final MenuEntrySearchCallback<MenuEntry<T>>? searchCallback;
-  final TextAlign textAlign;
-  final TextStyle? textStyle;
-  final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
-  final int maxLines;
-  final double? cursorHeight;
   final MenuCloseBehavior closeBehavior;
-  final bool? requestFocusOnTap;
   final MenuTheme? theme;
   final InputDecoration? inputDecoration;
   final Offset? offset;
@@ -71,7 +51,6 @@ class FilteredMenu<T> extends StatefulWidget {
 class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   late final TextEditingController _textController;
   late final FocusNode _focusNode;
-  final FocusNode _internalFocusNode = FocusNode();
   final LayerLink _layerLink = LayerLink();
   final ScrollController _scrollController = ScrollController();
 
@@ -80,6 +59,45 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   int? _currentHighlight;
   int? _selectedEntryIndex;
   bool _isOverlayVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: SizedBox(
+        width: widget.width,
+        child: TextField(
+          controller: _textController,
+          focusNode: _focusNode,
+          textAlignVertical: TextAlignVertical.center,
+          textInputAction: widget.textInputAction,
+          inputFormatters: widget.inputFormatters,
+          onTap: _toggleOverlay,
+          onChanged: (text) {
+            if (!_isOverlayVisible) {
+              _showOverlay();
+            }
+          },
+          decoration:
+              (widget.inputDecoration ??
+                      InputDecoration(border: const OutlineInputBorder()))
+                  .copyWith(
+                    prefixIcon: widget.leadingIcon,
+                    suffixIcon: widget.showTrailingIcon
+                        ? IconButton(
+                            icon: _isOverlayVisible
+                                ? (widget.selectedTrailingIcon ??
+                                      const Icon(Icons.arrow_drop_up))
+                                : (widget.trailingIcon ??
+                                      const Icon(Icons.arrow_drop_down)),
+                            onPressed: _toggleOverlay,
+                          )
+                        : null,
+                  ),
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -117,7 +135,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     _focusNode.removeListener(_onFocusChanged);
     _overlayEntry?.remove();
     _scrollController.dispose();
-    _internalFocusNode.dispose();
 
     if (widget.focusNode == null) {
       _focusNode.dispose();
@@ -309,7 +326,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
     _overlayEntry = _createOverlayEntry();
     Overlay.of(context).insert(_overlayEntry!);
-    _internalFocusNode.requestFocus();
+    _focusNode.requestFocus();
   }
 
   void _hideOverlay() {
@@ -334,71 +351,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
         widget.closeBehavior == MenuCloseBehavior.all) {
       _hideOverlay();
     }
-  }
-
-  bool _canRequestFocus() {
-    return widget.requestFocusOnTap ??
-        switch (Theme.of(context).platform) {
-          TargetPlatform.iOS ||
-          TargetPlatform.android ||
-          TargetPlatform.fuchsia => false,
-          TargetPlatform.macOS ||
-          TargetPlatform.linux ||
-          TargetPlatform.windows => true,
-        };
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: SizedBox(
-        width: widget.width,
-        child: TextField(
-          controller: _textController,
-          focusNode: _focusNode,
-          canRequestFocus: _canRequestFocus(),
-          enableInteractiveSelection: _canRequestFocus(),
-          readOnly: !_canRequestFocus(),
-          keyboardType: widget.keyboardType,
-          textAlign: widget.textAlign,
-          textAlignVertical: TextAlignVertical.center,
-          maxLines: widget.maxLines,
-          textInputAction: widget.textInputAction,
-          cursorHeight: widget.cursorHeight,
-          style: widget.textStyle,
-          inputFormatters: widget.inputFormatters,
-          onTap: _toggleOverlay,
-          onChanged: (text) {
-            if (!_isOverlayVisible) {
-              _showOverlay();
-            }
-          },
-          decoration:
-              (widget.inputDecoration ??
-                      InputDecoration(
-                        border: const OutlineInputBorder(),
-                        label: widget.label,
-                        hintText: widget.hintText,
-                        helperText: widget.helperText,
-                        errorText: widget.errorText,
-                      ))
-                  .copyWith(
-                    prefixIcon: widget.leadingIcon,
-                    suffixIcon: widget.showTrailingIcon
-                        ? IconButton(
-                            icon: _isOverlayVisible
-                                ? (widget.selectedTrailingIcon ??
-                                      const Icon(Icons.arrow_drop_up))
-                                : (widget.trailingIcon ??
-                                      const Icon(Icons.arrow_drop_down)),
-                            onPressed: _toggleOverlay,
-                          )
-                        : null,
-                  ),
-        ),
-      ),
-    );
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -474,18 +426,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
                 entry.leadingIcon!,
                 const SizedBox(width: 12),
               ],
-              Expanded(
-                child:
-                    entry.labelWidget ??
-                    Text(
-                      entry.label,
-                      style: widget.textStyle?.copyWith(
-                        color: entry.enabled
-                            ? null
-                            : Theme.of(context).disabledColor,
-                      ),
-                    ),
-              ),
+              Expanded(child: entry.labelWidget ?? Text(entry.label)),
               if (entry.trailingIcon != null) ...[
                 const SizedBox(width: 12),
                 entry.trailingIcon!,
