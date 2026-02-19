@@ -222,14 +222,10 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     final text = _textController.text;
 
     if (text.isNotEmpty) {
-      if (widget.filterCallback != null) {
-        _filteredEntries = widget.filterCallback!(widget.entries, text);
-        setState(() {});
-      } else {
-        _filteredEntries = widget.entries
-            .where((e) => e.label.toLowerCase().contains(text.toLowerCase()))
-            .toList();
-      }
+      _filteredEntries = widget.entries.where((entry) {
+        return entry.label.toLowerCase().contains(text.toLowerCase());
+      }).toList();
+      setState(() {});
     } else {
       _filteredEntries = widget.entries;
     }
