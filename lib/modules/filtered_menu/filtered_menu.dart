@@ -94,9 +94,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
         child: TextField(
           controller: _textController,
           focusNode: _focusNode,
-          canRequestFocus: _canRequestFocus(),
-          enableInteractiveSelection: _canRequestFocus(),
-          readOnly: !_canRequestFocus(),
           keyboardType: widget.keyboardType,
           textAlign: widget.textAlign,
           textAlignVertical: TextAlignVertical.center,
@@ -414,18 +411,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
         widget.closeBehavior == MenuCloseBehavior.all) {
       _hideOverlay();
     }
-  }
-
-  bool _canRequestFocus() {
-    return widget.requestFocusOnTap ??
-        switch (Theme.of(context).platform) {
-          TargetPlatform.iOS ||
-          TargetPlatform.android ||
-          TargetPlatform.fuchsia => false,
-          TargetPlatform.macOS ||
-          TargetPlatform.linux ||
-          TargetPlatform.windows => true,
-        };
   }
 
   OverlayEntry _createOverlayEntry() {
