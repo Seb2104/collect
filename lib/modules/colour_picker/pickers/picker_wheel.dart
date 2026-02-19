@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../collect.dart';
-import 'base/base_colour_picker.dart';
-import 'common/common.dart';
-import 'common/indicator.dart';
-import 'gestures/colour_picker_gesture_detector.dart';
-import 'painters/wheel_painter.dart';
+part of '../colour_picker.dart';
 
 class WheelPicker extends StatefulWidget {
   const WheelPicker({

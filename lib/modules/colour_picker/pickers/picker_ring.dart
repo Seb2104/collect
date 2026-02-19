@@ -1,11 +1,5 @@
-import 'package:flutter/material.dart';
+part of '../colour_picker.dart';
 
-import '../collect.dart';
-import 'base/base_colour_picker.dart';
-import 'common/common.dart';
-import 'gestures/colour_picker_gesture_detector.dart';
-import 'painters/palette_painters.dart';
-import 'painters/ring_painter.dart';
 
 class HueRingPicker extends StatefulWidget {
   const HueRingPicker({

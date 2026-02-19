@@ -1,8 +1,5 @@
-import 'dart:math';
+part of '../../colour_picker.dart';
 
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
 
 /// Shared gesture handling utilities for colour pickers
 class ColourPickerGestureUtils {

@@ -1,8 +1,4 @@
-import 'package:collect/src/common/painters.dart';
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
-import 'constant.dart';
+part of '../../colour_picker.dart';
 
 class ColourPickerSlider extends StatelessWidget {
   const ColourPickerSlider(

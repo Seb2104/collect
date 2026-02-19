@@ -1,5 +1,4 @@
-import 'package:collect/collect.dart';
-import 'package:flutter/material.dart' hide MenuController;
+part of '../../colour_picker.dart';
 
 // colorLabelTypes: [
 // ColorLabelType.hex,

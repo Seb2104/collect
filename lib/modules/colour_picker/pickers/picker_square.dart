@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../collect.dart';
-import 'base/base_colour_picker.dart';
-import 'common/common.dart';
-import 'gestures/colour_picker_gesture_detector.dart';
-import 'painters/palette_painters.dart';
+part of '../colour_picker.dart';
 
 class SquarePicker extends StatefulWidget {
   const SquarePicker({

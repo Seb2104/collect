@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
+part of '../../colour_picker.dart';
 
-import '../../collect.dart';
-import 'common.dart';
 
 class Indicator extends StatefulWidget {
   final double size;

@@ -4,10 +4,6 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:collect/modules/colour/colour.dart';
-import 'package:collect/src/picker_ring.dart';
-import 'package:collect/src/picker_slides.dart';
-import 'package:collect/src/picker_square.dart';
-import 'package:collect/src/picker_wheel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide FilterCallback, SearchCallback;
@@ -19,6 +15,8 @@ import 'package:unicode/unicode.dart' as unicode;
 
 export 'modules/colour/colour.dart';
 export 'modules/menu/menu.dart';
+export 'modules/colour_picker/colour_picker.dart';
+
 
 part 'core/constants/bases.dart';
 part 'core/constants/colour_pickers.dart';
@@ -42,7 +40,6 @@ part 'core/helpers/fonts.dart';
 part 'core/presentation/action_icon.dart';
 part 'core/presentation/app_theme.dart';
 part 'core/presentation/box.dart';
-part 'core/presentation/colour_picker.dart';
 part 'core/presentation/hover_detector.dart';
 part 'core/presentation/rounded_checkmark.dart';
 part 'core/presentation/tab_view.dart';

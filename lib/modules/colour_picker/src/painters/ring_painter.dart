@@ -1,8 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
+part of '../../colour_picker.dart';
 
 /// Painter for the hue ring
 /// Displays a ring showing the full hue spectrum with a pointer at the current hue

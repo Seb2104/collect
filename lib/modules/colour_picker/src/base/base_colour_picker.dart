@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
-import '../common/common.dart';
+part of '../../colour_picker.dart';
 
 /// Base class for all colour picker implementations.
 ///

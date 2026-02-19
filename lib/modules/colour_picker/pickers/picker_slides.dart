@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
+part of '../colour_picker.dart';
 
-import '../collect.dart';
-import 'base/base_colour_picker.dart';
-import 'common/common.dart';
 
 class SlidePicker extends StatefulWidget {
   const SlidePicker({

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+part of '../../colour_picker.dart';
 
-import '../../collect.dart';
 
 /// Painter for HSV palette with variable hue
 /// Shows a square with saturation on X-axis and value on Y-axis

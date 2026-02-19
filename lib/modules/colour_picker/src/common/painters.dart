@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+part of '../../colour_picker.dart';
 
-import '../../collect.dart';
 
 class CheckerPainter extends CustomPainter {
   const CheckerPainter();

@@ -1,8 +1,5 @@
-import 'dart:math';
+part of '../../colour_picker.dart';
 
-import 'package:flutter/material.dart';
-
-import '../../collect.dart';
 
 /// Painter for the color wheel picker
 /// Displays a circular hue gradient with radial saturation and value overlay
