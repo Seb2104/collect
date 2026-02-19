@@ -18,7 +18,6 @@ class FilteredMenu<T> extends StatefulWidget {
     this.trailingIcon,
     this.showTrailingIcon = true,
     this.selectedTrailingIcon,
-    this.searchCallback,
     this.textInputAction,
     this.inputFormatters,
     this.closeBehavior = MenuCloseBehavior.all,
@@ -36,7 +35,6 @@ class FilteredMenu<T> extends StatefulWidget {
   final Widget? trailingIcon;
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
-  final MenuEntrySearchCallback<MenuEntry<T>>? searchCallback;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
   final MenuCloseBehavior closeBehavior;
@@ -182,16 +180,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     final text = _textController.text;
 
     if (text.isNotEmpty) {
-      if (widget.searchCallback != null) {
-        _currentHighlight = widget.searchCallback!(_filteredEntries, text);
-      } else {
-        final searchText = text.toLowerCase();
-        final index = _filteredEntries.indexWhere(
-          (e) => e.label.toLowerCase().contains(searchText),
-        );
-        _currentHighlight = index != -1 ? index : null;
-      }
-
+      // FILTER HERE
       if (_currentHighlight != null) {
         _scrollToHighlight();
       }
