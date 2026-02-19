@@ -1,3 +1,7 @@
+## 2.0.0
+Added documentaion, new modules, new classes. 
+Shrunk size
+
 ## 0.0.1
 
 * Initial release with core utility libraries
