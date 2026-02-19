@@ -22,7 +22,6 @@ class FilteredMenu<T> extends StatefulWidget {
     this.trailingIcon,
     this.showTrailingIcon = true,
     this.selectedTrailingIcon,
-    this.filterCallback,
     this.searchCallback,
     this.textAlign = TextAlign.start,
     this.textStyle,
@@ -51,7 +50,6 @@ class FilteredMenu<T> extends StatefulWidget {
   final Widget? trailingIcon;
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
-  final MenuEntryFilterCallback<MenuEntry<T>>? filterCallback;
   final MenuEntrySearchCallback<MenuEntry<T>>? searchCallback;
   final TextAlign textAlign;
   final TextStyle? textStyle;
@@ -82,8 +80,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   int? _currentHighlight;
   int? _selectedEntryIndex;
   bool _isOverlayVisible = false;
-  bool _enableFilter = false;
-  bool _enableSearch = false;
 
   @override
   void initState() {
@@ -168,19 +164,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   void _updateFilteredEntries() {
     final text = _textController.text;
 
-    if (_enableFilter && text.isNotEmpty) {
-      if (widget.filterCallback != null) {
-        _filteredEntries = widget.filterCallback!(widget.entries, text);
-      } else {
-        _filteredEntries = widget.entries
-            .where((e) => e.label.toLowerCase().contains(text.toLowerCase()))
-            .toList();
-      }
-    } else {
-      _filteredEntries = widget.entries;
-    }
-
-    if (_enableSearch && text.isNotEmpty) {
+    if (text.isNotEmpty) {
       if (widget.searchCallback != null) {
         _currentHighlight = widget.searchCallback!(_filteredEntries, text);
       } else {
@@ -229,9 +213,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
   void _highlightNext() {
     setState(() {
-      _enableFilter = false;
-      _enableSearch = false;
-
       if (_filteredEntries.isEmpty) {
         _currentHighlight = null;
         return;
@@ -254,9 +235,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
   void _highlightPrevious() {
     setState(() {
-      _enableFilter = false;
-      _enableSearch = false;
-
       if (_filteredEntries.isEmpty) {
         _currentHighlight = null;
         return;
@@ -326,7 +304,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
     setState(() {
       _filteredEntries = widget.entries;
-      _enableFilter = false;
       _isOverlayVisible = true;
     });
 
