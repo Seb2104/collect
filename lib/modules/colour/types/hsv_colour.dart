@@ -1,6 +1,6 @@
-part of '../../collect.dart';
+part of '../colour.dart';
 
-class HSVColour extends Col implements HSVColor {
+class HSVColour extends ColourSpace implements HSVColor {
   @override
   final double alpha;
 
@@ -40,7 +40,7 @@ class HSVColour extends Col implements HSVColor {
     final double delta = max - min;
 
     final double alpha = color.alpha / 0xFF;
-    final double hue = Col.getHue(red, green, blue, max, delta);
+    final double hue = ColourSpace.getHue(red, green, blue, max, delta);
     final double saturation = max == 0.0 ? 0.0 : delta / max;
 
     return HSVColour.fromAHSV(alpha, hue, saturation, max);

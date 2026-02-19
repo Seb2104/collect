@@ -2,9 +2,8 @@ library;
 
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:math' show sqrt;
-import 'dart:ui';
 
+import 'package:collect/modules/colour/colour.dart';
 import 'package:collect/src/picker_ring.dart';
 import 'package:collect/src/picker_slides.dart';
 import 'package:collect/src/picker_square.dart';
@@ -18,20 +17,17 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:unicode/unicode.dart' as unicode;
 
+export 'modules/colour/colour.dart';
 export 'modules/menu/menu.dart';
 
 part 'core/constants/bases.dart';
 part 'core/constants/colour_pickers.dart';
-part 'core/constants/colours.dart';
+part 'modules/colour/constants/colours.dart';
 part 'core/constants/moment.dart';
 part 'core/constants/packaged_fonts.dart';
 part 'core/constants/picker_style.dart';
 part 'core/constants/strings.dart';
 part 'core/constants/tab_view.dart';
-part 'core/datatypes/col.dart';
-part 'core/datatypes/colour.dart';
-part 'core/datatypes/hsl_colour.dart';
-part 'core/datatypes/hsv_colour.dart';
 part 'core/datatypes/moment.dart';
 part 'core/datatypes/period.dart';
 part 'core/extensions/build_context.dart';

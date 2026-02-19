@@ -1,6 +1,6 @@
-part of '../../collect.dart';
+part of '../colour.dart';
 
-class HSLColour extends Col implements HSLColor {
+class HSLColour extends ColourSpace implements HSLColor {
   const HSLColour.fromAHSL(
     this.alpha,
     this.hue,
@@ -25,7 +25,7 @@ class HSLColour extends Col implements HSLColor {
     final double delta = max - min;
 
     final double alpha = color.alpha / 0xFF;
-    final double hue = Col.getHue(red, green, blue, max, delta);
+    final double hue = ColourSpace.getHue(red, green, blue, max, delta);
     final double lightness = (max + min) / 2.0;
     final double saturation = min == max
         ? 0.0
@@ -76,7 +76,7 @@ class HSLColour extends Col implements HSLColor {
         chroma * (1.0 - (((hue / 60.0) % 2.0) - 1.0).abs());
     final double match = lightness - chroma / 2.0;
 
-    return Col.colourFromHue(alpha, hue, chroma, secondary, match);
+    return ColourSpace.colourFromHue(alpha, hue, chroma, secondary, match);
   }
 
   @override
@@ -100,7 +100,7 @@ class HSLColour extends Col implements HSLColor {
         chroma * (1.0 - (((hue / 60.0) % 2.0) - 1.0).abs());
     final double match = lightness - chroma / 2.0;
 
-    return Col.colorFromHue(alpha, hue, chroma, secondary, match);
+    return ColourSpace.colorFromHue(alpha, hue, chroma, secondary, match);
   }
 
   HSLColour _scaleAlpha(double factor) {

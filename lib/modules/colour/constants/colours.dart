@@ -1,7 +1,6 @@
-part of '../../collect.dart';
+part of '../../../collect.dart';
 
 mixin class Colours {
-  // Transparent & Achromatic
   static const Colour transparent = Colour(
     alpha: 0x00,
     red: 0x00,
@@ -105,7 +104,6 @@ mixin class Colours {
     blue: 0xFF,
   );
 
-  // Primary Colors
   static const Colour pink = Colour(
     alpha: 0xFF,
     red: 0xE9,
@@ -203,7 +201,6 @@ mixin class Colours {
     blue: 0x8B,
   );
 
-  // Accent Colors
   static const Colour redAccent = Colour(
     alpha: 0xFF,
     red: 0xFF,

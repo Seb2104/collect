@@ -1,6 +1,16 @@
-part of '../../collect.dart';
+library;
 
-class Colour extends Col implements Color {
+import 'dart:math' as math;
+import 'dart:ui';
+
+import 'package:collect/collect.dart';
+import 'package:flutter/material.dart';
+
+part 'types/colour_space.dart';
+part 'types/hsl_colour.dart';
+part 'types/hsv_colour.dart';
+
+class Colour extends ColourSpace implements Color {
   @override
   final int alpha;
   @override
@@ -28,7 +38,7 @@ class Colour extends Col implements Color {
     final double delta = max - min;
 
     final double alpha = color.a / 0xFF;
-    final double hue = Col.getHue(red, green, blue, max, delta);
+    final double hue = ColourSpace.getHue(red, green, blue, max, delta);
     final double saturation = max == 0.0 ? 0.0 : delta / max;
 
     return HSVColour.fromAHSV(alpha, hue, saturation, max);
@@ -45,7 +55,7 @@ class Colour extends Col implements Color {
     final double delta = max - min;
 
     final double alpha = color.a / 0xFF;
-    final double hue = Col.getHue(red, green, blue, max, delta);
+    final double hue = ColourSpace.getHue(red, green, blue, max, delta);
     final double lightness = (max + min) / 2.0;
     final double saturation = min == max
         ? 0.0
