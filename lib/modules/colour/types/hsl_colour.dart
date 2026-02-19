@@ -1,5 +1,32 @@
 part of '../colour.dart';
 
+/// A colour represented in the **HSL** (Hue, Saturation, Lightness) colour
+/// space.
+///
+/// HSL is a cylindrical model where:
+/// - **Hue** (0-360) is the colour angle on the colour wheel.
+/// - **Saturation** (0.0-1.0) is the intensity of the colour.
+/// - **Lightness** (0.0-1.0) ranges from black (0) through the pure colour
+///   (0.5) to white (1.0).
+///
+/// [HSLColour] implements Flutter's [HSLColor] interface, so you can use it
+/// anywhere Flutter expects an [HSLColor].
+///
+/// ## Creating
+///
+/// ```dart
+/// final hsl = HSLColour(hue: 200, saturation: 0.8, lightness: 0.5);
+/// final fromColour = HSLColour.fromColour(someColour);
+/// final fromFlutter = HSLColour.fromColor(Colors.blue);
+/// ```
+///
+/// ## Converting
+///
+/// ```dart
+/// final colour = hsl.toColour();  // → Colour (ARGB)
+/// final hsv = hsl.toHSV();        // → HSVColour
+/// final color = hsl.toColor();     // → Flutter Color
+/// ```
 class HSLColour extends ColourSpace implements HSLColor {
   const HSLColour.fromAHSL(
     this.alpha,
@@ -145,7 +172,9 @@ class HSLColour extends ColourSpace implements HSLColor {
       '${alpha.roundToPrecision(2)},${hue.roundToPrecision(2)},${saturation.roundToPrecision(2)},${lightness.roundToPrecision(2)}';
 }
 
+/// Convenience extension to convert a Flutter [HSLColor] to an [HSLColour].
 extension Hslcolour on HSLColor {
+  /// Returns this [HSLColor] as a Collect [HSLColour].
   HSLColour get toHSLColour {
     return HSLColour(
       alpha: alpha,

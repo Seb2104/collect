@@ -1,6 +1,20 @@
 part of '../colour_picker.dart';
 
-
+/// A slider-based colour picker that breaks colour into individual channels.
+///
+/// Depending on the selected [colorModel], three or four sliders are shown:
+///
+/// | Model | Sliders                    |
+/// |-------|----------------------------|
+/// | RGB   | Red, Green, Blue (+Alpha)  |
+/// | HSV   | Hue, Saturation, Value (+Alpha) |
+/// | HSL   | Hue, Saturation, Lightness (+Alpha) |
+///
+/// An optional comparison indicator shows the original colour beside the
+/// currently selected colour so users can see the difference at a glance.
+///
+/// This widget is not typically created directly — use
+/// [ColourPicker.slides] instead.
 class SlidePicker extends StatefulWidget {
   const SlidePicker({
     super.key,

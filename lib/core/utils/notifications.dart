@@ -1,8 +1,43 @@
 part of '../../collect.dart';
 
+/// A singleton toast-notification system that renders animated overlay
+/// messages in the top-right corner of the screen.
+///
+/// Notifications slide in from the right, stack vertically, and auto-dismiss
+/// after a configurable duration. They're backed by Flutter's [Overlay], so
+/// they float above all other widgets.
+///
+/// ## Quick Usage
+///
+/// The easiest way to show notifications is through the [BuildContext]
+/// extension methods:
+///
+/// ```dart
+/// context.notify('Saved successfully');
+/// context.warn('Disk space is low');
+/// context.fail('Upload failed');
+/// ```
+///
+/// ## Direct API
+///
+/// ```dart
+/// NotificationManager().show(
+///   context: context,
+///   message: 'Custom notification',
+///   type: NotificationType.info,
+///   duration: Duration(seconds: 5),
+/// );
+/// ```
+///
+/// ## Auto-Dismiss
+///
+/// - **Error** notifications stay for 5 seconds by default.
+/// - All other types stay for 3 seconds.
+/// - Pass a custom [Duration] to override.
 class NotificationManager {
   static final NotificationManager _instance = NotificationManager._internal();
 
+  /// Returns the singleton [NotificationManager] instance.
   factory NotificationManager() => _instance;
 
   NotificationManager._internal();
@@ -11,6 +46,12 @@ class NotificationManager {
   final List<NotificationData> _notifications = [];
   final GlobalKey<NotificationOverlayState> _overlayKey = GlobalKey();
 
+  /// Displays a toast notification with the given [message].
+  ///
+  /// The [type] controls the visual style (though the current implementation
+  /// uses a uniform dark style). The notification auto-dismisses after
+  /// [duration], which defaults to 3 seconds for info/warning and 5 seconds
+  /// for errors.
   void show({
     required BuildContext context,
     required String message,
@@ -59,6 +100,7 @@ class NotificationManager {
     }
   }
 
+  /// Immediately removes all active notifications and cleans up the overlay.
   void clear() {
     _notifications.clear();
     _overlayEntry?.remove();
@@ -66,6 +108,10 @@ class NotificationManager {
   }
 }
 
+/// The overlay widget that renders the stacked notification cards.
+///
+/// You shouldn't need to use this directly — [NotificationManager] creates
+/// and manages it for you.
 class NotificationOverlay extends StatefulWidget {
   final List<NotificationData> notifications;
   final Function(String) onDismiss;
@@ -218,14 +264,40 @@ class NotificationOverlayState extends State<NotificationOverlay>
   }
 }
 
-enum NotificationType { success, error, info, warning }
+/// The severity level of a notification, used to control auto-dismiss
+/// duration and (potentially) visual styling.
+enum NotificationType {
+  /// A positive outcome (e.g. "File saved").
+  success,
 
+  /// Something went wrong (e.g. "Upload failed"). Stays visible longer.
+  error,
+
+  /// Neutral information (e.g. "3 items selected").
+  info,
+
+  /// A non-critical heads-up (e.g. "Disk space is low").
+  warning,
+}
+
+/// Internal data model for a single notification.
+///
+/// Each notification gets a unique [id] (based on the current epoch
+/// milliseconds) and a [timestamp] recording when it was created.
 class NotificationData {
+  /// A unique identifier for this notification.
   final String id;
+
+  /// The text content displayed to the user.
   final String message;
+
+  /// The severity type of this notification.
   final NotificationType type;
+
+  /// When this notification was created.
   final Moment timestamp;
 
+  /// Creates a [NotificationData] and records the current time.
   NotificationData({
     required this.id,
     required this.message,

@@ -1,5 +1,17 @@
 part of '../../colour_picker.dart';
 
+/// A single-axis colour slider for one channel of a colour model.
+///
+/// Renders a gradient track appropriate for the given [trackType] (hue,
+/// saturation, value, lightness, red, green, blue, or alpha) and a
+/// draggable thumb that reports colour changes through [onColorChanged].
+///
+/// The track gradient updates to reflect the current [hsvColor], so each
+/// slider always shows the range of values that are available given the
+/// other channels' current settings.
+///
+/// Set [displayThumbColor] to `true` to fill the thumb with the colour it
+/// represents, or leave it `false` for a plain white thumb.
 class ColourPickerSlider extends StatelessWidget {
   const ColourPickerSlider(
     this.trackType,

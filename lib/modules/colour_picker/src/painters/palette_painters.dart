@@ -1,8 +1,13 @@
 part of '../../colour_picker.dart';
 
 
-/// Painter for HSV palette with variable hue
-/// Shows a square with saturation on X-axis and value on Y-axis
+/// Paints an HSV palette where **hue is the free variable** (controlled by
+/// an external slider).
+///
+/// The square gradient maps **saturation** along the X-axis (left = 0,
+/// right = 1) and **value** along the Y-axis (top = 1, bottom = 0). A small
+/// circle pointer marks the current colour position. The pointer colour
+/// adapts between white and black for readability against the background.
 class HSVWithHueColorPainter extends CustomPainter {
   const HSVWithHueColorPainter(this.hsvColor, {this.pointerColor});
 
@@ -53,8 +58,11 @@ class HSVWithHueColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for HSV palette with variable saturation
-/// Shows a square with hue on X-axis and value on Y-axis
+/// Paints an HSV palette where **saturation is the free variable**.
+///
+/// Maps **hue** (0-360) along the X-axis and **value** (0-1) along the
+/// Y-axis. A horizontal rainbow gradient at the current saturation level
+/// is overlaid with a vertical transparent-to-black gradient.
 class HSVWithSaturationColorPainter extends CustomPainter {
   const HSVWithSaturationColorPainter(this.hsvColor, {this.pointerColor});
 
@@ -103,8 +111,11 @@ class HSVWithSaturationColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for HSV palette with variable value
-/// Shows a square with hue on X-axis and saturation on Y-axis
+/// Paints an HSV palette where **value (brightness) is the free variable**.
+///
+/// Maps **hue** (0-360) along the X-axis and **saturation** (0-1) along the
+/// Y-axis. A black overlay with opacity `(1 - value)` dims the palette to
+/// reflect the current brightness level.
 class HSVWithValueColorPainter extends CustomPainter {
   const HSVWithValueColorPainter(this.hsvColor, {this.pointerColor});
 
@@ -157,8 +168,11 @@ class HSVWithValueColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for HSL palette with variable hue
-/// Shows a square with saturation on X-axis and lightness on Y-axis
+/// Paints an HSL palette where **hue is the free variable**.
+///
+/// Maps **saturation** (0-1) along the X-axis and **lightness** (0-1) along
+/// the Y-axis. A four-stop vertical gradient (white → transparent →
+/// transparent → black) creates the characteristic HSL lightness ramp.
 class HSLWithHueColorPainter extends CustomPainter {
   const HSLWithHueColorPainter(this.hslColor, {this.pointerColor});
 
@@ -209,8 +223,11 @@ class HSLWithHueColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for HSL palette with variable saturation
-/// Shows a square with hue on X-axis and lightness on Y-axis
+/// Paints an HSL palette where **saturation is the free variable**.
+///
+/// Maps **hue** (0-360) along the X-axis and **lightness** (0-1) along the
+/// Y-axis. The horizontal rainbow is rendered at the current saturation,
+/// with the same four-stop lightness overlay as [HSLWithHueColorPainter].
 class HSLWithSaturationColorPainter extends CustomPainter {
   const HSLWithSaturationColorPainter(this.hslColor, {this.pointerColor});
 
@@ -265,8 +282,11 @@ class HSLWithSaturationColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for HSL palette with variable lightness
-/// Shows a square with hue on X-axis and saturation on Y-axis
+/// Paints an HSL palette where **lightness is the free variable**.
+///
+/// Maps **hue** (0-360) along the X-axis and **saturation** (0-1) along the
+/// Y-axis. Black and white overlays are applied with opacity derived from
+/// the current lightness to simulate the effect of the lightness channel.
 class HSLWithLightnessColorPainter extends CustomPainter {
   const HSLWithLightnessColorPainter(this.hslColor, {this.pointerColor});
 
@@ -329,8 +349,11 @@ class HSLWithLightnessColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for RGB palette with variable red
-/// Shows a square with blue on X-axis and green on Y-axis
+/// Paints an RGB palette where **red is the free variable**.
+///
+/// Maps **blue** (0-255) along the X-axis and **green** (0-255) along the
+/// Y-axis. Two linear gradients are blended with [BlendMode.multiply] to
+/// produce the correct 2D colour field at the current red level.
 class RGBWithRedColorPainter extends CustomPainter {
   const RGBWithRedColorPainter(this.color, {this.pointerColor});
 
@@ -381,8 +404,10 @@ class RGBWithRedColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for RGB palette with variable green
-/// Shows a square with blue on X-axis and red on Y-axis
+/// Paints an RGB palette where **green is the free variable**.
+///
+/// Maps **blue** (0-255) along the X-axis and **red** (0-255) along the
+/// Y-axis, using multiply-blended gradients at the current green level.
 class RGBWithGreenColorPainter extends CustomPainter {
   const RGBWithGreenColorPainter(this.color, {this.pointerColor});
 
@@ -433,8 +458,10 @@ class RGBWithGreenColorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-/// Painter for RGB palette with variable blue
-/// Shows a square with red on X-axis and green on Y-axis
+/// Paints an RGB palette where **blue is the free variable**.
+///
+/// Maps **red** (0-255) along the X-axis and **green** (0-255) along the
+/// Y-axis, using multiply-blended gradients at the current blue level.
 class RGBWithBlueColorPainter extends CustomPainter {
   const RGBWithBlueColorPainter(this.color, {this.pointerColor});
 

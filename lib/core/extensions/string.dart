@@ -1,7 +1,18 @@
 part of '../../collect.dart';
 
-/// Provides a set of extensions for the core String class.
+/// Extensions on [String] for case conversion, validation, truncation,
+/// and general text manipulation.
 ///
+/// These are thin wrappers around the [Strings] utility class, exposed as
+/// extension methods so you can chain them naturally:
+///
+/// ```dart
+/// 'hello world'.toProperCase()   // 'Hello World'
+/// 'DartVM'.toSnakeCase()         // 'dart_vm'
+/// 'Hello World'.abbreviate(8)    // 'Hello...'
+/// 'abc123'.isNumeric()           // false
+/// 'LOUD'.isUpperCase()           // true
+/// ```
 extension StringEx on String {
   /// Abbreviate a string to [maxWidth] by truncating the
   /// string and adding '...' to then truncated string.

@@ -1,8 +1,18 @@
 part of '../../colour_picker.dart';
 
 
-/// Painter for the color wheel picker
-/// Displays a circular hue gradient with radial saturation and value overlay
+/// Paints the full colour wheel for [WheelPicker].
+///
+/// Three layers are composited to create the wheel:
+///
+/// 1. A [SweepGradient] fills a circle with the full hue spectrum.
+/// 2. A [RadialGradient] from white to transparent reduces saturation
+///    toward the centre.
+/// 3. A black overlay with opacity `(1 - value)` controls brightness.
+///
+/// A small circle pointer is drawn at the position corresponding to the
+/// current hue (angle) and saturation (distance from centre). The pointer
+/// colour automatically switches between white and black for readability.
 class HUEColorWheelPainter extends CustomPainter {
   const HUEColorWheelPainter(this.hsvColour, {this.pointerColor});
 

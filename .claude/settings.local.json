@@ -14,7 +14,8 @@
       "Bash(flutter --version:*)",
       "Bash(dart --version:*)",
       "Bash(flutter doctor:*)",
-      "Bash(where:*)"
+      "Bash(where:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

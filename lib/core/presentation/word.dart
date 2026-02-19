@@ -1,7 +1,42 @@
 part of '../../collect.dart';
 
+/// Internal marker for which theme-aware colour variant a [Word] should use.
 enum _WordTextStyle { normal, primary, secondary, tertiary }
 
+/// An advanced text widget that bundles a [Text] with inline [TextStyle]
+/// parameters and theme-aware colour variants — so you can style text
+/// without manually building a [TextStyle] every time.
+///
+/// ## Why use Word instead of Text?
+///
+/// Flutter's [Text] widget requires you to wrap all styling in a separate
+/// [TextStyle] object. [Word] flattens that: you pass `fontSize`,
+/// `fontWeight`, `color`, etc. directly as constructor parameters.
+///
+/// ## Named Constructors
+///
+/// | Constructor       | Colour                         | Defaults                   |
+/// |-------------------|--------------------------------|----------------------------|
+/// | `Word(...)`       | Inherited / custom             | Normal weight, no overflow |
+/// | `Word.primary`    | [AppTheme.textPrimary]         | Bold, 28px, ellipsis       |
+/// | `Word.secondary`  | [AppTheme.textSecondary]       | Normal weight, ellipsis    |
+/// | `Word.tertiary`   | [AppTheme.textTertiary]        | Normal weight, ellipsis    |
+///
+/// ## Example
+///
+/// ```dart
+/// // Simple usage
+/// Word('Hello, world!')
+///
+/// // Styled
+/// Word('Title', fontSize: 24, fontWeight: FontWeight.bold)
+///
+/// // Theme-aware primary heading
+/// Word.primary('Dashboard')
+///
+/// // Selectable text
+/// Word('Copy me', selectable: true)
+/// ```
 class Word extends StatefulWidget {
   final String data;
   final bool selectable;

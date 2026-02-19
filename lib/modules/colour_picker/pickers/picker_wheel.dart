@@ -1,5 +1,18 @@
 part of '../colour_picker.dart';
 
+/// A circular colour wheel picker with value/alpha sliders.
+///
+/// The wheel maps the full hue spectrum around its circumference and
+/// saturation from the centre outward. A draggable pointer lets the user
+/// pick any hue/saturation combination, while separate sliders control
+/// brightness (value) and opacity (alpha).
+///
+/// Supports both portrait (vertical) and landscape (horizontal) layouts,
+/// controlled by [orientation]. In portrait mode the wheel sits above the
+/// sliders; in landscape mode they sit side by side.
+///
+/// This widget is not typically created directly — use
+/// [ColourPicker.wheel] instead.
 class WheelPicker extends StatefulWidget {
   const WheelPicker({
     super.key,

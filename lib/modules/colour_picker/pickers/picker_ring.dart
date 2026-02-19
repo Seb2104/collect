@@ -1,6 +1,16 @@
 part of '../colour_picker.dart';
 
-
+/// A hue ring colour picker with an inner saturation/value palette.
+///
+/// Displays a circular ring of the full hue spectrum. The user drags around
+/// the ring to select a hue, then drags inside the inner square to adjust
+/// saturation and value. Optionally includes an alpha slider.
+///
+/// Adapts between portrait and landscape layouts — in portrait the palette
+/// and ring are stacked; in landscape they are placed side by side.
+///
+/// This widget is not typically created directly — use
+/// [ColourPicker.ring] instead.
 class HueRingPicker extends StatefulWidget {
   const HueRingPicker({
     super.key,

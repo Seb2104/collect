@@ -1,3 +1,39 @@
+/// The Collect Colour system — a multi-format colour class that goes beyond
+/// Flutter's [Color].
+///
+/// This library provides [Colour], a drop-in replacement for [Color] that
+/// adds support for multiple colour spaces (RGB, HSL, HSV), numerous input
+/// formats (hex, percentage, fraction, base-256), and seamless conversion
+/// between them.
+///
+/// ## Colour Spaces
+///
+/// - [Colour] — The primary ARGB colour class (implements [Color]).
+/// - [HSVColour] — Hue, Saturation, Value representation (implements [HSVColor]).
+/// - [HSLColour] — Hue, Saturation, Lightness representation (implements [HSLColor]).
+/// - [ColourSpace] — The sealed base class that defines the conversion contract.
+///
+/// ## Quick Start
+///
+/// ```dart
+/// // From hex
+/// final red = Colour.fromHex(hexString: '#FF0000');
+///
+/// // From RGB components
+/// final blue = Colour.fromRGB(red: 0, green: 0, blue: 255);
+///
+/// // From HSV values
+/// final green = Colour.fromHSV(h: 120, s: 1.0, v: 1.0);
+///
+/// // Convert between spaces
+/// final hsv = red.toHSV();
+/// final hsl = red.toHSL();
+///
+/// // Output in different formats
+/// print(red.hex);   // 'FFFF0000'
+/// print(red.rgb);   // '255,0,0'
+/// print(red.b256);  // base-256 encoded
+/// ```
 library;
 
 import 'dart:math' as math;
@@ -10,18 +46,57 @@ part 'types/colour_space.dart';
 part 'types/hsl_colour.dart';
 part 'types/hsv_colour.dart';
 
+/// A rich colour class that implements Flutter's [Color] interface while
+/// adding multi-format input/output and colour space conversions.
+///
+/// [Colour] stores colour as ARGB integer components (0-255 each) and
+/// can be created from hex strings, RGB/ARGB values, HSV/HSL values,
+/// percentages, fractions, base-256 strings, or existing [Color] objects.
+///
+/// ## Constructors
+///
+/// | Constructor              | Input Format                             |
+/// |--------------------------|------------------------------------------|
+/// | `Colour()`               | Raw ARGB integers (0-255)                |
+/// | `Colour.fromRGB()`       | RGB integers with full opacity           |
+/// | `Colour.fromARGB()`      | RGB integers with opacity as percentage  |
+/// | `Colour.fromHex()`       | Hex string (`#FF0000`, `#F00`, `FF0000`) |
+/// | `Colour.fromHSV()`       | Hue (0-360), Saturation, Value (0-1)     |
+/// | `Colour.fromHSL()`       | Hue (0-360), Saturation, Lightness (0-1) |
+/// | `Colour.fromPercent()`   | ARGB as percentages (0-100)              |
+/// | `Colour.fromFraction()`  | ARGB as fractions (0.0-1.0)              |
+/// | `Colour.fromB256()`      | 4-character base-256 encoded string      |
+/// | `Colour.fromColor()`     | Existing Flutter [Color]                 |
+///
+/// ## Output Formats
+///
+/// | Getter  | Example Output    |
+/// |---------|-------------------|
+/// | [hex]   | `'FFFF0000'`      |
+/// | [rgb]   | `'255,0,0'`       |
+/// | [argb]  | `'255,255,0,0'`   |
+/// | [b256]  | Base-256 string   |
 class Colour extends ColourSpace implements Color {
+  /// The alpha (opacity) channel, 0-255.
   @override
   final int alpha;
+
+  /// The red channel, 0-255.
   @override
   final int red;
+
+  /// The green channel, 0-255.
   @override
   final int green;
+
+  /// The blue channel, 0-255.
   @override
   final int blue;
 
+  /// This colour converted to the HSV colour space.
   HSVColour get hsv => toHSV();
 
+  /// This colour converted to the HSL colour space.
   HSLColour get hsl => toHSL();
 
   @override
@@ -105,15 +180,20 @@ class Colour extends ColourSpace implements Color {
   @override
   double get b => blue / 255;
 
+  /// Returns this [Colour] as a standard Flutter [Color].
   Color get color => Color.fromARGB(alpha, red, green, blue);
 
+  /// The ARGB value as an 8-character hex string (e.g. `'FFFF0000'`).
   String get hex =>
       Radix.hex(alpha) + Radix.hex(red) + Radix.hex(green) + Radix.hex(blue);
 
+  /// The ARGB value as a 4-character base-256 encoded string.
   String get b256 => alpha.b256 + red.b256 + green.b256 + blue.b256;
 
+  /// Comma-separated ARGB string (e.g. `'255,255,0,0'`).
   String get argb => '$alpha,$red,$green,$blue';
 
+  /// Comma-separated RGB string (e.g. `'255,0,0'`).
   String get rgb => '$red,$green,$blue';
 
   @override
@@ -389,6 +469,13 @@ class Colour extends ColourSpace implements Color {
   }
 }
 
+/// Convenience extension to convert any Flutter [Color] to a [Colour].
+///
+/// ```dart
+/// final colour = Colors.blue.colour;
+/// print(colour.hex); // 'FF2196F3'
+/// ```
 extension c on Color {
+  /// Converts this [Color] to a [Colour] instance.
   Colour get colour => Colour.fromColor(this);
 }

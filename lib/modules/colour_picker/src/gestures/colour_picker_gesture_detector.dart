@@ -1,7 +1,15 @@
 part of '../../colour_picker.dart';
 
 
-/// Shared gesture handling utilities for colour pickers
+/// Shared geometry and coordinate utilities for colour picker gesture handling.
+///
+/// Provides two core transformations used by all picker gesture detectors:
+///
+/// 1. **Global → normalised** — Converts a screen-space tap/drag position
+///    into a (0-1, 0-1) coordinate within the picker widget.
+/// 2. **Normalised → polar** — Converts the normalised position into hue
+///    (degrees) and distance (0-1 from centre), used by wheel and ring
+///    pickers.
 class ColourPickerGestureUtils {
   /// Converts a global position to local normalized coordinates [0-1]
   ///
@@ -53,9 +61,14 @@ class ColourPickerGestureUtils {
   }
 }
 
-/// Gesture detector for rectangular colour palettes
+/// Gesture detector for rectangular (square) colour palettes.
 ///
-/// Handles pan gestures and converts them to normalized coordinates
+/// Translates pan-down and pan-update gestures into normalised (0-1)
+/// horizontal/vertical coordinates, then maps those coordinates to colour
+/// channel changes based on the active [paletteType].
+///
+/// Uses [AlwaysWinPanGestureRecognizer] to ensure the picker always wins the
+/// gesture arena, even when nested inside scrollable containers.
 class RectanglePaletteGestureDetector extends StatelessWidget {
   const RectanglePaletteGestureDetector({
     super.key,
@@ -201,9 +214,12 @@ class RectanglePaletteGestureDetector extends StatelessWidget {
   }
 }
 
-/// Gesture detector for wheel colour pickers
+/// Gesture detector for the circular colour wheel.
 ///
-/// Handles pan gestures and converts them to polar coordinates (hue + saturation)
+/// Converts pan gestures into polar coordinates, mapping the angle to hue
+/// (0-360) and the distance from centre to saturation (0-1). Like
+/// [RectanglePaletteGestureDetector], uses [AlwaysWinPanGestureRecognizer]
+/// to guarantee gesture capture.
 class WheelGestureDetector extends StatelessWidget {
   const WheelGestureDetector({
     super.key,
@@ -277,9 +293,13 @@ class WheelGestureDetector extends StatelessWidget {
   }
 }
 
-/// Gesture detector for hue ring pickers
+/// Gesture detector for the hue ring.
 ///
-/// Only updates hue, distance must be within ring bounds
+/// Only responds to gestures that land within the ring's annular region
+/// (normalised distance between 0.7 and 1.3 from centre). Updates hue only;
+/// saturation and value are left unchanged. Uses a [Listener] instead of a
+/// [GestureDetector] so that the inner palette can receive its own gestures
+/// independently.
 class HueRingGestureDetector extends StatelessWidget {
   const HueRingGestureDetector({
     super.key,
@@ -337,9 +357,12 @@ class HueRingGestureDetector extends StatelessWidget {
   }
 }
 
-/// Gesture detector for simple HSV palettes (saturation/value only)
+/// Gesture detector for the inner HSV palette inside a hue ring.
 ///
-/// Similar to RectanglePaletteGestureDetector but only updates saturation and value
+/// Simpler than [RectanglePaletteGestureDetector] — always maps horizontal
+/// position to saturation and vertical position to value, without needing
+/// a [PaletteType]. Uses a [Listener] with opaque hit testing so it coexists
+/// with the surrounding [HueRingGestureDetector].
 class SimpleHSVGestureDetector extends StatelessWidget {
   const SimpleHSVGestureDetector({
     super.key,

@@ -1,54 +1,132 @@
 part of '../../collect.dart';
 
+/// Quick base-conversion getters on non-nullable [int].
+///
+/// These turn any integer into its string representation in common numeral
+/// bases — perfect for debugging, encoding, or display purposes.
+///
+/// ```dart
+/// 255.hex  // 'FF'
+/// 42.bin   // '101010'
+/// 255.oct  // '377'
+/// 255.b256 // base-256 encoded string
+/// ```
 extension Ba on int {
+  /// Converts this integer to its **octal** (base-8) string representation.
   String get oct {
     return Radix.base(this, Bases.b8);
   }
 
+  /// Converts this integer to its **binary** (base-2) string representation,
+  /// in uppercase.
   String get bin {
     return Radix.base(this, Bases.b2).toUpperCase();
   }
 
+  /// Converts this integer to its **hexadecimal** (base-16) string
+  /// representation, in uppercase.
+  ///
+  /// ```dart
+  /// 255.hex // 'FF'
+  /// ```
   String get hex {
     return Radix.base(this, Bases.b16).toUpperCase();
   }
 
+  /// Converts this integer to its **decimal** (base-10) string representation.
   String get dec {
     return Radix.base(this, Bases.b10);
   }
 
+  /// Converts this integer to its **base-256** encoded string.
+  ///
+  /// Base-256 treats each byte as a single "digit," which is useful for
+  /// compact binary encoding.
   String get b256 {
     return Radix.base(this, Bases.b256);
   }
 }
 
+/// A wide range of extensions on nullable [int] — from null-safe defaults
+/// and layout helpers to duration shortcuts and date utilities.
+///
+/// ## Layout Helpers
+///
+/// ```dart
+/// 16.height // SizedBox(height: 16)
+/// 24.width  // SizedBox(width: 24)
+/// ```
+///
+/// ## Duration Shortcuts
+///
+/// ```dart
+/// 5.seconds      // Duration(seconds: 5)
+/// 300.milliseconds // Duration(milliseconds: 300)
+/// 2.hours        // Duration(hours: 2)
+/// ```
+///
+/// ## Date Utilities
+///
+/// ```dart
+/// 3.toMonthName()            // 'March'
+/// 3.toMonthName(isHalfName: true) // 'Mar'
+/// 1.toWeekDay()              // 'Monday'
+/// 21.toMonthDaySuffix()      // '21 st'
+/// ```
 extension Int on int? {
-  /// Validate given int is not null and returns given value if null.
+  /// Returns this value if non-null, otherwise returns [value] (defaults to `0`).
   int validate({int value = 0}) {
     return this ?? value;
   }
 
-  /// Leaves given height of space
+  /// Creates a [SizedBox] with the given height in logical pixels.
+  ///
+  /// Handy for vertical spacing in column layouts:
+  /// ```dart
+  /// Column(children: [Text('Hello'), 12.height, Text('World')])
+  /// ```
   Widget get height => SizedBox(height: this?.toDouble());
 
+  /// Returns a responsive height value scaled to the current screen size.
+  ///
+  /// Based on a 585px reference layout height. Make sure to call
+  /// `SizeConfig().init(context)` before using this.
   double get dynamicHeight {
     double screenHeight = SizeConfig.screenHeight as double;
     // 812 is the layout height that designer use
     return (this! / 585) * screenHeight;
   }
 
+  /// Returns a responsive width value scaled to the current screen size.
+  ///
+  /// Based on a 270px reference layout width. Make sure to call
+  /// `SizeConfig().init(context)` before using this.
   double get dynamicWidth {
     double screenWidth = SizeConfig.screenWidth as double;
     // 375 is the layout width that designer use
     return (this! / 270) * screenWidth;
   }
 
-  /// Leaves given width of space
+  /// Creates a [SizedBox] with the given width in logical pixels.
+  ///
+  /// Handy for horizontal spacing in row layouts:
+  /// ```dart
+  /// Row(children: [Icon(Icons.star), 8.width, Text('Favourite')])
+  /// ```
   Widget get width => SizedBox(width: this?.toDouble());
 
-  /// HTTP status code
+  /// Returns `true` if this integer is a successful HTTP status code
+  /// (200-206 inclusive).
+  ///
+  /// ```dart
+  /// 200.isSuccessful() // true
+  /// 404.isSuccessful() // false
+  /// ```
   bool isSuccessful() => this! >= 200 && this! <= 206;
 
+  /// Creates a uniform [BorderRadius] with the given corner radius.
+  ///
+  /// Defaults to `10` if no [val] is provided.
   BorderRadius borderRadius([double? val]) =>
       BorderRadius.all(Radius.circular(val ?? 10));
 
@@ -102,7 +180,15 @@ extension Int on int? {
   /// Returns Size
   Size get size => Size(this!.toDouble(), this!.toDouble());
 
-  // return suffix (th,st,nd,rd) of the given month day number
+  /// Returns the day number with its ordinal suffix (`st`, `nd`, `rd`, `th`).
+  ///
+  /// Only valid for day-of-month values (1-31). Throws if out of range.
+  ///
+  /// ```dart
+  /// 1.toMonthDaySuffix()  // '1 st'
+  /// 22.toMonthDaySuffix() // '22 nd'
+  /// 11.toMonthDaySuffix() // '11 th' (special case for teens)
+  /// ```
   String toMonthDaySuffix() {
     if (!(this! >= 1 && this! <= 31)) {
       throw Exception('Invalid day of month');
@@ -124,7 +210,14 @@ extension Int on int? {
     }
   }
 
-  // returns month name from the given int
+  /// Converts a month number (1-12) to its full or abbreviated name.
+  ///
+  /// Set [isHalfName] to `true` for the three-letter abbreviation.
+  ///
+  /// ```dart
+  /// 3.toMonthName()                    // 'March'
+  /// 3.toMonthName(isHalfName: true)    // 'Mar'
+  /// ```
   String toMonthName({bool isHalfName = false}) {
     String status = '';
     if (!(this! >= 1 && this! <= 12)) {
@@ -158,7 +251,14 @@ extension Int on int? {
     return status;
   }
 
-  // returns WeekDay from the given int
+  /// Converts a weekday number (1 = Monday, 7 = Sunday) to its name.
+  ///
+  /// Set [isHalfName] to `true` for three-letter abbreviations.
+  ///
+  /// ```dart
+  /// 1.toWeekDay()                   // 'Monday'
+  /// 1.toWeekDay(isHalfName: true)   // 'Mon'
+  /// ```
   String toWeekDay({bool isHalfName = false}) {
     if (!(this! >= 1 && this! <= 7)) {
       throw Exception('Invalid day of month');
@@ -192,7 +292,20 @@ extension Int on int? {
   }
 }
 
-/// Model class for Size Configurations
+/// Captures the screen's dimensions and orientation from the current
+/// [BuildContext] so that responsive layout helpers (like [Int.dynamicHeight]
+/// and [Int.dynamicWidth]) can work.
+///
+/// Call [init] once near the top of your widget tree (e.g. in your app's
+/// `build` method) to populate the static values:
+///
+/// ```dart
+/// @override
+/// Widget build(BuildContext context) {
+///   SizeConfig().init(context);
+///   return MaterialApp(...);
+/// }
+/// ```
 class SizeConfig {
   static MediaQueryData? _mediaQueryData;
   static double? screenWidth;

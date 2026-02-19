@@ -1,6 +1,12 @@
 part of '../../colour_picker.dart';
 
-
+/// A compound indicator widget used by the wheel picker to display the
+/// selected colour alongside value and alpha sliders.
+///
+/// Shows a [ColorIndicator] swatch next to two [ColourPickerSlider]s — one
+/// for brightness (value) and one for opacity (alpha). Adapts its internal
+/// layout for both portrait and landscape orientations while keeping the
+/// same logical structure.
 class Indicator extends StatefulWidget {
   final double size;
   final HSVColour colour;

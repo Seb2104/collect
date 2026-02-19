@@ -1,5 +1,34 @@
 part of '../colour.dart';
 
+/// A colour represented in the **HSV** (Hue, Saturation, Value) colour space.
+///
+/// HSV is a cylindrical model where:
+/// - **Hue** (0-360) is the colour angle on the colour wheel.
+/// - **Saturation** (0.0-1.0) is the purity/intensity of the colour.
+/// - **Value** (0.0-1.0) is the brightness, from black (0) to full colour (1).
+///
+/// HSV is often preferred for colour pickers because it maps intuitively
+/// to how humans think about colour selection — pick a hue, then adjust
+/// how vivid and how bright it should be.
+///
+/// [HSVColour] implements Flutter's [HSVColor] interface, so it works
+/// anywhere Flutter expects an [HSVColor].
+///
+/// ## Creating
+///
+/// ```dart
+/// final hsv = HSVColour(hue: 120, saturation: 1.0, value: 0.8);
+/// final fromColour = HSVColour.fromColour(someColour);
+/// final fromFlutter = HSVColour.fromColor(Colors.green);
+/// ```
+///
+/// ## Converting
+///
+/// ```dart
+/// final colour = hsv.toColour();  // → Colour (ARGB)
+/// final hsl = hsv.toHSL();        // → HSLColour
+/// final color = hsv.toColor();     // → Flutter Color
+/// ```
 class HSVColour extends ColourSpace implements HSVColor {
   @override
   final double alpha;
@@ -164,7 +193,9 @@ class HSVColour extends ColourSpace implements HSVColor {
       '${alpha.roundToPrecision(2)},${hue.roundToPrecision(2)},${saturation.roundToPrecision(2)},${value.roundToPrecision(2)}';
 }
 
+/// Convenience extension to convert a Flutter [HSVColor] to an [HSVColour].
 extension Hsvcolour on HSVColor {
+  /// Returns this [HSVColor] as a Collect [HSVColour].
   HSVColour get toHSVColour {
     return HSVColour(
       alpha: alpha,

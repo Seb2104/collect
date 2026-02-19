@@ -1,3 +1,35 @@
+/// A searchable dropdown menu widget.
+///
+/// [Menu] renders a compact trigger button that, when tapped, opens an
+/// overlay dropdown populated with [MenuItem]s. It supports optional
+/// **type-to-search** filtering (set [MenuConfig.searchable] to `true`),
+/// keyboard navigation (arrow keys, Enter, Escape), and colour history.
+///
+/// ## Quick Start
+///
+/// ```dart
+/// Menu(
+///   height: 40,
+///   width: 200,
+///   items: [
+///     MenuItem(label: 'Option A', value: 'a'),
+///     MenuItem(label: 'Option B', value: 'b'),
+///   ],
+/// )
+/// ```
+///
+/// ## Architecture
+///
+/// The menu is split into several collaborating classes:
+///
+/// | Class          | Role                                       |
+/// |----------------|--------------------------------------------|
+/// | [Menu]         | Root widget — trigger button & overlay host |
+/// | [MenuController] | State management & overlay lifecycle      |
+/// | [MenuItem]     | Data model + widget builder for each row   |
+/// | [MenuScope]    | InheritedWidget providing controller access |
+/// | [MenuConfig]   | Visual / behavioural options for the menu   |
+/// | [ItemConfig]   | Visual options for individual items         |
 library menu;
 
 import 'package:collect/collect.dart';
@@ -10,11 +42,28 @@ part 'presentation/menu_scope.dart';
 part 'structs/item_config.dart';
 part 'structs/menu_config.dart';
 
+/// Callback for custom item filtering logic.
+///
+/// Receives the full [items] list and the current search [query], and should
+/// return a new list containing only the items that match.
 typedef MenuFilterCallback =
     List<MenuItem> Function(List<MenuItem> items, String query);
 
+/// Callback for custom search-highlight logic.
+///
+/// Receives the current (possibly filtered) [items] and the [query], and
+/// should return the index of the best match, or `null` if nothing matches.
 typedef MenuSearchCallback = int? Function(List<MenuItem> items, String query);
 
+/// A dropdown menu widget with optional search, filter, and keyboard support.
+///
+/// Displays a trigger bar showing the currently selected [MenuItem]. Tapping
+/// it opens an overlay with the available items. When [MenuConfig.searchable]
+/// is enabled, the trigger bar transforms into a text field for live
+/// filtering.
+///
+/// Pass a [MenuController] to control the menu programmatically (e.g. to
+/// open, close, or select items from outside the widget).
 class Menu extends StatefulWidget {
   final double height;
   final double width;

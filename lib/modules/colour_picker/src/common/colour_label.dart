@@ -1,12 +1,21 @@
 part of '../../colour_picker.dart';
 
-// colorLabelTypes: [
-// ColorLabelType.hex,
-// ColorLabelType.rgb,
-// ColorLabelType.hsl,
-// ColorLabelType.hsv,
-// ],
-
+/// A dropdown-driven colour value display that lets the user switch between
+/// output formats on the fly.
+///
+/// Shows the current colour's value as text, with a [Menu] dropdown to pick
+/// which format to display:
+///
+/// | Format | Example Output        |
+/// |--------|-----------------------|
+/// | b256   | 4-char base-256 string|
+/// | HEX    | `FFFF0000`            |
+/// | aRGB   | `255,255,0,0`         |
+/// | HSL    | `1.0,0.0,1.0,0.5`    |
+/// | HSV    | `1.0,120.0,1.0,0.8`  |
+///
+/// Used internally by the colour picker widgets to show the selected
+/// colour's numeric representation.
 class ColourLabel extends StatefulWidget {
   final Colour colour;
   final double height;

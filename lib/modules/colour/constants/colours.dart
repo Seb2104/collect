@@ -1,5 +1,26 @@
 part of '../../../collect.dart';
 
+/// A palette of pre-defined [Colour] constants, mirroring Flutter's
+/// [Colors] class but using the Collect [Colour] type.
+///
+/// Use these anywhere you'd use `Colors.red` or `Colors.blue`, but with
+/// full access to Collect's multi-format output and colour space conversions.
+///
+/// ## Available Colours
+///
+/// **Blacks & Whites** — [black], [black87], [black54], [black45], [black38],
+/// [black26], [black12], [white], [white70], [white60], [white54], [white38],
+/// [white30], [white24], [white12], [white10], [transparent].
+///
+/// **Material Primaries** — [pink], [purple], [deepPurple], [indigo],
+/// [lightBlue], [cyan], [teal], [lightGreen], [lime], [yellow], [amber],
+/// [orange], [deepOrange], [brown], [grey], [blueGrey].
+///
+/// **Material Accents** — [redAccent], [pinkAccent], [purpleAccent],
+/// [deepPurpleAccent], [indigoAccent], [blueAccent], [lightBlueAccent],
+/// [cyanAccent], [tealAccent], [greenAccent], [lightGreenAccent],
+/// [limeAccent], [yellowAccent], [amberAccent], [orangeAccent],
+/// [deepOrangeAccent].
 mixin class Colours {
   static const Colour transparent = Colour(
     alpha: 0x00,

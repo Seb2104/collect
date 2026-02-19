@@ -1,6 +1,11 @@
 part of '../../colour_picker.dart';
 
-
+/// Paints a checkerboard pattern, commonly used as a transparency background.
+///
+/// The checkerboard tile size is calculated as 1/6 of the available height,
+/// alternating between light grey (`#CCCCCC`) and white. This is the
+/// standard visual cue that lets users see what the alpha channel of a
+/// colour actually looks like.
 class CheckerPainter extends CustomPainter {
   const CheckerPainter();
 
@@ -23,6 +28,11 @@ class CheckerPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
+/// A circular swatch that previews the current colour.
+///
+/// Draws a checkerboard background behind a filled circle so that semi-
+/// transparent colours are clearly visible. Used in pickers to show the
+/// currently selected colour or items in the colour history strip.
 class ColorIndicator extends StatelessWidget {
   const ColorIndicator(
     this.hsvColor, {
@@ -52,6 +62,8 @@ class ColorIndicator extends StatelessWidget {
   }
 }
 
+/// Painter that renders a checkerboard background with a solid colour circle
+/// on top — the canvas-level implementation behind [ColorIndicator].
 class IndicatorPainter extends CustomPainter {
   const IndicatorPainter(this.color);
 
@@ -84,6 +96,19 @@ class IndicatorPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
+/// Paints the gradient track for a [ColourPickerSlider].
+///
+/// The gradient rendered depends on the [trackType]:
+///
+/// | Track Type       | Gradient                                    |
+/// |------------------|---------------------------------------------|
+/// | hue              | Full rainbow (0-360 degrees)                 |
+/// | saturation       | Desaturated → fully saturated at current hue |
+/// | saturationForHSL | Same range but in HSL space                  |
+/// | value            | Black → full brightness at current hue        |
+/// | lightness        | Black → pure colour → white                  |
+/// | red / green / blue | 0 → 255 for that channel                  |
+/// | alpha            | Transparent → opaque (over a checkerboard)   |
 class TrackPainter extends CustomPainter {
   const TrackPainter(this.trackType, this.hsvColor);
 
@@ -193,6 +218,12 @@ class TrackPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
+/// Paints the draggable thumb indicator for a [ColourPickerSlider].
+///
+/// Renders a white circle with a drop shadow. When [thumbColor] is provided,
+/// an inner circle is filled with that colour to preview the slider's current
+/// position. Set [fullThumbColor] to `true` to fill the entire thumb rather
+/// than just the inner 65%.
 class ThumbPainter extends CustomPainter {
   const ThumbPainter({this.thumbColor, this.fullThumbColor = false});
 

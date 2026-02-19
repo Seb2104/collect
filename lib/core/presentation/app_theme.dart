@@ -1,6 +1,53 @@
 part of '../../collect.dart';
 
+/// The Collect design system — a complete Material 3 theme built around
+/// two signature colour palettes: **Sage** (a calm olive-green) and
+/// **Terracotta** (a warm earthy tone).
+///
+/// [AppTheme] provides:
+///
+/// - Ready-to-use [ThemeData] for light and dark modes via [light] and [dark].
+/// - Context-aware colour accessors (e.g. [textPrimary], [background]) that
+///   automatically return the right value for the current brightness.
+/// - A full set of semantic colour tokens for surfaces, borders, text
+///   hierarchy, hover/focus states, and table styling.
+///
+/// ## Quick Start
+///
+/// ```dart
+/// MaterialApp(
+///   theme: AppTheme.light(),
+///   darkTheme: AppTheme.dark(),
+/// )
+/// ```
+///
+/// ## Using Context-Aware Colours
+///
+/// ```dart
+/// Container(
+///   color: AppTheme.background(context),
+///   child: Text(
+///     'Hello',
+///     style: TextStyle(color: AppTheme.textPrimary(context)),
+///   ),
+/// )
+/// ```
+///
+/// ## Colour Palette
+///
+/// | Token                  | Hex       | Usage                          |
+/// |------------------------|-----------|--------------------------------|
+/// | [primarySage]          | `#9CAF88` | Primary actions, indicators    |
+/// | [secondaryTerracotta]  | `#D4B5A0` | Secondary accents              |
+/// | [accentGold]           | `#E6D5B8` | Success highlights             |
+/// | [softCoral]            | `#E5C4B5` | Warnings                       |
+/// | [accentError]          | `#D49490` | Error states                   |
+/// | [lavenderMist]         | `#CBBFD4` | Tertiary accents               |
 class AppTheme {
+  /// The base text style inherited by the entire theme's text hierarchy.
+  ///
+  /// Uses Times New Roman as the primary font with a sensible set of
+  /// fallbacks that covers Windows, macOS, Linux, and emoji rendering.
   static const TextStyle baseTextStyle = TextStyle(
     fontFamily: 'Times New Roman',
     fontSize: 12,
@@ -15,6 +62,10 @@ class AppTheme {
     ],
   );
 
+  /// Returns the **light** mode [ThemeData].
+  ///
+  /// Built on Material 3 with the Sage/Terracotta palette, warm surface
+  /// tones, and a full text theme derived from [baseTextStyle].
   static ThemeData light() {
     return ThemeData(
       useMaterial3: true,
@@ -181,6 +232,10 @@ class AppTheme {
     );
   }
 
+  /// Returns the **dark** mode [ThemeData].
+  ///
+  /// Uses deeper surface colours and lighter text to maintain readability
+  /// while keeping the same Sage/Terracotta personality as the light theme.
   static ThemeData dark() {
     return ThemeData(
       useMaterial3: true,
@@ -347,54 +402,75 @@ class AppTheme {
     );
   }
 
+  // -----------------------------------------------------------------------
+  // Context-Aware Colour Accessors
+  // -----------------------------------------------------------------------
+  //
+  // Each of these inspects the current theme brightness and returns the
+  // appropriate light or dark variant. Use these instead of hard-coding
+  // colour constants — they'll adapt automatically when the user toggles
+  // between light and dark mode.
+  // -----------------------------------------------------------------------
+
+  /// The semantic "success" colour. Currently [accentGold].
   static Color success(BuildContext context) => accentGold;
 
+  /// The semantic "warning" colour. Currently [softCoral].
   static Color warning(BuildContext context) => softCoral;
 
+  /// The semantic "error" colour. Currently [accentError].
   static Color error(BuildContext context) => accentError;
 
+  /// The highest-contrast text colour for the current brightness.
   static Color textPrimary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightTextPrimary
         : darkTextPrimary;
   }
 
+  /// A medium-emphasis text colour for secondary content.
   static Color textSecondary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightTextSecondary
         : darkTextSecondary;
   }
 
+  /// A low-emphasis text colour for hints, placeholders, and captions.
   static Color textTertiary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightTextTertiary
         : darkTextTertiary;
   }
 
+  /// A surface colour for elevated containers (cards, dialogs).
   static Color surfaceElevated(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightSurfaceElevated
         : darkSurfaceElevated;
   }
 
+  /// A very subtle border for low-contrast separation.
   static Color borderSubtle(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightBorderSubtle
         : darkBorderSubtle;
   }
 
+  /// The background tint applied on mouse hover.
   static Color hover(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightHover
         : darkHover;
   }
 
+  /// The background tint applied when a widget has keyboard/accessibility focus.
   static Color focus(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightFocus
         : darkFocus;
   }
 
+  /// The standard border colour for the current brightness.
   static Color border(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? lightBorder
@@ -497,6 +573,11 @@ class AppTheme {
         : darkTableShadow;
   }
 
+  // -----------------------------------------------------------------------
+  // Light Theme — Table Colours
+  // -----------------------------------------------------------------------
+
+  /// Default cell background in light mode.
   static const Color lightTableCellBackground = Color(0xFFFFFFFE);
   static const Color lightTableCellHover = Color(0xFFFAF7F3);
   static const Color lightTableCellFocus = Color(0xFFF0EDE7);
@@ -510,6 +591,11 @@ class AppTheme {
   static const Color lightTableShadow = Color(0x0A3A3531);
   static const Color lightTableBorder = Colors.transparent;
 
+  // -----------------------------------------------------------------------
+  // Dark Theme — Table Colours
+  // -----------------------------------------------------------------------
+
+  /// Default cell background in dark mode.
   static const Color darkTableCellBackground = Color(0xFF2A2825);
   static const Color darkTableCellHover = Color(0xFF38352F);
   static const Color darkTableCellFocus = Color(0xFF423F38);
@@ -523,6 +609,11 @@ class AppTheme {
   static const Color darkTableResizeHandleHover = Color(0xFFAABD98);
   static const Color darkTableShadow = Color(0x33000000);
 
+  // -----------------------------------------------------------------------
+  // Brand Palette
+  // -----------------------------------------------------------------------
+
+  /// The primary Sage green — the signature colour of the Collect design system.
   static const Color primarySage = Color(0xFF9CAF88);
   static const Color primarySageDark = Color(0xFF7A8F6D);
   static const Color secondaryTerracotta = Color(0xFFD4B5A0);
@@ -534,6 +625,11 @@ class AppTheme {
   static const Color accentWarning = Color(0xFFE5BD8F);
   static const Color accentError = Color(0xFFD49490);
 
+  // -----------------------------------------------------------------------
+  // Light Theme — Surface, Text & Chrome Colours
+  // -----------------------------------------------------------------------
+
+  /// The main background colour for light mode.
   static const Color lightBackground = Color(0xFFF5F3EE);
   static const Color lightSurface = Color(0xFFFFFDFA);
   static const Color lightSurfaceVariant = Color(0xFFF8F5F0);
@@ -547,6 +643,11 @@ class AppTheme {
   static const Color lightHover = Color(0xFFFAF7F3);
   static const Color lightFocus = Color(0xFFF0EDE7);
 
+  // -----------------------------------------------------------------------
+  // Dark Theme — Surface, Text & Chrome Colours
+  // -----------------------------------------------------------------------
+
+  /// The main background colour for dark mode.
   static const Color darkBackground = Color(0xFF2A2825);
   static const Color darkSurface = Color(0xFF1F1D1A);
   static const Color darkSurfaceVariant = Color(0xFF38352F);

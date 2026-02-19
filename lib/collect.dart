@@ -1,3 +1,76 @@
+/// # Collect — The Developer's Repertoire
+///
+/// A comprehensive Flutter toolkit providing reusable utilities, extensions,
+/// custom datatypes, and UI widgets for rapid application development.
+///
+/// ## Overview
+///
+/// Collect bundles commonly-used functionality into a single, well-organized
+/// package. It is structured into two main areas:
+///
+/// - **Core** — Fundamental utilities, extensions, constants, helpers, and
+///   presentation widgets that extend Flutter's built-in capabilities.
+/// - **Modules** — Feature-specific, self-contained modules including a
+///   [Colour] system, a [ColourPicker] widget, and a searchable [Menu].
+///
+/// ## Feature Highlights
+///
+/// | Category         | Description                                              |
+/// |------------------|----------------------------------------------------------|
+/// | **Extensions**   | 100+ extension methods on `int`, `double`, `String`,     |
+/// |                  | `Widget`, `List`, `BuildContext`, and more.               |
+/// | **Datatypes**    | [Moment] (rich `DateTime` wrapper) and [Period]          |
+/// |                  | (duration with year/month support).                       |
+/// | **Colour**       | Multi-format colour class supporting RGB, HSL, HSV,      |
+/// |                  | Hex, and Base-256 representations.                        |
+/// | **ColourPicker** | Interactive colour picker with wheel, square, ring, and  |
+/// |                  | slider picker styles.                                     |
+/// | **Menu**         | Searchable dropdown menu with filtering and custom items. |
+/// | **Theming**      | Material 3 theme system (Sage & Terracotta palettes).    |
+/// | **Fonts**        | 16 bundled font families ready for use.                   |
+/// | **Notifications**| Toast-style notification system.                          |
+/// | **Radix**        | Base conversion utilities (binary, octal, hex, base-256). |
+///
+/// ## Quick Start
+///
+/// ```dart
+/// import 'package:collect/collect.dart';
+///
+/// // Use extension methods
+/// final greeting = 'hello world'.toTitleCase(); // 'Hello World'
+/// final binary = 42.toBinary();                 // '101010'
+///
+/// // Work with Moments
+/// final now = Moment.now();
+/// print(now.format('MMMM dd, yyyy'));           // 'February 19, 2026'
+///
+/// // Create colours in any format
+/// final red = Colour.fromHex('#FF0000');
+/// final blue = Colour.fromRGB(0, 0, 255);
+/// ```
+///
+/// ## Architecture
+///
+/// ```
+/// collect/
+/// ├── core/
+/// │   ├── constants/    — Static values, enums, and lookup tables
+/// │   ├── datatypes/    — Moment and Period custom types
+/// │   ├── extensions/   — Extension methods on built-in types
+/// │   ├── helpers/      — Icon and font helper utilities
+/// │   ├── presentation/ — Ready-to-use UI widgets
+/// │   └── utils/        — Notifications, radix conversion, string processing
+/// └── modules/
+///     ├── colour/        — Colour class and colour-space types
+///     ├── colour_picker/  — Interactive colour picker widgets
+///     └── menu/          — Searchable dropdown menu component
+/// ```
+///
+/// See also:
+/// - [GitHub Repository](https://github.com/Seb2104/collect)
+/// - [Colour] for multi-format colour handling
+/// - [Moment] for advanced date/time operations
+/// - [Period] for human-friendly durations
 library;
 
 import 'dart:io';

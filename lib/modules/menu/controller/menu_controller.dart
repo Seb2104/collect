@@ -1,5 +1,16 @@
 part of '../menu.dart';
 
+/// Immutable snapshot of the menu's current state.
+///
+/// Held by [MenuController] as a [ValueNotifier] value, so any change to
+/// the state triggers listeners (and therefore widget rebuilds).
+///
+/// - [selectedItem] — the item currently shown in the trigger bar.
+/// - [filteredItems] — the subset of items visible in the dropdown (may be
+///   the full list or a search-filtered subset).
+/// - [isOverlayVisible] — whether the dropdown overlay is currently showing.
+/// - [highlightedIndex] — the index of the keyboard-highlighted item, or
+///   `null` if nothing is highlighted.
 class MenuState {
   final MenuItem selectedItem;
   final List<MenuItem> filteredItems;
@@ -31,6 +42,20 @@ class MenuState {
   }
 }
 
+/// Manages the lifecycle, selection, filtering, and overlay visibility of a
+/// [Menu].
+///
+/// Extends [ValueNotifier] so the [Menu] widget rebuilds whenever the state
+/// changes. You can create a controller externally and pass it to [Menu] for
+/// programmatic control, or let the widget create one internally.
+///
+/// ## Key methods
+///
+/// - [selectItem] — picks an item, closes the overlay, and unfocuses.
+/// - [filterItems] — filters the item list against a search query.
+/// - [searchHighlight] — highlights the best-matching item without filtering.
+/// - [highlightNext] / [highlightPrevious] — keyboard arrow navigation.
+/// - [showOverlay] / [hideOverlay] / [toggleOverlay] — overlay management.
 class MenuController extends ValueNotifier<MenuState> {
   FocusNode? _focusNode;
   OverlayEntry? _overlay;

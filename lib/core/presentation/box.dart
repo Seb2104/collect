@@ -1,6 +1,23 @@
 part of '../../collect.dart';
 
+/// A lightweight alternative to [DecoratedBox] that paints a [Decoration]
+/// on either the background or foreground of its child.
+///
+/// This is functionally similar to Flutter's built-in [DecoratedBox], but
+/// lives inside the Collect library so it can be used alongside the
+/// custom shadow decorations below.
+///
+/// ```dart
+/// StyledBox(
+///   decoration: BoxDecoration(
+///     color: Colors.white,
+///     borderRadius: BorderRadius.circular(12),
+///   ),
+///   child: Padding(padding: EdgeInsets.all(16), child: Text('Hello')),
+/// )
+/// ```
 class StyledBox extends SingleChildRenderObjectWidget {
+  /// Creates a [StyledBox] with the given [decoration].
   const StyledBox({
     super.key,
     required this.decoration,
@@ -8,8 +25,10 @@ class StyledBox extends SingleChildRenderObjectWidget {
     super.child,
   });
 
+  /// The decoration to paint (gradient, colour, border, shadows, etc.).
   final Decoration decoration;
 
+  /// Whether to paint the decoration behind or in front of the child.
   final DecorationPosition position;
 
   @override
@@ -50,7 +69,24 @@ class StyledBox extends SingleChildRenderObjectWidget {
   }
 }
 
-/// Casts a shadow on the INSIDE of the box
+/// A [ShapeDecoration] that supports **inset (inner) shadows**.
+///
+/// Standard Flutter [BoxShadow] only paints shadows on the outside of a
+/// shape. This decoration also handles [InsetBoxShadow] entries, which
+/// paint on the inside — perfect for subtle pressed/recessed effects.
+///
+/// ```dart
+/// StyledBox(
+///   decoration: InsetShadowShapeDecoration(
+///     color: Colors.white,
+///     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+///     shadows: [
+///       InsetBoxShadow(color: Colors.black26, blurRadius: 8, spreadRadius: 2),
+///     ],
+///   ),
+///   child: SizedBox(width: 100, height: 100),
+/// )
+/// ```
 class InsetShadowShapeDecoration extends ShapeDecoration {
   const InsetShadowShapeDecoration({
     super.shape = const RoundedRectangleBorder(),
@@ -359,8 +395,23 @@ class _ShapeDecorationPainter extends BoxPainter {
   }
 }
 
-/// Casts a shadow on the outside of the box
+/// A [BoxShadow] variant that is rendered *inside* the shape by
+/// [InsetShadowShapeDecoration].
+///
+/// Use this for pressed/recessed visual effects — the shadow is painted
+/// inward from the shape's edge rather than outward.
+///
+/// ## Named Constructors
+///
+/// - [InsetBoxShadow.dip] — A pre-configured "dipped" inset shadow with
+///   sensible defaults, handy for quick prototyping.
+///
+/// ```dart
+/// InsetBoxShadow(color: Colors.black26, blurRadius: 6, spreadRadius: 1)
+/// InsetBoxShadow.dip() // quick default
+/// ```
 final class InsetBoxShadow extends BoxShadow {
+  /// Creates an inset shadow with the given parameters.
   const InsetBoxShadow({
     super.color,
     super.offset,
@@ -369,6 +420,8 @@ final class InsetBoxShadow extends BoxShadow {
     super.blurStyle = BlurStyle.normal,
   });
 
+  /// A convenient pre-configured inset shadow with an outer blur style,
+  /// 8px blur radius, and 3px spread — a nice "dipped" look out of the box.
   const InsetBoxShadow.dip({
     super.color = Colors.black,
     super.offset = Offset.zero,

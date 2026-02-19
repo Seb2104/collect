@@ -1,5 +1,12 @@
 part of '../menu.dart';
 
+/// An [InheritedWidget] that provides the active [MenuController],
+/// [ItemConfig], and item height to descendant widgets.
+///
+/// Placed at the root of the dropdown overlay so that [MenuItem.build] can
+/// look up the controller and styling without needing explicit parameters.
+///
+/// Access the nearest scope with `MenuScope.of(context)`.
 class MenuScope extends InheritedWidget {
   final MenuController controller;
   final ItemConfig itemConfig;

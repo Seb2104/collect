@@ -1,5 +1,18 @@
 part of '../../../collect.dart';
 
+/// Extensions on nullable [num] for validation, range checks, formatting,
+/// and mathematical helpers.
+///
+/// These work on both `int` and `double` since they extend [num]. Every
+/// method is null-safe — if the value is `null`, [validate] kicks in and
+/// treats it as `0`.
+///
+/// ```dart
+/// num? value;
+/// value.isPositive;            // false (null → 0 → not positive)
+/// 3.14.roundToPrecision(1);    // 3.1
+/// 75.percentageOf(200);        // 37.5
+/// ```
 extension Num on num? {
   /// Validate given double is not null and returns given value if null.
   num validate({num value = 0}) => this ?? value;

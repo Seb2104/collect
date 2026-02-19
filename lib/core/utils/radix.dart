@@ -1,5 +1,32 @@
 part of '../../collect.dart';
 
+/// Converts integers between numeral bases — from binary (base-2) all the
+/// way up to base-256.
+///
+/// Under the hood, the conversion works by treating each base as a custom
+/// alphabet. The [_base] string defines 256+ unique symbols (digits, letters,
+/// punctuation, Greek, and Cyrillic characters) and the algorithm maps
+/// between source and destination alphabets using long division.
+///
+/// ## Common Conversions
+///
+/// ```dart
+/// Radix.hex(255);         // 'FF'
+/// Radix.bin(42);          // '101010'
+/// Radix.oct(8);           // '10'
+/// Radix.base(100, Base.b36); // base-36 representation
+/// ```
+///
+/// ## Colour Helpers
+///
+/// [Radix] also includes a few helpers for clamping values into the 0-255
+/// colour range:
+///
+/// ```dart
+/// Radix.colourValue(128.7);            // 129
+/// Radix.fractionToColourValue(0.5);    // 128
+/// Radix.percentToColourValue(50.0);    // 128
+/// ```
 class Radix {
   @Deprecated('Use base instead')
   static dynamic change(dynamic data, Base radix) {
@@ -18,6 +45,13 @@ class Radix {
           );
   }
 
+  /// Converts an integer [data] to its string representation in the given
+  /// [radix] base.
+  ///
+  /// ```dart
+  /// Radix.base(255, Base.hexadecimal); // 'FF'
+  /// Radix.base(42, Base.binary);       // '101010'
+  /// ```
   static String base(int data, Base radix) {
     return _crypt(
       data: data,
@@ -26,6 +60,8 @@ class Radix {
     );
   }
 
+  /// Converts a string [data] from [currentRadix] back to its decimal
+  /// (base-10) string representation.
   static String getDecimal(String data, Base currentRadix) {
     return _crypt(
       data: data,
@@ -34,14 +70,19 @@ class Radix {
     );
   }
 
+  /// Shorthand for octal (base-8) conversion.
   static String oct(int data) => base(data, Bases.b8);
 
+  /// Shorthand for binary (base-2) conversion, uppercase.
   static String bin(int data) => base(data, Bases.b2).toUpperCase();
 
+  /// Shorthand for hexadecimal (base-16) conversion, uppercase.
   static String hex(int data) => base(data, Bases.b16).toUpperCase();
 
+  /// Shorthand for decimal (base-10) conversion.
   static String dec(int data) => base(data, Bases.b10);
 
+  /// Shorthand for base-256 conversion.
   static String b256(int data) => base(data, Bases.b256);
 
   static String _crypt({
@@ -88,14 +129,19 @@ class Radix {
     return result;
   }
 
+  /// Clamps [data] to the 0-255 range and rounds to the nearest integer.
+  ///
+  /// Useful for ensuring a raw double stays within valid RGB bounds.
   static int colourValue(double data) {
     return data.clamp(0, 255).round();
   }
 
+  /// Converts a 0.0-1.0 fraction to a 0-255 colour value.
   static int fractionToColourValue(double data) {
     return (data.clamp(0.0, 1.0) * 255).round();
   }
 
+  /// Converts a 0-100 percentage to a 0-255 colour value.
   static int percentToColourValue(double data) {
     return ((data.clamp(0.0, 100.0) / 100) * 255).round();
   }

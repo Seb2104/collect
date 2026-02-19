@@ -1,3 +1,25 @@
+/// The Collect Colour Picker — a family of interactive colour selection widgets.
+///
+/// This library provides four distinct picker styles, each suited to different
+/// use cases and visual preferences:
+///
+/// | Picker     | Best For                                   |
+/// |------------|--------------------------------------------|
+/// | [wheel]    | Intuitive hue/saturation selection          |
+/// | [square]   | Precise colour space exploration (HSV/HSL/RGB) |
+/// | [ring]     | Compact hue selection with SV palette       |
+/// | [slides]   | Channel-by-channel slider control           |
+///
+/// All pickers are accessed through the static factory methods on
+/// [ColourPicker]. They share common features like alpha support, colour
+/// history, label display, and thumb colour previews.
+///
+/// ```dart
+/// ColourPicker.wheel(
+///   currentColour: myColour,
+///   onColourChanged: (colour) => setState(() => myColour = colour),
+/// )
+/// ```
 library;
 
 import 'dart:math';
@@ -20,8 +42,33 @@ part 'src/painters/palette_painters.dart';
 part 'src/painters/ring_painter.dart';
 part 'src/painters/wheel_painter.dart';
 
-//TODO change it so you can just specify the orientation
+/// Central factory for creating colour picker widgets.
+///
+/// Rather than instantiating picker classes directly, use the static methods
+/// on this class to get the picker style you need:
+///
+/// - [ColourPicker.wheel] — A circular hue wheel with saturation mapped
+///   radially, plus value/alpha sliders.
+/// - [ColourPicker.square] — A rectangular palette that supports multiple
+///   colour models (HSV, HSL, RGB) with configurable axes.
+/// - [ColourPicker.ring] — A hue ring surrounding a compact SV palette.
+/// - [ColourPicker.slides] — Individual channel sliders (R/G/B, H/S/V, or
+///   H/S/L) with optional comparison indicator.
+///
+/// Each method returns a ready-to-use [Widget] that you can drop into your
+/// widget tree.
 class ColourPicker {
+  /// Creates a colour wheel picker.
+  ///
+  /// The wheel maps hue around the circle and saturation from centre to edge.
+  /// A separate value slider controls brightness. Supports both portrait and
+  /// landscape orientations.
+  ///
+  /// - [currentColour] is the starting colour.
+  /// - [onColourChanged] fires whenever the user selects a new colour.
+  /// - [size] controls the overall dimension of the picker area.
+  /// - [style] wraps the picker in custom padding, margin, and decoration.
+  /// - [orientation] forces a portrait or landscape layout.
   static Widget wheel({
     required Colour currentColour,
     required ValueChanged<Colour> onColourChanged,
@@ -59,6 +106,18 @@ class ColourPicker {
     );
   }
 
+  /// Creates a square palette colour picker.
+  ///
+  /// The square renders a 2D gradient based on the chosen [paletteType]. For
+  /// instance, `PaletteType.hsvWithHue` shows saturation on the X-axis and
+  /// value on the Y-axis, with a separate hue slider alongside.
+  ///
+  /// - [paletteType] selects which two components are shown on the square
+  ///   axes and which one gets its own slider.
+  /// - [colorPickerWidth] sets the width (and, via [pickerAreaHeightPercent],
+  ///   the height) of the palette area.
+  /// - [colorHistory] and [onHistoryChanged] enable a tappable history strip
+  ///   of previously selected colours.
   static Widget square({
     required Color currentColour,
     required ValueChanged<Color> onColorChanged,
@@ -99,6 +158,15 @@ class ColourPicker {
     );
   }
 
+  /// Creates a slider-based colour picker.
+  ///
+  /// Presents individual channel sliders for the selected [colorModel] (RGB,
+  /// HSV, or HSL). Optionally shows a comparison indicator that splits the
+  /// original and current colour side by side.
+  ///
+  /// - [sliderSize] controls the width and height of each slider track.
+  /// - [showIndicator] toggles the before/after colour comparison bar.
+  /// - [showParams] displays the numeric value next to each slider.
   static Widget slides({
     required Color currentColour,
     required ValueChanged<Color> onColorChanged,
@@ -139,6 +207,14 @@ class ColourPicker {
     );
   }
 
+  /// Creates a hue ring colour picker.
+  ///
+  /// Displays a circular hue ring with a square HSV palette in the centre.
+  /// Dragging around the ring changes the hue; dragging inside the square
+  /// adjusts saturation and value.
+  ///
+  /// - [hueRingStrokeWidth] controls the thickness of the hue ring.
+  /// - [colorPickerHeight] sets the overall size of the picker.
   static Widget ring({
     required Color currentColour,
     required ValueChanged<Color> onColorChanged,

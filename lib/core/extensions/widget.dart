@@ -1,6 +1,38 @@
 part of '../../collect.dart';
 
-// Widget Extensions
+/// A big collection of layout and transform extensions on nullable [Widget].
+///
+/// These let you wrap any widget with common layout modifiers using clean,
+/// chainable syntax instead of deeply nested constructor calls:
+///
+/// ```dart
+/// // Instead of this:
+/// Padding(
+///   padding: EdgeInsets.all(16),
+///   child: SizedBox(
+///     width: 200,
+///     child: Opacity(opacity: 0.8, child: myWidget),
+///   ),
+/// )
+///
+/// // You can write this:
+/// myWidget.paddingAll(16).withWidth(200).opacity(opacity: 0.8)
+/// ```
+///
+/// ## Available Helpers
+///
+/// | Category       | Methods                                                    |
+/// |----------------|------------------------------------------------------------|
+/// | **Sizing**     | [withSize], [withWidth], [withHeight]                      |
+/// | **Padding**    | [paddingAll], [paddingTop], [paddingLeft], [paddingRight],  |
+/// |                | [paddingBottom], [paddingOnly], [paddingSymmetric],         |
+/// |                | [paddingDirectional]                                        |
+/// | **Visibility** | [visible], [opacity]                                       |
+/// | **Clipping**   | [cornerRadiusWithClipRRect], [cornerRadiusWithClipRRectOnly]|
+/// | **Transform**  | [rotate], [scale], [translate]                             |
+/// | **Layout**     | [center], [expand], [flexible], [fit]                      |
+/// | **Effects**    | [withShaderMask], [withShaderMaskGradient]                  |
+/// | **Misc**       | [withTooltip], [validate], [makeRefreshable]               |
 extension WidgetExtension on Widget? {
   /// With custom height and width
   SizedBox withSize({double width = 0.0, double height = 0.0}) {

@@ -1,14 +1,31 @@
 part of '../colour.dart';
 
+/// The sealed base class for all colour space representations in Collect.
+///
+/// Every colour space ([Colour], [HSVColour], [HSLColour]) extends
+/// [ColourSpace] and implements the three conversion methods, so you can
+/// freely convert between any pair of colour spaces.
+///
+/// ```dart
+/// ColourSpace anyColour = someHSVColour;
+/// final rgb = anyColour.toColour();
+/// final hsl = anyColour.toHSL();
+/// ```
 sealed class ColourSpace {
   const ColourSpace();
 
+  /// Converts this colour to its [Colour] (ARGB) representation.
   Colour toColour();
 
+  /// Converts this colour to its [HSLColour] representation.
   HSLColour toHSL();
 
+  /// Converts this colour to its [HSVColour] representation.
   HSVColour toHSV();
 
+  /// Calculates the hue (0-360 degrees) from normalised RGB components.
+  ///
+  /// This is a shared helper used by all colour space conversion methods.
   static double getHue(
     double red,
     double green,
@@ -31,6 +48,9 @@ sealed class ColourSpace {
     return hue;
   }
 
+  /// Constructs a [Colour] from hue, chroma, secondary component, and
+  /// match offset values. This is the core algorithm that maps HSL/HSV
+  /// parameters back to RGB.
   static Colour colourFromHue(
     double alpha,
     double hue,
@@ -56,6 +76,8 @@ sealed class ColourSpace {
     );
   }
 
+  /// Same as [colourFromHue] but returns a Flutter [Color] instead of a
+  /// [Colour]. Used internally where the Flutter type is needed directly.
   static Color colorFromHue(
     double alpha,
     double hue,
@@ -80,6 +102,16 @@ sealed class ColourSpace {
   }
 }
 
+/// Returns `true` if white text should be used on the given
+/// [backgroundColor] for readability.
+///
+/// Uses a weighted luminance formula (ITU-R BT.601) to decide. Pass a
+/// positive [bias] to make the function favour white more aggressively.
+///
+/// ```dart
+/// useWhiteForeground(Colors.black);  // true
+/// useWhiteForeground(Colors.white);  // false
+/// ```
 bool useWhiteForeground(Color backgroundColor, {double bias = 0.0}) {
   int v = math
       .sqrt(
@@ -91,6 +123,7 @@ bool useWhiteForeground(Color backgroundColor, {double bias = 0.0}) {
   return v < 130 + bias ? true : false;
 }
 
+/// Converts an [HSVColor] to an [HSLColour].
 HSLColour hsvToHsl(HSVColor color) {
   double s = 0.0;
   double l = 0.0;
@@ -112,6 +145,7 @@ HSLColour hsvToHsl(HSVColor color) {
   );
 }
 
+/// Converts an [HSLColor] to an [HSVColour].
 HSVColour hslToHsv(HSLColor color) {
   double s = 0.0;
   double v = 0.0;
@@ -130,11 +164,23 @@ HSVColour hslToHsv(HSLColor color) {
   );
 }
 
+/// Regex pattern that matches partial hex colour strings (1-8 hex chars,
+/// optional leading `#`).
 const String kValidHexPattern = r'^#?[0-9a-fA-F]{1,8}';
 
+/// Regex pattern that matches complete, valid hex colour strings (3, 6, or
+/// 8 hex chars, optional leading `#`).
 const String kCompleteValidHexPattern =
     r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$';
 
+/// Parses a hex colour string into a Flutter [Color], or returns `null`
+/// if the string is invalid.
+///
+/// Supports 3-digit (`#F00`), 6-digit (`#FF0000`), and 8-digit
+/// (`#FFFF0000`) hex strings, with or without the leading `#`.
+///
+/// Set [enableAlpha] to `false` to force full opacity regardless of any
+/// alpha component in the input.
 Color? colorFromHex(String inputString, {bool enableAlpha = true}) {
   final RegExp hexValidator = RegExp(kCompleteValidHexPattern);
   if (!hexValidator.hasMatch(inputString)) return null;
@@ -152,6 +198,12 @@ Color? colorFromHex(String inputString, {bool enableAlpha = true}) {
   return enableAlpha ? color : color.withAlpha(255);
 }
 
+/// Converts a Flutter [Color] to a hex string.
+///
+/// Options:
+/// - [includeHashSign] — Prepend `#` to the output.
+/// - [enableAlpha] — Include the alpha channel in the output.
+/// - [toUpperCase] — Return the hex in uppercase (default: `true`).
 String colorToHex(
   Color color, {
   bool includeHashSign = false,

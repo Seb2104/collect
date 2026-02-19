@@ -1,5 +1,32 @@
 part of '../../../collect.dart';
 
+/// A flexible tab view that supports tabs on any edge — top, bottom, left,
+/// or right.
+///
+/// [TabView] wraps Flutter's [TabController] and [TabBarView] into a single
+/// widget with a clean API. Tabs can be arranged horizontally (top/bottom)
+/// or vertically (left/right) with an animated selection indicator.
+///
+/// ## Example
+///
+/// ```dart
+/// TabView(
+///   tabPosition: Side.left,
+///   tabsWidth: 180,
+///   content: TabViewContent([
+///     TabViewItem('Dashboard', view: DashboardPage()),
+///     TabViewItem('Settings', view: SettingsPage()),
+///     TabViewItem('Profile', view: ProfilePage()),
+///   ]),
+/// )
+/// ```
+///
+/// ## Customisation
+///
+/// - Control which tab is selected on mount with [initialIndex].
+/// - Disable the selection indicator by setting [indicator] to `false`.
+/// - Add [leading] and [trailing] widgets around the tab strip.
+/// - Adjust the animation speed with [animationDuration].
 class TabView extends StatefulWidget {
   /// Which side the tabs are aligned to
   final Side tabPosition;
@@ -233,13 +260,27 @@ class _TabViewState extends State<TabView> with TickerProviderStateMixin {
   }
 }
 
+/// The data model for a [TabView], holding the list of tabs and their
+/// associated page widgets.
+///
+/// ```dart
+/// const content = TabViewContent([
+///   TabViewItem('Home', view: HomePage()),
+///   TabViewItem('Search', view: SearchPage()),
+/// ]);
+/// ```
 class TabViewContent {
+  /// The ordered list of [TabViewItem]s.
   final List<TabViewItem> content;
 
+  /// Creates a [TabViewContent] from a list of [TabViewItem]s.
   const TabViewContent(this.content);
 
+  /// The number of tabs.
   int get length => content.length;
 
+  /// Builds a list of [Tab] widgets from the item titles (for use with
+  /// a standard [TabBar] if needed).
   List<Tab> get tabs {
     List<Tab> data = [];
     for (TabViewItem item in content) {
@@ -248,6 +289,7 @@ class TabViewContent {
     return data;
   }
 
+  /// A flat list of tab title strings.
   List<String> get titles {
     List<String> data = [];
     for (TabViewItem item in content) {
@@ -256,6 +298,7 @@ class TabViewContent {
     return data;
   }
 
+  /// A flat list of the page widgets for each tab.
   List<Widget> get pages {
     List<Widget> data = [];
     for (TabViewItem item in content) {
@@ -265,11 +308,17 @@ class TabViewContent {
   }
 }
 
+/// A single tab entry pairing a [title] with a [view] widget.
 class TabViewItem {
+  /// The text label shown in the tab strip.
   final String title;
+
+  /// The widget displayed when this tab is selected.
   final Widget view;
 
+  /// Creates a [TabViewItem] with the given [title] and [view].
   const TabViewItem(this.title, {required this.view});
 }
 
+/// Which edge of the [TabView] the tab strip should appear on.
 enum Side { top, left, bottom, right }

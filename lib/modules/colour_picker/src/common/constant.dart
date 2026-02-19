@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 
+/// Layout delegate for the [ColourPickerSlider] widget.
+///
+/// Positions three child elements within a slider:
+/// - [track] — the colour gradient bar, inset 15px from each side.
+/// - [thumb] — the draggable indicator, overlaid on top of the track.
+/// - [gestureContainer] — a full-size hit region that captures pan gestures.
+///
+/// The track height is 1/5 of the available height and is vertically centred
+/// at 40% of the height. The thumb is sized at 5px wide and 1/4 of the
+/// height.
 class SliderLayout extends MultiChildLayoutDelegate {
   static const String track = 'track';
   static const String thumb = 'thumb';

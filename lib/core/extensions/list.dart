@@ -1,8 +1,22 @@
 part of '../../collect.dart';
 
+/// Extensions on nullable [Iterable] for safe access, indexed iteration,
+/// and aggregate calculations.
+///
+/// All methods are null-safe — if the iterable is `null`, you get sensible
+/// defaults (empty list, zero sum, etc.) instead of a crash.
+///
+/// ```dart
+/// List<int>? scores;
+/// scores.validate();                  // []
+/// [1, 3, 7].sumBy((n) => n);         // 11
+/// [10, 20, 30].averageBy((n) => n);  // 20.0
+/// ```
 extension ListExtensions<T> on Iterable<T>? {
-  /// Validate given List is not null and returns blank list if null.
-  /// This should not be used to clear list
+  /// Returns this iterable as a [List], or an empty list if `null`.
+  ///
+  /// This is your go-to null-safety net for list parameters. Note: this
+  /// creates a new list each time, so don't use it to "clear" an existing one.
   List<T> validate() {
     if (this == null) {
       return [];
@@ -11,7 +25,13 @@ extension ListExtensions<T> on Iterable<T>? {
     }
   }
 
-  /// Generate forEach but gives index for each element
+  /// Like [forEach], but the callback also receives the current [index].
+  ///
+  /// ```dart
+  /// ['a', 'b', 'c'].forEachIndexed((element, index) {
+  ///   print('$index: $element'); // 0: a, 1: b, 2: c
+  /// });
+  /// ```
   void forEachIndexed(void Function(T element, int index) action) {
     var index = 0;
     for (var element in this!) {

@@ -1,7 +1,30 @@
 part of '../menu.dart';
 
-enum Aligned { left, center, right }
+/// Horizontal alignment options for menu item text.
+enum Aligned {
+  /// Left-aligned text.
+  left,
 
+  /// Centre-aligned text.
+  center,
+
+  /// Right-aligned text.
+  right,
+}
+
+/// Visual configuration for individual dropdown items.
+///
+/// Controls the look and feel of each row in the [Menu] overlay, including
+/// internal padding, text alignment, background colour, corner radius,
+/// border, and elevation.
+///
+/// ```dart
+/// ItemConfig(
+///   alignment: Aligned.left,
+///   backgroundColour: Colours.white,
+///   elevation: 2,
+/// )
+/// ```
 class ItemConfig {
   final EdgeInsetsGeometry padding;
   final Aligned alignment;

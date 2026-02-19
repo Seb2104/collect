@@ -1,8 +1,42 @@
 part of '../../collect.dart';
 
+/// A convenient shorthand alias for [Bases].
+///
+/// This lets you write `Base.binary` instead of `Bases.binary` — same thing,
+/// just a bit cleaner to read in calling code.
 typedef Base = Bases;
 
+/// All supported numeral bases for radix conversion, from base-2 up to base-256.
+///
+/// Each entry maps a human-readable name to its numeric radix value. The enum
+/// includes both the traditional mathematical names (like [binary], [octal],
+/// [hexadecimal]) and shorthand aliases (`b2`, `b3`, ... `b256`) so you can
+/// pick whichever style feels right for your code.
+///
+/// ## Usage
+///
+/// Pass a [Bases] value to the radix conversion utilities on `int`:
+///
+/// ```dart
+/// final hex = 255.toBase(Bases.hexadecimal); // 'FF'
+/// final bin = 42.toBase(Base.b2);             // '101010'
+/// ```
+///
+/// ## Common Bases
+///
+/// | Name           | Value | Typical Use                         |
+/// |----------------|-------|-------------------------------------|
+/// | [binary]       | 2     | Bitwise operations, low-level I/O   |
+/// | [octal]        | 8     | Unix file permissions               |
+/// | [decimal]      | 10    | Everyday numbers                    |
+/// | [hexadecimal]  | 16    | Colour codes, memory addresses      |
+/// | [sexagesimal]  | 60    | Time and angle measurements         |
+/// | [b256]         | 256   | Byte-level encoding                 |
+///
+/// The shorthand entries (`b2` through `b256`) are provided for quick access
+/// when the formal name would be cumbersome.
 enum Bases {
+  /// Base-2 (binary). The foundation of all digital computing — just 0s and 1s.
   binary(value: 2),
   ternary(value: 3),
   quaternary(value: 4),
@@ -342,7 +376,11 @@ enum Bases {
   b255(value: 255),
   b256(value: 256);
 
+  /// The numeric radix value this entry represents.
+  ///
+  /// For example, [hexadecimal] has a value of `16`, and [binary] has `2`.
   final int value;
 
+  /// Creates a [Bases] entry with the given radix [value].
   const Bases({required this.value});
 }

@@ -1,5 +1,19 @@
 part of '../colour_picker.dart';
 
+/// A rectangular 2D palette colour picker with a configurable colour model.
+///
+/// The palette axes change depending on the selected [paletteType]. For
+/// example, `PaletteType.hsvWithHue` shows saturation horizontally and value
+/// vertically, while a separate slider adjusts hue.
+///
+/// Features include:
+/// - Support for HSV, HSL, and RGB palette modes.
+/// - Optional alpha slider.
+/// - Colour history strip (tap the indicator to save, long-press to remove).
+/// - Colour label display in multiple formats.
+///
+/// This widget is not typically created directly — use
+/// [ColourPicker.square] instead.
 class SquarePicker extends StatefulWidget {
   const SquarePicker({
     super.key,

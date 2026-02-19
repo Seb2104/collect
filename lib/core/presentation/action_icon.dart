@@ -1,6 +1,33 @@
 part of '../../collect.dart';
 
+/// A compact, tooltip-enabled icon button with built-in active/disabled states.
+///
+/// [ActionIcon] is designed for toolbar-style UIs where you need a small
+/// icon that responds to taps, shows a tooltip on hover, and visually
+/// communicates whether it's currently active or disabled — all without
+/// writing boilerplate.
+///
+/// ## Example
+///
+/// ```dart
+/// ActionIcon(
+///   icon: Icons.format_bold,
+///   tooltip: 'Bold',
+///   isActive: isBold,
+///   onTap: () => toggleBold(),
+/// )
+/// ```
+///
+/// ## Visual Behaviour
+///
+/// - **Default** — The icon is rendered at 75% opacity.
+/// - **Active** — A subtle sage-coloured background and border appear.
+/// - **Disabled** — The icon fades to 40% opacity and ignores taps.
+/// - **Hover** — An ink-splash effect using the current theme's hover colour.
 class ActionIcon extends StatefulWidget {
+  /// Creates an [ActionIcon] button.
+  ///
+  /// [icon] and [tooltip] are required. Everything else is optional.
   const ActionIcon({
     super.key,
     required this.icon,
@@ -10,10 +37,20 @@ class ActionIcon extends StatefulWidget {
     this.isActive = false,
   });
 
+  /// The icon glyph to display (e.g. `Icons.format_bold`).
   final IconData icon;
+
+  /// The tooltip message shown on hover/long-press.
   final String tooltip;
+
+  /// Called when the user taps the icon. Ignored when [enabled] is `false`.
   final VoidCallback? onTap;
+
+  /// Whether this icon button is interactive. Defaults to `true`.
   final bool enabled;
+
+  /// Whether this icon is in its "active" visual state (highlighted
+  /// background). Defaults to `false`.
   final bool isActive;
 
   @override

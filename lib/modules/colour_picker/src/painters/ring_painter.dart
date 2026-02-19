@@ -1,7 +1,14 @@
 part of '../../colour_picker.dart';
 
-/// Painter for the hue ring
-/// Displays a ring showing the full hue spectrum with a pointer at the current hue
+/// Paints the hue ring for [HueRingPicker].
+///
+/// Draws a circular stroke using a [SweepGradient] that cycles through all
+/// 360 degrees of hue. A thumb (white circle with optional colour fill)
+/// is positioned at the angle corresponding to the current [hsvColor.hue].
+///
+/// The [strokeWidth] controls the thickness of the ring. Hit testing limits
+/// interaction to the annular region between 70% and 130% of the radius,
+/// so taps in the centre or far outside the ring are ignored.
 class HueRingPainter extends CustomPainter {
   const HueRingPainter(
     this.hsvColor, {
