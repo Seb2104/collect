@@ -23,7 +23,6 @@ class _FilteredMenuDemoState extends State<FilteredMenuDemo> {
             child: FilteredMenu(
               entries: menuEntries,
               width: 500,
-              height: 50,
             ),
           ),
         ),
