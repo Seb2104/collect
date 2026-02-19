@@ -11,7 +11,7 @@ part of '../menu.dart';
 /// and updating the trigger bar.
 class MenuItem {
   final String label;
-  final String value;
+  final dynamic value;
 
   const MenuItem({required this.label, required this.value});
 
