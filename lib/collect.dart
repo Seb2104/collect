@@ -18,7 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:unicode/unicode.dart' as unicode;
 
-export 'api/menu/menu.dart';
+export 'api/modules/menu/menu.dart';
 
 part 'api/constants/bases.dart';
 part 'api/constants/colour_pickers.dart';

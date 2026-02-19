@@ -1,5 +1,5 @@
 import 'package:collect/collect.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide MenuController;
 
 // colorLabelTypes: [
 // ColorLabelType.hex,
@@ -35,13 +35,11 @@ class _ColourLabelState extends State<ColourLabel> {
 
   String hsvView() => widget.colour.hsv.toString();
 
-  MenuControl menuController = MenuControl();
   String selectedFormat = 'b256';
 
   @override
   void initState() {
     super.initState();
-    menuController.selectedValue = selectedFormat;
   }
 
   String getViewForFormat(String format) {
@@ -68,16 +66,17 @@ class _ColourLabelState extends State<ColourLabel> {
       height: widget.height,
       child: Row(
         children: [
-          MenuDropDown(
+          Menu(
+            height: 40,
             width: 100,
-            value: selectedFormat,
-            onChanged: (val) {
-              selectedFormat = val;
-              menuController.selectedValue = selectedFormat;
-              print(selectedFormat);
-              setState(() {});
-            },
-            items: ['b256', 'hex', 'argb', 'hsl', 'hsv'],
+            // value: selectedFormat,
+            items: [
+              MenuItem(label: 'b256', value: 'b256'),
+              MenuItem(label: 'HEX', value: 'hex'),
+              MenuItem(label: 'aRGB', value: 'argb'),
+              MenuItem(label: 'HSL', value: 'hsl'),
+              MenuItem(label: 'HSV', value: 'hsv'),
+            ],
           ),
           Spacer(),
           Word(getViewForFormat(selectedFormat), fontSize: 14),

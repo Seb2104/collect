@@ -1,6 +1,6 @@
 name: collect
 description: "The Developers Repertoire"
-version: 2.1.0
+version: 2.2.0
 homepage: https://github.com/Seb2104/collect
 repository: https://github.com/Seb2104/collect
 topics:
@@ -32,8 +32,5 @@ flutter:
 
   plugin:
     platforms:
-      android:
-        package: com.recollect.collect
-        pluginClass: collectPlugin
       windows:
         pluginClass: collectPluginCApi

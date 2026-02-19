@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 Colour colour = Colours.white;
 List<MenuItem> menuItems = [
-  MenuItem(value: 'first'),
-  MenuItem(value: 'second'),
-  MenuItem(value: 'third'),
-  MenuItem(value: 'fourth'),
-  MenuItem(value: 'fifth'),
+  MenuItem(label: 'First', value: '1'),
+  MenuItem(label: 'Second', value: '2'),
+  MenuItem(label: 'Third', value: '3'),
+  MenuItem(label: 'Fourth', value: '4'),
+  MenuItem(label: 'Fifth', value: '5'),
 ];
 List<String> menuValues = ['first', 'second', 'third', 'fourth', 'fifth'];
 
@@ -23,45 +23,23 @@ class MenuDemo extends StatefulWidget {
 }
 
 class _MenuDemoState extends State<MenuDemo> {
-  TextEditingController controller = TextEditingController();
   String selected = menuItems[0].value;
-
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(() {
-      print(controller.text);
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.light(),
       home: Scaffold(
-        body: SizedBox(
+        body: Container(
           height: MediaQuery.of(context).size.height * 1,
           width: MediaQuery.of(context).size.width * 1,
+          color: AppTheme.background(context),
           child: Center(
-            child: MenuTextField(
+            child: Menu(
               items: menuItems,
-              controller: controller,
-              enableSearch: true,
-              enableFilter: true,
-              selected: selected,
               width: 500,
-              onSelected: (newValue) {
-                controller.text = newValue;
-                selected = newValue;
-                setState(() {});
-              },
+              height: 40,
+              menuConfig: MenuConfig(searchable: true),
             ),
           ),
         ),
