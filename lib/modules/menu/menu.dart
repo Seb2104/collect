@@ -238,7 +238,7 @@ class _MenuState extends State<Menu> {
                         controller: _searchController,
                         focusNode: _searchFocusNode,
                         autofocus: true,
-                        style:  const TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontFamily: TIMES_NEW_ROMAN,
                           fontFamilyFallback: [APPLE_COLOUR_EMOJI],
@@ -247,7 +247,7 @@ class _MenuState extends State<Menu> {
                           focusedBorder: InputBorder.none,
                           isDense: true,
                         ),
-                      )
+                      ),
                     )
                   else ...[
                     Word(_menuController.value.selectedItem.label),

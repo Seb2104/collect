@@ -2,14 +2,14 @@ part of '../../collect.dart';
 
 typedef Font = String;
 
-class Fonts {
-  static final Fonts _instance = Fonts._internal();
+class SystemFonts {
+  static final SystemFonts _instance = SystemFonts._internal();
 
-  factory Fonts() {
+  factory SystemFonts() {
     return _instance;
   }
 
-  Fonts._internal() {
+  SystemFonts._internal() {
     _fontDirectories.addAll(_getFontDirectories());
   }
 

@@ -24,8 +24,9 @@ class MenuState {
       selectedItem: selectedItem ?? this.selectedItem,
       filteredItems: filteredItems ?? this.filteredItems,
       isOverlayVisible: isOverlayVisible ?? this.isOverlayVisible,
-      highlightedIndex:
-          clearHighlight ? null : (highlightedIndex ?? this.highlightedIndex),
+      highlightedIndex: clearHighlight
+          ? null
+          : (highlightedIndex ?? this.highlightedIndex),
     );
   }
 }
@@ -68,8 +69,9 @@ class MenuController extends ValueNotifier<MenuState> {
     final items = value.filteredItems;
     if (items.isEmpty) return;
     final current = value.highlightedIndex;
-    final prev =
-        (current == null || current == 0) ? items.length - 1 : current - 1;
+    final prev = (current == null || current == 0)
+        ? items.length - 1
+        : current - 1;
     value = value.copyWith(highlightedIndex: prev);
     _overlay?.markNeedsBuild();
   }
@@ -97,19 +99,15 @@ class MenuController extends ValueNotifier<MenuState> {
       filtered = filterCallback(allItems, query);
     } else {
       final q = query.toLowerCase();
-      filtered =
-          allItems
-              .where((item) => item.label.toLowerCase().contains(q))
-              .toList();
+      filtered = allItems
+          .where((item) => item.label.toLowerCase().contains(q))
+          .toList();
     }
     value = value.copyWith(filteredItems: filtered, clearHighlight: true);
     _overlay?.markNeedsBuild();
   }
 
-  void searchHighlight(
-    String query, {
-    MenuSearchCallback? searchCallback,
-  }) {
+  void searchHighlight(String query, {MenuSearchCallback? searchCallback}) {
     if (query.isEmpty) {
       value = value.copyWith(clearHighlight: true);
       _overlay?.markNeedsBuild();
