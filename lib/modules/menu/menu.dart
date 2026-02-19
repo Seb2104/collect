@@ -209,10 +209,12 @@ class _MenuState extends State<Menu> {
 
     if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
       _menuController.highlightNext();
+      _updateTextFieldFromHighlight();
       _scrollToHighlight();
       return true;
     } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
       _menuController.highlightPrevious();
+      _updateTextFieldFromHighlight();
       _scrollToHighlight();
       return true;
     } else if (event.logicalKey == LogicalKeyboardKey.enter) {
@@ -226,6 +228,20 @@ class _MenuState extends State<Menu> {
     }
 
     return false;
+  }
+
+  void _updateTextFieldFromHighlight() {
+    final idx = _menuController.value.highlightedIndex;
+    if (idx == null || idx >= _menuController.value.filteredItems.length) {
+      return;
+    }
+
+    final highlightedItem = _menuController.value.filteredItems[idx];
+
+    // Temporarily disable the search listener to avoid triggering filtering
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.text = highlightedItem.label;
+    _searchController.addListener(_onSearchChanged);
   }
 
   void _scrollToHighlight() {
