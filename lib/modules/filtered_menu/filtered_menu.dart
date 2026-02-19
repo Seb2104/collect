@@ -12,7 +12,6 @@ class FilteredMenu<T> extends StatefulWidget {
     required this.entries,
     this.initialSelection,
     this.onSelected,
-    this.controller,
     this.focusNode,
     this.width,
     this.label,
@@ -44,7 +43,6 @@ class FilteredMenu<T> extends StatefulWidget {
   final List<MenuEntry<T>> entries;
   final T? initialSelection;
   final ValueChanged<T?>? onSelected;
-  final TextEditingController? controller;
   final FocusNode? focusNode;
   final double? width;
   final Widget? label;
@@ -94,7 +92,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   @override
   void initState() {
     super.initState();
-    _textController = widget.controller ?? TextEditingController();
+    _textController = TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
     _enableSearch = widget.enableSearch;
     _filteredEntries = widget.entries;
@@ -130,9 +128,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     _scrollController.dispose();
     _internalFocusNode.dispose();
 
-    if (widget.controller == null) {
-      _textController.dispose();
-    }
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
