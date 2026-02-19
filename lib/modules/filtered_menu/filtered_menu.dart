@@ -14,9 +14,8 @@ class FilteredMenu<T> extends StatefulWidget {
     this.onSelected,
     this.controller,
     this.focusNode,
-    this.enabled = true,
     this.width,
-    this.menuHeight,
+    this.height,
     this.label,
     this.hintText,
     this.helperText,
@@ -48,9 +47,8 @@ class FilteredMenu<T> extends StatefulWidget {
   final ValueChanged<T?>? onSelected;
   final TextEditingController? controller;
   final FocusNode? focusNode;
-  final bool enabled;
   final double? width;
-  final double? menuHeight;
+  final double? height;
   final Widget? label;
   final String? hintText;
   final String? helperText;
@@ -214,7 +212,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   }
 
   bool _handleKeyEvent(KeyEvent event) {
-    if (!_isOverlayVisible || !widget.enabled) return false;
+    if (!_isOverlayVisible) return false;
     if (event is! KeyDownEvent) return false;
 
     final key = event.logicalKey;
@@ -338,7 +336,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   }
 
   void _showOverlay() {
-    if (_isOverlayVisible || !widget.enabled) return;
+    if (_isOverlayVisible) return;
 
     setState(() {
       _filteredEntries = widget.entries;
@@ -396,7 +394,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
         child: TextField(
           controller: _textController,
           focusNode: _focusNode,
-          enabled: widget.enabled,
           canRequestFocus: _canRequestFocus(),
           enableInteractiveSelection: _canRequestFocus(),
           readOnly: !_canRequestFocus(),
@@ -408,7 +405,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
           cursorHeight: widget.cursorHeight,
           style: widget.textStyle,
           inputFormatters: widget.inputFormatters,
-          onTap: widget.enabled ? _toggleOverlay : null,
+          onTap: _toggleOverlay,
           onChanged: (text) {
             if (!_isOverlayVisible) {
               _showOverlay();
@@ -432,7 +429,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
                                       const Icon(Icons.arrow_drop_up))
                                 : (widget.trailingIcon ??
                                       const Icon(Icons.arrow_drop_down)),
-                            onPressed: widget.enabled ? _toggleOverlay : null,
+                            onPressed: _toggleOverlay,
                           )
                         : null,
                   ),
@@ -470,7 +467,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         maxHeight:
-                            widget.menuHeight ??
+                            widget.height ??
                             MediaQuery.of(context).size.height * 0.4,
                       ),
                       child: ListView.builder(
