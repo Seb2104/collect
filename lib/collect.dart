@@ -89,6 +89,7 @@ import 'package:unicode/unicode.dart' as unicode;
 export 'modules/colour/colour.dart';
 export 'modules/colour_picker/colour_picker.dart';
 export 'modules/menu/menu.dart';
+export 'modules/filtered_menu/filtered_menu.dart';
 
 part 'core/constants/bases.dart';
 part 'core/constants/colour_pickers.dart';

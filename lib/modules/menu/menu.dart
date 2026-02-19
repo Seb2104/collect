@@ -41,7 +41,6 @@ part 'presentation/menu_item.dart';
 part 'presentation/menu_scope.dart';
 part 'structs/item_config.dart';
 part 'structs/menu_config.dart';
-part 'types/filtered_menu.dart';
 
 /// Callback for custom item filtering logic.
 ///

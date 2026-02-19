@@ -1,11 +1,10 @@
-part of '../menu.dart';
+library;
 
-enum MenuCloseBehavior { all, self, none }
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-typedef MenuEntryFilterCallback<T> =
-    List<T> Function(List<T> entries, String filter);
-typedef MenuEntrySearchCallback<T> =
-    int? Function(List<T> entries, String query);
+part 'src/data.dart';
+part 'src/menu_entry.dart';
 
 class FilteredMenu<T> extends StatefulWidget {
   const FilteredMenu({
@@ -549,41 +548,4 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
       ),
     );
   }
-}
-
-class MenuEntry<T> {
-  const MenuEntry({
-    required this.value,
-    required this.label,
-    this.labelWidget,
-    this.leadingIcon,
-    this.trailingIcon,
-    this.enabled = true,
-    this.style,
-  });
-
-  final T value;
-
-  final String label;
-
-  final Widget? labelWidget;
-
-  final Widget? leadingIcon;
-
-  final Widget? trailingIcon;
-
-  final bool enabled;
-
-  final ButtonStyle? style;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MenuEntry<T> &&
-          runtimeType == other.runtimeType &&
-          value == other.value &&
-          label == other.label;
-
-  @override
-  int get hashCode => Object.hash(value, label);
 }
