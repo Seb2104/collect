@@ -1,6 +1,6 @@
 name: collect
 description: "The Developers Repertoire"
-version: 2.2.3
+version: 2.2.4
 homepage: https://github.com/Seb2104/collect
 repository: https://github.com/Seb2104/collect
 topics:
@@ -18,7 +18,6 @@ dependencies:
   flutter:
     sdk: flutter
   unicode: ^1.1.9
-  file_picker: ^10.3.10
   path: ^1.9.1
 
 dev_dependencies:
