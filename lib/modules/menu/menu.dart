@@ -4,11 +4,11 @@ import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-part 'src/controller/menu_controller.dart';
-part 'src/presentation/menu_item.dart';
-part 'src/presentation/menu_scope.dart';
-part 'src/structs/item_config.dart';
-part 'src/structs/menu_config.dart';
+part 'controller/menu_controller.dart';
+part 'presentation/menu_item.dart';
+part 'presentation/menu_scope.dart';
+part 'structs/item_config.dart';
+part 'structs/menu_config.dart';
 
 typedef MenuFilterCallback =
     List<MenuItem> Function(List<MenuItem> items, String query);

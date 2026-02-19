@@ -1,4 +1,4 @@
-part of '../../menu.dart';
+part of '../menu.dart';
 
 enum Aligned { left, center, right }
 

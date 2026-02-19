@@ -1,4 +1,4 @@
-part of '../../menu.dart';
+part of '../menu.dart';
 
 class MenuScope extends InheritedWidget {
   final MenuController controller;
