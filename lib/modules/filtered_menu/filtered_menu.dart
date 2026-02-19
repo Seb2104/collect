@@ -86,6 +86,59 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   bool _isOverlayVisible = false;
 
   @override
+  Widget build(BuildContext context) {
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: SizedBox(
+        width: widget.width,
+        child: TextField(
+          controller: _textController,
+          focusNode: _focusNode,
+          canRequestFocus: _canRequestFocus(),
+          enableInteractiveSelection: _canRequestFocus(),
+          readOnly: !_canRequestFocus(),
+          keyboardType: widget.keyboardType,
+          textAlign: widget.textAlign,
+          textAlignVertical: TextAlignVertical.center,
+          maxLines: widget.maxLines,
+          textInputAction: widget.textInputAction,
+          cursorHeight: widget.cursorHeight,
+          style: widget.textStyle,
+          inputFormatters: widget.inputFormatters,
+          onTap: _toggleOverlay,
+          onChanged: (text) {
+            if (!_isOverlayVisible) {
+              _showOverlay();
+            }
+          },
+          decoration:
+              (widget.inputDecoration ??
+                      InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: widget.label,
+                        hintText: widget.hintText,
+                        helperText: widget.helperText,
+                        errorText: widget.errorText,
+                      ))
+                  .copyWith(
+                    prefixIcon: widget.leadingIcon,
+                    suffixIcon: widget.showTrailingIcon
+                        ? IconButton(
+                            icon: _isOverlayVisible
+                                ? (widget.selectedTrailingIcon ??
+                                      const Icon(Icons.arrow_drop_up))
+                                : (widget.trailingIcon ??
+                                      const Icon(Icons.arrow_drop_down)),
+                            onPressed: _toggleOverlay,
+                          )
+                        : null,
+                  ),
+        ),
+      ),
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
     _textController = widget.controller ?? TextEditingController();
@@ -187,6 +240,12 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     if (text.isNotEmpty) {
       if (widget.searchCallback != null) {
         _currentHighlight = widget.searchCallback!(_filteredEntries, text);
+
+        final index = widget.entries.indexWhere((entry) {
+          return entry.label.toLowerCase().startsWith(text.toLowerCase());
+        });
+
+        _currentHighlight = index != -1 ? index : null;
         setState(() {});
       } else {
         final searchText = text.toLowerCase();
@@ -367,59 +426,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
           TargetPlatform.linux ||
           TargetPlatform.windows => true,
         };
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: SizedBox(
-        width: widget.width,
-        child: TextField(
-          controller: _textController,
-          focusNode: _focusNode,
-          canRequestFocus: _canRequestFocus(),
-          enableInteractiveSelection: _canRequestFocus(),
-          readOnly: !_canRequestFocus(),
-          keyboardType: widget.keyboardType,
-          textAlign: widget.textAlign,
-          textAlignVertical: TextAlignVertical.center,
-          maxLines: widget.maxLines,
-          textInputAction: widget.textInputAction,
-          cursorHeight: widget.cursorHeight,
-          style: widget.textStyle,
-          inputFormatters: widget.inputFormatters,
-          onTap: _toggleOverlay,
-          onChanged: (text) {
-            if (!_isOverlayVisible) {
-              _showOverlay();
-            }
-          },
-          decoration:
-              (widget.inputDecoration ??
-                      InputDecoration(
-                        border: const OutlineInputBorder(),
-                        label: widget.label,
-                        hintText: widget.hintText,
-                        helperText: widget.helperText,
-                        errorText: widget.errorText,
-                      ))
-                  .copyWith(
-                    prefixIcon: widget.leadingIcon,
-                    suffixIcon: widget.showTrailingIcon
-                        ? IconButton(
-                            icon: _isOverlayVisible
-                                ? (widget.selectedTrailingIcon ??
-                                      const Icon(Icons.arrow_drop_up))
-                                : (widget.trailingIcon ??
-                                      const Icon(Icons.arrow_drop_down)),
-                            onPressed: _toggleOverlay,
-                          )
-                        : null,
-                  ),
-        ),
-      ),
-    );
   }
 
   OverlayEntry _createOverlayEntry() {

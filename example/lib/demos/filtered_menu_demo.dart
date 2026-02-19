@@ -13,7 +13,6 @@ class _FilteredMenuDemoState extends State<FilteredMenuDemo> {
   List<MenuEntry> _filterCallback(List<MenuEntry> entries, String filter) {
     if (filter.isEmpty) return entries;
 
-    setState(() {});
     return entries.where((entry) {
       return entry.label.toLowerCase().contains(filter.toLowerCase());
     }).toList();
