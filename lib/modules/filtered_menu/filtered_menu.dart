@@ -23,8 +23,6 @@ class FilteredMenu<T> extends StatefulWidget {
     this.trailingIcon,
     this.showTrailingIcon = true,
     this.selectedTrailingIcon,
-    this.enableFilter = true,
-    this.enableSearch = true,
     this.filterCallback,
     this.searchCallback,
     this.textAlign = TextAlign.start,
@@ -55,8 +53,6 @@ class FilteredMenu<T> extends StatefulWidget {
   final Widget? trailingIcon;
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
-  final bool enableFilter;
-  final bool enableSearch;
   final MenuEntryFilterCallback<MenuEntry<T>>? filterCallback;
   final MenuEntrySearchCallback<MenuEntry<T>>? searchCallback;
   final TextAlign textAlign;
@@ -88,15 +84,12 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   int? _currentHighlight;
   int? _selectedEntryIndex;
   bool _isOverlayVisible = false;
-  bool _enableFilter = false;
-  bool _enableSearch = false;
 
   @override
   void initState() {
     super.initState();
     _textController = widget.controller ?? TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
-    _enableSearch = widget.enableSearch;
     _filteredEntries = widget.entries;
 
     _textController.addListener(_onTextChanged);
@@ -162,8 +155,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   void _onTextChanged() {
     if (_isOverlayVisible) {
       setState(() {
-        _enableFilter = widget.enableFilter;
-        _enableSearch = widget.enableSearch;
         _updateFilteredEntries();
       });
     }
@@ -180,9 +171,10 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   void _updateFilteredEntries() {
     final text = _textController.text;
 
-    if (_enableFilter && text.isNotEmpty) {
+    if (text.isNotEmpty) {
       if (widget.filterCallback != null) {
         _filteredEntries = widget.filterCallback!(widget.entries, text);
+        setState(() {});
       } else {
         _filteredEntries = widget.entries
             .where((e) => e.label.toLowerCase().contains(text.toLowerCase()))
@@ -192,9 +184,10 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
       _filteredEntries = widget.entries;
     }
 
-    if (_enableSearch && text.isNotEmpty) {
+    if (text.isNotEmpty) {
       if (widget.searchCallback != null) {
         _currentHighlight = widget.searchCallback!(_filteredEntries, text);
+        setState(() {});
       } else {
         final searchText = text.toLowerCase();
         final index = _filteredEntries.indexWhere(
@@ -241,9 +234,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
   void _highlightNext() {
     setState(() {
-      _enableFilter = false;
-      _enableSearch = false;
-
       if (_filteredEntries.isEmpty) {
         _currentHighlight = null;
         return;
@@ -266,9 +256,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
   void _highlightPrevious() {
     setState(() {
-      _enableFilter = false;
-      _enableSearch = false;
-
       if (_filteredEntries.isEmpty) {
         _currentHighlight = null;
         return;
@@ -338,7 +325,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
 
     setState(() {
       _filteredEntries = widget.entries;
-      _enableFilter = false;
       _isOverlayVisible = true;
     });
 
@@ -362,7 +348,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   void _selectEntry(MenuEntry<T> entry, int index) {
     _updateTextController(entry.label);
     _selectedEntryIndex = index;
-    _currentHighlight = widget.enableSearch ? index : null;
+    _currentHighlight = index;
     widget.onSelected?.call(entry.value);
 
     if (widget.closeBehavior == MenuCloseBehavior.self ||
