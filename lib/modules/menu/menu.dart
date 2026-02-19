@@ -148,6 +148,9 @@ class _MenuState extends State<Menu> {
     if (_searchable) {
       HardwareKeyboard.instance.removeHandler(_onKeyEvent);
     }
+    _menuController.removeListener(_onControllerChanged);
+    _focusNode.removeListener(_onFocusChanged);
+    _searchFocusNode.removeListener(_onSearchFocusChanged);
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     _searchFocusNode.dispose();
@@ -160,7 +163,7 @@ class _MenuState extends State<Menu> {
   }
 
   void _onSearchChanged() {
-    if (_isClosing) return;
+    if (!mounted || _isClosing) return;
     final config = widget.menuConfig;
     final query = _searchController.text;
 
@@ -184,6 +187,8 @@ class _MenuState extends State<Menu> {
   }
 
   void _onControllerChanged() {
+    if (!mounted) return;
+
     final isVisible = _menuController.value.isOverlayVisible;
     final wasVisible = _wasOverlayVisible;
     _wasOverlayVisible = isVisible;
@@ -243,9 +248,10 @@ class _MenuState extends State<Menu> {
   }
 
   void _onFocusChanged() {
+    if (!mounted) return;
     if (_searchable) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!_focusNode.hasFocus && !_searchFocusNode.hasFocus) {
+        if (mounted && !_focusNode.hasFocus && !_searchFocusNode.hasFocus) {
           _menuController.hideOverlay();
         }
       });
@@ -255,8 +261,9 @@ class _MenuState extends State<Menu> {
   }
 
   void _onSearchFocusChanged() {
+    if (!mounted) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_focusNode.hasFocus && !_searchFocusNode.hasFocus) {
+      if (mounted && !_focusNode.hasFocus && !_searchFocusNode.hasFocus) {
         _menuController.hideOverlay();
       }
     });

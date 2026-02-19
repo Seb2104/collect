@@ -96,7 +96,9 @@ class MenuController extends ValueNotifier<MenuState> {
     final current = value.highlightedIndex;
     final next = (current == null) ? 0 : (current + 1) % items.length;
     value = value.copyWith(highlightedIndex: next);
-    _overlay?.markNeedsBuild();
+    if (_overlay != null && _overlay!.mounted) {
+      _overlay!.markNeedsBuild();
+    }
   }
 
   void highlightPrevious() {
@@ -107,7 +109,9 @@ class MenuController extends ValueNotifier<MenuState> {
         ? items.length - 1
         : current - 1;
     value = value.copyWith(highlightedIndex: prev);
-    _overlay?.markNeedsBuild();
+    if (_overlay != null && _overlay!.mounted) {
+      _overlay!.markNeedsBuild();
+    }
   }
 
   void selectHighlighted() {
@@ -124,7 +128,9 @@ class MenuController extends ValueNotifier<MenuState> {
   }) {
     if (query.isEmpty) {
       value = value.copyWith(filteredItems: allItems, clearHighlight: true);
-      _overlay?.markNeedsBuild();
+      if (_overlay != null && _overlay!.mounted) {
+        _overlay!.markNeedsBuild();
+      }
       return;
     }
 
@@ -138,13 +144,17 @@ class MenuController extends ValueNotifier<MenuState> {
           .toList();
     }
     value = value.copyWith(filteredItems: filtered, clearHighlight: true);
-    _overlay?.markNeedsBuild();
+    if (_overlay != null && _overlay!.mounted) {
+      _overlay!.markNeedsBuild();
+    }
   }
 
   void searchHighlight(String query, {MenuSearchCallback? searchCallback}) {
     if (query.isEmpty) {
       value = value.copyWith(clearHighlight: true);
-      _overlay?.markNeedsBuild();
+      if (_overlay != null && _overlay!.mounted) {
+        _overlay!.markNeedsBuild();
+      }
       return;
     }
 
@@ -164,7 +174,9 @@ class MenuController extends ValueNotifier<MenuState> {
     } else {
       value = value.copyWith(clearHighlight: true);
     }
-    _overlay?.markNeedsBuild();
+    if (_overlay != null && _overlay!.mounted) {
+      _overlay!.markNeedsBuild();
+    }
   }
 
   void showOverlay(BuildContext context, OverlayEntry Function() builder) {
@@ -178,8 +190,14 @@ class MenuController extends ValueNotifier<MenuState> {
   }
 
   void hideOverlay() {
-    _overlay?.remove();
-    _overlay = null;
+    if (_overlay != null) {
+      try {
+        _overlay?.remove();
+      } catch (e) {
+        // Overlay may already be removed if the widget tree was disposed
+      }
+      _overlay = null;
+    }
     value = value.copyWith(isOverlayVisible: false);
   }
 
