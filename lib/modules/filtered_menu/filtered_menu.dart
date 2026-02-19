@@ -15,7 +15,6 @@ class FilteredMenu<T> extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.width,
-    this.height,
     this.label,
     this.hintText,
     this.helperText,
@@ -48,7 +47,6 @@ class FilteredMenu<T> extends StatefulWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final double? width;
-  final double? height;
   final Widget? label;
   final String? hintText;
   final String? helperText;
@@ -466,9 +464,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
                     borderRadius: BorderRadius.circular(8),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight:
-                            widget.height ??
-                            MediaQuery.of(context).size.height * 0.4,
+                        maxHeight: MediaQuery.of(context).size.height * 0.4,
                       ),
                       child: ListView.builder(
                         controller: _scrollController,
