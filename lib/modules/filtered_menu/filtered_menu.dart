@@ -22,8 +22,6 @@ class FilteredMenu<T> extends StatefulWidget {
     this.trailingIcon,
     this.showTrailingIcon = true,
     this.selectedTrailingIcon,
-    this.enableFilter = true,
-    this.enableSearch = true,
     this.filterCallback,
     this.searchCallback,
     this.textAlign = TextAlign.start,
@@ -53,8 +51,6 @@ class FilteredMenu<T> extends StatefulWidget {
   final Widget? trailingIcon;
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
-  final bool enableFilter;
-  final bool enableSearch;
   final MenuEntryFilterCallback<MenuEntry<T>>? filterCallback;
   final MenuEntrySearchCallback<MenuEntry<T>>? searchCallback;
   final TextAlign textAlign;
@@ -94,7 +90,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     super.initState();
     _textController = TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
-    _enableSearch = widget.enableSearch;
     _filteredEntries = widget.entries;
 
     _textController.addListener(_onTextChanged);
@@ -157,8 +152,6 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   void _onTextChanged() {
     if (_isOverlayVisible) {
       setState(() {
-        _enableFilter = widget.enableFilter;
-        _enableSearch = widget.enableSearch;
         _updateFilteredEntries();
       });
     }
@@ -357,7 +350,7 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
   void _selectEntry(MenuEntry<T> entry, int index) {
     _updateTextController(entry.label);
     _selectedEntryIndex = index;
-    _currentHighlight = widget.enableSearch ? index : null;
+    _currentHighlight = index;
     widget.onSelected?.call(entry.value);
 
     if (widget.closeBehavior == MenuCloseBehavior.self ||
