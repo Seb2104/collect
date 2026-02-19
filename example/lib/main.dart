@@ -1,6 +1,7 @@
 import 'package:collect/collect.dart';
 import 'package:flutter/material.dart';
 
+List<String> menuValues = ['first', 'second', 'third', 'fourth', 'fifth'];
 Colour colour = Colours.white;
 List<MenuItem> menuItems = [
   MenuItem(label: 'First', value: '1'),
@@ -9,7 +10,6 @@ List<MenuItem> menuItems = [
   MenuItem(label: 'Fourth', value: '4'),
   MenuItem(label: 'Fifth', value: '5'),
 ];
-List<String> menuValues = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 void main() {
   runApp(MenuDemo());
@@ -35,11 +35,24 @@ class _MenuDemoState extends State<MenuDemo> {
           width: MediaQuery.of(context).size.width * 1,
           color: AppTheme.background(context),
           child: Center(
-            child: Menu(
-              items: menuItems,
-              width: 500,
-              height: 40,
-              menuConfig: MenuConfig(searchable: true),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Menu(
+                  items: menuItems,
+                  width: 500,
+                  height: 40,
+                  menuConfig: MenuConfig(searchable: true),
+                  onSelected: (item) {
+                    setState(() {
+                      selected = item.value;
+                    });
+                    print('Selected: ${item.label} (${item.value})');
+                  },
+                ),
+                SizedBox(height: 20),
+                Word('Selected value: $selected'),
+              ],
             ),
           ),
         ),

@@ -55,6 +55,11 @@ typedef MenuFilterCallback =
 /// should return the index of the best match, or `null` if nothing matches.
 typedef MenuSearchCallback = int? Function(List<MenuItem> items, String query);
 
+/// Callback invoked when a menu item is selected.
+///
+/// Receives the selected [MenuItem] as a parameter.
+typedef OnMenuItemSelected = void Function(MenuItem item);
+
 /// A dropdown menu widget with optional search, filter, and keyboard support.
 ///
 /// Displays a trigger bar showing the currently selected [MenuItem]. Tapping
@@ -69,6 +74,7 @@ class Menu extends StatefulWidget {
   final double width;
   final List<MenuItem> items;
   final MenuController? controller;
+  final OnMenuItemSelected? onSelected;
 
   final MenuConfig menuConfig;
   final ItemConfig itemConfig;
@@ -79,6 +85,7 @@ class Menu extends StatefulWidget {
     required this.width,
     required this.items,
     this.controller,
+    this.onSelected,
     this.menuConfig = const MenuConfig(),
     this.itemConfig = const ItemConfig(),
   });
@@ -114,6 +121,7 @@ class _MenuState extends State<Menu> {
     if (widget.controller != null) {
       _menuController = widget.controller!;
       _menuController.attachFocusNode(_focusNode);
+      _menuController.attachOnSelected(widget.onSelected);
     } else {
       _controllerCreatedInternally = true;
       _menuController = MenuController(
@@ -123,6 +131,7 @@ class _MenuState extends State<Menu> {
           isOverlayVisible: false,
         ),
         focusNode: _focusNode,
+        onSelected: widget.onSelected,
       );
     }
 

@@ -59,13 +59,22 @@ class MenuState {
 class MenuController extends ValueNotifier<MenuState> {
   FocusNode? _focusNode;
   OverlayEntry? _overlay;
+  OnMenuItemSelected? _onSelected;
 
-  MenuController({required MenuState initialState, FocusNode? focusNode})
-    : _focusNode = focusNode,
-      super(initialState);
+  MenuController({
+    required MenuState initialState,
+    FocusNode? focusNode,
+    OnMenuItemSelected? onSelected,
+  })  : _focusNode = focusNode,
+        _onSelected = onSelected,
+        super(initialState);
 
   void attachFocusNode(FocusNode node) {
     _focusNode = node;
+  }
+
+  void attachOnSelected(OnMenuItemSelected? callback) {
+    _onSelected = callback;
   }
 
   bool get isOverlayVisible => _overlay != null;
@@ -74,7 +83,7 @@ class MenuController extends ValueNotifier<MenuState> {
     value = value.copyWith(selectedItem: item, isOverlayVisible: false);
     _focusNode?.unfocus();
     hideOverlay();
-    print(item.value);
+    _onSelected?.call(item);
   }
 
   void updateFilteredItems(List<MenuItem> items) {
