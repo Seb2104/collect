@@ -1,4 +1,5 @@
 part of '../filtered_menu.dart';
+
 class MenuEntry<T> {
   const MenuEntry({
     required this.value,
@@ -27,10 +28,10 @@ class MenuEntry<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MenuEntry<T> &&
-              runtimeType == other.runtimeType &&
-              value == other.value &&
-              label == other.label;
+      other is MenuEntry<T> &&
+          runtimeType == other.runtimeType &&
+          value == other.value &&
+          label == other.label;
 
   @override
   int get hashCode => Object.hash(value, label);

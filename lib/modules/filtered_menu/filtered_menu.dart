@@ -44,15 +44,10 @@ class FilteredMenu<T> extends StatefulWidget {
   });
 
   final List<MenuEntry<T>> entries;
-
   final T? initialSelection;
-
   final ValueChanged<T?>? onSelected;
-
   final TextEditingController? controller;
-
   final FocusNode? focusNode;
-
   final bool enabled;
   final double? width;
   final double? menuHeight;
@@ -64,12 +59,10 @@ class FilteredMenu<T> extends StatefulWidget {
   final Widget? trailingIcon;
   final bool showTrailingIcon;
   final Widget? selectedTrailingIcon;
-
   final bool enableFilter;
   final bool enableSearch;
   final MenuEntryFilterCallback<MenuEntry<T>>? filterCallback;
   final MenuEntrySearchCallback<MenuEntry<T>>? searchCallback;
-
   final TextAlign textAlign;
   final TextStyle? textStyle;
   final TextInputType? keyboardType;
@@ -77,13 +70,10 @@ class FilteredMenu<T> extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int maxLines;
   final double? cursorHeight;
-
   final MenuCloseBehavior closeBehavior;
   final bool? requestFocusOnTap;
-
   final MenuTheme? theme;
   final InputDecoration? inputDecoration;
-
   final Offset? offset;
 
   @override

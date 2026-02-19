@@ -5,7 +5,7 @@ part of '../menu.dart';
 /// Receives the full [items] list and the current search [query], and should
 /// return a new list containing only the items that match.
 typedef MenuFilterCallback =
-List<MenuItem> Function(List<MenuItem> items, String query);
+    List<MenuItem> Function(List<MenuItem> items, String query);
 
 /// Callback for custom search-highlight logic.
 ///
