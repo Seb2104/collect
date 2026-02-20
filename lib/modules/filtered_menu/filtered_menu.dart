@@ -231,9 +231,16 @@ class _FilteredMenuState<T> extends State<FilteredMenu<T>> {
     }
 
     if (text.isNotEmpty) {
-      _currentHighlight = widget.searchCallback!(_filteredEntries, text);
-
-      setState(() {});
+      if (widget.searchCallback != null) {
+        _currentHighlight = widget.searchCallback!(_filteredEntries, text);
+        setState(() {});
+      } else {
+        final searchText = text.toLowerCase();
+        final index = _filteredEntries.indexWhere(
+          (e) => e.label.toLowerCase().contains(searchText),
+        );
+        _currentHighlight = index != -1 ? index : null;
+      }
 
       if (_currentHighlight != null) {
         _scrollToHighlight();
